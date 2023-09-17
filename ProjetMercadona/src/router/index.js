@@ -27,6 +27,7 @@ const routes = [
         path: "/connexion-utilisateur",
         name: "connexionUtilisateur",
         component: ConnexionUtilisateur,
+        props : name ,
       },
       {
         path: "/espace-admin",

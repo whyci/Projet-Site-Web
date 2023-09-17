@@ -43,7 +43,7 @@
 import { onMounted } from "vue";
 import Produits from "../components/Produits.vue";
 import 'bootstrap/dist/css/bootstrap.min.css';
-/* Importe la framework Bootstrap 5 qui permet d'améliorer le front du document */
+// Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 
 onMounted(() => {
 });

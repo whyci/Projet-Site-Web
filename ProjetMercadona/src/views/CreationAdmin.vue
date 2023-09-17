@@ -72,10 +72,18 @@
   </div>
   <footer class="footer-bg">
   </footer>
-  <div class="p-2 text-center">
+  <div class="text-center p-2">
     <br>
-    <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-            class="btn btn-success" @click="">Déjà un compte ? Clique ici</button>
+    <router-link
+      :to="{ name: 'connexionAdmin' }"
+    >
+      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+              @click="navigate"
+              role="link"
+      >
+        Déjà un compte ? Clique ici
+      </button>
+    </router-link>
     <br><br>
   </div>
 </template>

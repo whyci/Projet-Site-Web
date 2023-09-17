@@ -10,12 +10,13 @@
     <p class="mb-2">
       {{ $filters.truncateWords( produit.description , 20) }}
     </p>
-    <h2 class="font-bold">{{ produit.prix }}€</h2>
+    <p class="font-bold">{{ produit.prix }}€ </p>
+    <p v-if="produit.nouveauprix >0 " class="font-bold text-red-600">{{ produit.nouveauprix }}€</p>
   </div>
 </template>
 
 <script setup>
-/* Importe la framework Bootstrap 5 qui permet d'améliorer le front du document */
+// Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -24,6 +25,7 @@ const produit = defineProps({
   description: String,
   categorie: String,
   prix: Number,
+  nouveauprix:Number,
   image: ImageData
 })
 

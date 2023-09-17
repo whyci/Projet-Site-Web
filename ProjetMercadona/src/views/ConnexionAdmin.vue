@@ -46,8 +46,16 @@
     </footer>
   <br>
   <div class="text-center p-2">
-    <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-            class="btn btn-success" @click="">Pas encore de compte ? Clique ici</button>
+    <router-link
+      :to="{ name: 'creationAdmin' }"
+    >
+      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+        @click="navigate"
+        role="link"
+      >
+        Pas encore de compte ? Clique ici
+      </button>
+    </router-link>
     <br><br>
   </div>
 </template>

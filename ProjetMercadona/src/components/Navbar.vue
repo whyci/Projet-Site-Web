@@ -12,6 +12,20 @@
               <!-- bg-white permet que le fond de la barre soit blanche, h-16 de gérer la hauteur de la barre
                 et flex permet d'adapter le texte pour qu'il s'aligne droit dans la barre-->
 
+
+
+              <!--
+              <nav>
+                  <router-link to="/">Accueil</router-link>
+                  <router-link to="/Catalogue">Catalogue</router-link>
+                  <router-link :to="{name:'Product', params : {name :nameProduct}}">Produit 1</router-link>
+                  <router-link :to="{name:'Product', params : {name :'Trotinette'}}">Produit 2</router-link>
+                  <button @click="changer">Produit 3</button>
+                  {{ nameProduct }}
+              </nav>
+              -->
+
+
               <router-link
                 :to="{ name: 'accueil' }"
                 class="inline-flex items-center px-5 text-green-900 font-bold text-2xl"
@@ -88,7 +102,7 @@
 </template>
 
 <script setup>
-/* Importe la framework Bootstrap 5 qui permet d'améliorer le front du document */
+// Importe la framework Bootstrap 5 qui permet d'améliorer le front du document //
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const props = defineProps({
