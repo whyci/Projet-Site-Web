@@ -1,18 +1,21 @@
 <template>
-  <div
-    class="p-3 bg-white shadow rounded-xl hover:scale-105 transition-all h-100"
-  >
-    <img class="display-flex rounded-xl border-8 border-white h-48" v-if="produit.image" :src="image" alt="Select image">
 
-      <br>
-    <h3 class="font-bold">{{ produit.libelle }}</h3>
-    <h4 class="font-semibold">Categorie : {{ produit.categorie }}</h4>
-    <p class="mb-2">
-      {{ $filters.truncateWords( produit.description , 20) }}
-    </p>
-    <p class="font-bold">{{ produit.prix }}€ </p>
-    <p v-if="produit.nouveauprix >0 " class="font-bold text-red-600">{{ produit.nouveauprix }}€</p>
-  </div>
+  <div class="p-3 bg-white shadow rounded-xl hover:scale-105 transition-all h-100">
+    <div class="">
+    <img class="rounded-xl border-8 border-white ml-auto h-40 mr-auto" v-if="produit.image" :src="image" alt="Select image"></div>
+      <div>
+      </div>
+        <br>
+        <p class="font-bold text-xl-center text-2xl">{{ produit.libelle }}</p>
+        <p class="font-semibold text-xl-center">Categorie : {{ produit.categorie }}</p>
+        <p class="mb-2">
+          {{ $filters.truncateWords( produit.description , 20) }}
+        </p>
+        <p v-if="produit.nouveauprix" class="font-bold text-decoration-line-through">{{ produit.prix }}€ </p>
+        <p v-else class="font-bold text-2xl ">{{ produit.prix }}€ </p>
+
+        <p v-if="produit.nouveauprix >0 " class="font-bold text-red-600 text-3xl">{{ produit.nouveauprix }}€</p>
+    </div>
 </template>
 
 <script setup>

@@ -18,7 +18,6 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Produits from "../components/Produits.vue";
 
 const naturesChemin = "natures.png";
 
@@ -30,7 +29,6 @@ const askedPromo = ref(false);
 const ancienPrixPromo = ref(0);
 
 const nomProduitRecherche = ref("");
-
 
 const produits = ref([]);
 const catalogue = ref([
