@@ -1,8 +1,8 @@
 <template>
   <div class="p-10">
-    <h1 class="text-4xl font-bold text-green-900">Espace administrateur</h1>
     <!-- text-4xl permet d'agrandir le texte; font-bold permet de mettre en gras;
       text-green-900 permet de mettre en vert foncée -->
+    <h1 class="text-4xl font-bold text-green-900">Espace administrateur</h1>
     <br>
     <div>
   <p>Veuillez remplir le formulaire ci-dessous pour créer un produit.</p>
@@ -54,6 +54,10 @@
       </div>
       <div class="">
       <br>
+        <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
+        btn, et btn-success permettent de créer un carré et le mettre en couleur
+        les autres informations permettent de rechercher un produit selon sa catégorie
+        quand l'on click sur la bouton ça valide le formulaire -->
       <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
               class="btn btn-success" @click="ajouterProduit">Submit</button>
       <br><br>
@@ -89,9 +93,11 @@
 
   </template>
   -->
-  <Produits />
-  <!-- permet d'importer le fichier produits et d'afficher les données -->
+
+    <!-- permet d'importer le fichier produits et d'afficher les données -->
+<Produits :page-parent="'EspaceAdministrateur'"/>
   </div>
+  <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
   <footer class="footer-bg">
   </footer>
 </template>
@@ -99,6 +105,9 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import Produits from "../components/Produits.vue";
+import Produit from "../components/ProduitElement.vue";
+import Catalogue from "./Catalogue.vue";
+import EspaceAdministrateur from "./EspaceAdministrateur.vue";
 
 const idProduitPromotionString = ref("");
 const idProduitPromotionInt = ref(0);

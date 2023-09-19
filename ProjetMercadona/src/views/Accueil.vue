@@ -1,23 +1,27 @@
 <template>
   <div class="p-10 ">
+    <!-- text-4xl permet d'agrandir le texte et font-bold de le mettre en gras;
+   text-green-900 permet de mettre le texte en vert foncée -->
     <h1 class="text-4xl font-bold text-green-900">Voici les produits en promotions !</h1>
-    <!-- text-4xl permet d'agrandir le texte; font-bold permet de mettre en gras;
-      text-green-900 permet de mettre en vert foncée -->
     <br>
-  <p>Veuillez remplir le formulaire ci-dessous afin de vous créer un compte les informations comportants un signe * sont obligatoire.</p>
+  <p>Voici les produits en promotion de notre magasin toutes catégories confondus, l'alimentaire, traiteur, hygiènes, loisirs ...</p>
     <br>
     <div>
-    <Produits/>
+      <!-- permet d'importer le fichier produits et d'afficher les données -->
+   <Produits :page-parent="'Accueil'"/>
+    </div>
   </div>
-  </div>
-  <!-- permet d'importer le fichier produits et d'afficher les données -->
+  <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
       <footer class="footer-bg">
       </footer>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+
+// Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Produits from "../components/Produits.vue";
 
 const naturesChemin = "natures.png";
 
@@ -46,8 +50,6 @@ const catalogue = ref([
   {id: 12, libelle: "Tabouret", categorie: "Mobilier", prix: 11, image: "../assets/Banque_images/cd.jpg"}
 ]);
 
-
-
 function nouveauProduit() {
   submitted.value = false;
 }
@@ -67,7 +69,6 @@ function demanderPromo() {
   idProduitPromotionInt.value = parseInt(idProduitPromotionString.value);
   askedPromo.value = true;
   recupereAncienPrix();
-
 }
 
 function terminerPromo() {

@@ -1,10 +1,18 @@
 <template>
 
   <div class="grid grid-cols-1 md:grid-cols-5 gap-10">
-    <template v-if="catalogue.length !== 0">
-      <div v-for="(produit, index) in catalogue">
+    <template v-if="listePromotions.length !== 0">
+      <div v-for="(produit, index) in listePromotions">
         <Produit :libelle="produit.libelle" :description="produit.description"
-                 :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix" :image="produit.image"></Produit>
+                 :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix"
+                 :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
+      </div>
+    </template>
+    <template v-else-if="catalogue.length !== 0">
+      <div v-for="(produit, index) in catalogue">
+          <Produit :libelle="produit.libelle" :description="produit.description"
+                 :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix"
+                 :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
       </div>
     </template>
     <template v-else>
@@ -15,10 +23,9 @@
 
 <script setup>
 import Produit from "./ProduitElement.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const catalogue = ref([
   {id: 1, libelle: "Artichaut", categorie: "Alimentaire", prix: 6, nouveauprix: "", image: "./src/assets/Banque_images/artichaut.jpg"},
@@ -34,5 +41,32 @@ const catalogue = ref([
   {id: 11, libelle: "CD", categorie: "Musique", prix: 25, nouveauprix: 15, image: "./src/assets/Banque_images/cd.jpg"},
   {id: 12, libelle: "Café", categorie: "Alimentaire", prix: 6, nouveauprix: "", image: "./src/assets/Banque_images/café.jpg"}
 ]);
+
+const produits = defineProps({
+  pageParent: String,
+});
+
+const listePromotions = ref([]);
+
+// On remplie la listePromotions des produits en promotion.
+function creationListePromotion() {
+  // On parcourt la liste catalogue. length récupère la taille de la liste (nombre d'éléments=produits dans la liste).
+  for (let indexProduit = 0; indexProduit < catalogue.value.length; indexProduit ++) {
+    // Si le produit courant possède un nouveau prix, on ajoute ce produit dans la liste des promotions.
+    if (catalogue.value[indexProduit].nouveauprix > 0) {
+      // On ajoute le produit dans la liste des promotions.
+      listePromotions.value.push(catalogue.value[indexProduit]);
+    }
+  }
+}
+
+// Appelé systématiquement au chargement du composant.
+onMounted(async () => {
+  // Vérifier si l'on est appelé par la page Accueil
+  if (produits.pageParent === "Accueil") {
+    // On crée la liste de promotion
+    creationListePromotion();
+  }
+});
 
 </script>

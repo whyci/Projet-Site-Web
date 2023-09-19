@@ -15,6 +15,11 @@
         <p v-else class="font-bold text-2xl ">{{ produit.prix }}€ </p>
 
         <p v-if="produit.nouveauprix >0 " class="font-bold text-red-600 text-3xl">{{ produit.nouveauprix }}€</p>
+    <br>
+    <button v-if="produit.pageGrandParent === 'EspaceAdministrateur'" style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+            class="btn btn-success" @click="">Valider</button>
+    <br>
+
     </div>
 </template>
 
@@ -29,7 +34,8 @@ const produit = defineProps({
   categorie: String,
   prix: Number,
   nouveauprix:Number,
-  image: ImageData
+  image: ImageData,
+  pageGrandParent: String,
 })
 
 </script>
