@@ -7,3 +7,11 @@ export function setConnexionAdmin(connexionAdmin) {
 export function setConnexionBack(connexionBack) {
   state.connexionBack = connexionBack || null;
 }
+
+export function setCatalogue(catalogue) {
+  state.catalogue = catalogue || null;
+}
+
+export function ajoutProduit(produit) {
+  state.catalogue.push(produit);
+}

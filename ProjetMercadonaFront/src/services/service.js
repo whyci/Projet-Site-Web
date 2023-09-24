@@ -5,8 +5,9 @@ class Service {
     return axiosClient.get("/catalogue/complet");
   }
 
-  chercherProduit(id) {
-    return axiosClient.get("/catalogue/filtre/"+id);
+  chercherProduit(rechercheCategorie) {
+    console.log("Recherche catégorie " + rechercheCategorie);
+    return axiosClient.get("/catalogue/filtre/categorie/"+rechercheCategorie);
   }
 
   ajouterProduit(produit) {

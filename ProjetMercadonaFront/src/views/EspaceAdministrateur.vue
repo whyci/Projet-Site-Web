@@ -9,63 +9,61 @@
     <br>
   </div>
   <div class="">
-    <div v-if="!submitted">
-      <div class="form-group">
-        <br>
-        <input
-          type="text"
-          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-          id="title"
-          required_
-          v-model="ajoutProduit.libelle"
-          name="libelle"
-          placeholder="Ecrire le libelle du produit *"
-        />
-        <br>
-        <input
-          type="text"
-          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-          id="description"
-          required
-          v-model="ajoutProduit.categorie"
-          name="categorie"
-          placeholder="Ecrire la catégorie du produit *"
-        />
-        <br>
-        <input
-          type="text"
-          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-          id="prix"
-          required
-          v-model="ajoutProduit.prix"
-          name="prix"
-          placeholder="Ecrire le prix du produit *"
-        />
-        <br>
-        <input
-          type="text"
-          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-50"
-          id="description"
-          required
-          v-model="ajoutProduit.description"
-          name="description"
-          placeholder="Ecrire la description du produit *"
-        />
-      </div>
-      <div class="">
+    <div class="form-group">
       <br>
-        <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
-        btn, et btn-success permettent de créer un carré et le mettre en couleur
-        les autres informations permettent de rechercher un produit selon sa catégorie
-        quand l'on click sur la bouton ça valide le formulaire -->
-      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-              class="btn btn-success" @click="ajouterProduit">Submit</button>
-      <br><br>
-      </div>
+      <input
+        type="text"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+        id="title"
+        required_
+        v-model="ajoutProduit.libelle"
+        name="libelle"
+        placeholder="Ecrire le libelle du produit *"
+      />
+      <br>
+      <input
+        type="text"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+        id="description"
+        required
+        v-model="ajoutProduit.categorie"
+        name="categorie"
+        placeholder="Ecrire la catégorie du produit *"
+      />
+      <br>
+      <input
+        type="text"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+        id="prix"
+        required
+        v-model="ajoutProduit.prix"
+        name="prix"
+        placeholder="Ecrire le prix du produit *"
+      />
+      <br>
+      <input
+        type="text"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-50"
+        id="description"
+        required
+        v-model="ajoutProduit.description"
+        name="description"
+        placeholder="Ecrire la description du produit *"
+      />
+    </div>
+    <div class="">
+    <br>
+      <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
+      btn, et btn-success permettent de créer un carré et le mettre en couleur
+      les autres informations permettent de rechercher un produit selon sa catégorie
+      quand l'on click sur la bouton ça valide le formulaire -->
+    <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+            class="btn btn-success" @click="ajouterProduit">Créer le produit</button>
+    <br><br>
     </div>
   </div>
-  <br>
-  <!--
+    <!--
+    <br>
     <template v-if="!askedPromo">
         <input
           type="text"
@@ -82,21 +80,21 @@
               class="btn btn-success" @click="demanderPromo">Demander promo</button>
       <br><br/>
     </div>
-  </template>
-  <template v-else>
-    <Promotion :id="idProduitPromotionInt" :ancien-prix="ancienPrixPromo"></Promotion>
-    <button style="border : 1px solid #000; padding : 5px;
-  max-width: 300px;
-  margin: auto;"
-            class="btn btn-success" @click="terminerPromo">Terminer promo</button>
-    <br><br/>
+    </template>
 
-  </template>
-  -->
-
+    <template v-else>
+      <Promotion :id="idProduitPromotionInt" :ancien-prix="ancienPrixPromo"></Promotion>
+      <button style="border : 1px solid #000; padding : 5px;
+      max-width: 300px;
+      margin: auto;"
+              class="btn btn-success" @click="terminerPromo">Terminer promo</button>
+      <br><br/>
+    </template>
+    -->
     <!-- permet d'importer le fichier produits et d'afficher les données -->
     <Produits :page-parent="'EspaceAdministrateur'"/>
   </div>
+
   <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
   <footer class="footer-bg">
   </footer>
@@ -109,12 +107,14 @@ import Produit from "../components/ProduitElement.vue";
 import Catalogue from "./Catalogue.vue";
 import EspaceAdministrateur from "./EspaceAdministrateur.vue";
 import Service from "../services/service.js";
+import store from "../store/index.js";
 
 const idProduitPromotionString = ref("");
 const idProduitPromotionInt = ref(0);
 const askedPromo = ref(false);
 const ancienPrixPromo = ref(0);
-const submitted = ref(false);
+
+const catalogue = ref(store.state.catalogue);
 
 // Produit que l'on souhaite ajouter
 const ajoutProduit = ref({
@@ -125,19 +125,26 @@ const ajoutProduit = ref({
   prix: 0
 });
 
-function ajouterProduit() {
+function ajoutProduitValide() {
+  return !( (ajoutProduit.value.libelle == "") || (ajoutProduit.value.categorie == "") ||
+    (ajoutProduit.value.prix <=0) || (ajoutProduit.value.description == ""));
+}
 
-  // Ajoute le produit dans la base de donnée.
-  Service.ajouterProduit(ajoutProduit.value)
-    .then(response => {
-      console.log(response.data);
-      console.log("ajout effectué !");
-      submitted.value = true;
-    })
-    .catch(e => {
-      console.log("Erreur détectée, malheureusement ...");
-      console.log(e);
-    })
+function ajouterProduit() {
+  if (ajoutProduitValide()) {
+    // Ajoute le produit dans la base de donnée.
+    Service.ajouterProduit(ajoutProduit.value)
+      .then(response => {
+        console.log(response.data);
+        console.log("ajout effectué !");
+        alert("Ajout du produit " + ajoutProduit.value.libelle+" !");
+      })
+      .catch(e => {
+        console.log("Erreur détectée, malheureusement ...");
+        console.log(e);
+        alert("ECHEC de l'ajout du produit "+ajoutProduit.value.libelle+" !!");
+      })
+  }
 }
 
 /**
@@ -150,13 +157,13 @@ function recupereAncienPrix() {
   for (i = 0; i < catalogue.value.length; i ++) {
 
     // On cree une variable locale qui stocke l'id courant du produit.
-    // JSON.parse(JSON.stringify()) recupere chaque entite produit contenu dans le catalogue.
-    let idProduitCourant = JSON.parse(JSON.stringify(catalogue.value[i])).id;
+    let idProduitCourant = catalogue.value[i].id;
 
     // On verifie ensuite s'il est egal a l'id du produit que l'on souhaite appliquer une promotion.
     if (idProduitCourant === idProduitPromotionInt.value) {
       // On récupère la valeur de l'ancien prix.
-      ancienPrixPromo.value = JSON.parse(JSON.stringify(catalogue.value[i])).prix;
+      ancienPrixPromo.value = catalogue.value[i].prix;
+      break;
     }
   }
 }
