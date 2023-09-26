@@ -12,5 +12,5 @@ public interface ProduitService {
 
     List<Produit> afficherProduits();
 
-    void supprimerProduit(Integer id);
+    void supprimerProduit(Long id);
 }

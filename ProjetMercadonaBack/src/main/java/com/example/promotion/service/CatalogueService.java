@@ -11,5 +11,7 @@ public interface CatalogueService {
 
     List<Produit> afficherCatalogueComplet();
 
-    Optional<Produit> afficherCatalogueFiltre(Integer id);
+    Optional<Produit> afficherCatalogueFiltre(Long id);
+
+    List<Produit> afficherCatalogueFiltreCategorie(String categorie);
 }

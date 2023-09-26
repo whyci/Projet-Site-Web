@@ -6,9 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "produit")
 public class Produit {
     @Id
-    @PrimaryKeyJoinColumn
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer produit_id;
+    private Long id;
 
     private String libelle;
 
@@ -16,24 +15,28 @@ public class Produit {
 
     private String categorie;
 
-    private Integer prix;
+    private Float prix;
 
-    private Integer promotion_id_cle;
+    private Long promotionIdCle;
 
-    public Integer getPromotion_id_cle() {
-        return promotion_id_cle;
+    public Long getPromotionIdCle() {
+        return promotionIdCle;
     }
 
-    public void setPromotion_id_cle(Integer promotion_id_cle) {
-        this.promotion_id_cle = promotion_id_cle;
+    public void setPromotionIdCle(Long promotionIdCle) {
+        this.promotionIdCle = promotionIdCle;
     }
 
-    private Integer getProduit_id() {
-        return produit_id;
+    /**
+     * Getter : Récupère l'identifiant du produit.
+     * @return Identifiant du produit.
+     */
+    public Long getId() {
+        return id;
     }
 
-    private void setProduit_id(Integer id) {
-        this.produit_id = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLibelle() {
@@ -60,11 +63,11 @@ public class Produit {
         this.categorie = categorie;
     }
 
-    public Integer getPrix() {
+    public Float getPrix() {
         return prix;
     }
 
-    public void setPrix(Integer prix) {
+    public void setPrix(Float prix) {
         this.prix = prix;
     }
 }

@@ -2,15 +2,12 @@ package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
-
 @Entity
 @Table(name = "administrateur")
 public class Administrateur {
     @Id
-    @PrimaryKeyJoinColumn
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer administrateur_id;
+    private Long id;
 
     private String nom;
 
@@ -18,18 +15,18 @@ public class Administrateur {
 
     private Integer age;
 
-    private String adresse_mail;
+    private String adresseMail;
 
-    private String mot_de_passe;
+    private String motDePasse;
 
-    private String numero_telephone;
+    private String numeroTelephone;
 
-    private Integer getAdministrateur_id() {
-        return administrateur_id;
+    private Long getId() {
+        return id;
     }
 
-    private void setAdministrateur_id(Integer id) {
-        this.administrateur_id = id;
+    private void setId(Long id) {
+        this.id = id;
     }
 
     public String getNom() {
@@ -56,27 +53,27 @@ public class Administrateur {
         this.age = age;
     }
 
-    public String getAdresse_mail() {
-        return adresse_mail;
+    public String getAdresseMail() {
+        return adresseMail;
     }
 
-    public void setAdresse_mail(String adresse_mail) {
-        this.adresse_mail = adresse_mail;
+    public void setAdresseMail(String adresseMail) {
+        this.adresseMail = this.adresseMail;
     }
 
-    public String getMot_de_passe() {
-        return mot_de_passe;
+    public String getMotDePasse() {
+        return motDePasse;
     }
 
-    public void setMot_de_passe(String mot_de_passe) {
-        this.mot_de_passe = mot_de_passe;
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
     }
 
-    public String getNumero_telephone() {
-        return numero_telephone;
+    public String getNumeroTelephone() {
+        return numeroTelephone;
     }
 
-    public void setNumero_telephone(String numero_telephone) {
-        this.numero_telephone = numero_telephone;
+    public void setNumeroTelephone(String numeroTelephone) {
+        this.numeroTelephone = numeroTelephone;
     }
 }

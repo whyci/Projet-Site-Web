@@ -2,38 +2,36 @@ package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "promotion")
 public class Promotion {
     @Id
-    @PrimaryKeyJoinColumn
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private Date debut;
 
     private Date fin;
 
-    private Integer pourcentage_remise;
+    private Float pourcentageRemise;
 
-    private Integer produit_id_cle;
+    private Long produitIdCle;
 
-    public Integer getProduit_id_cle() {
-        return produit_id_cle;
+    public Long getProduitIdCle() {
+        return produitIdCle;
     }
 
-    public void setProduit_id_cle(Integer produit_id_cle) {
-        this.produit_id_cle = produit_id_cle;
+    public void setProduitIdCle(Long produitIdCle) {
+        this.produitIdCle = produitIdCle;
     }
 
-    private Integer getId() {
+    private Long getId() {
         return id;
     }
 
-    private void setId(Integer id) {
+    private void setId(Long id) {
         this.id = id;
     }
 
@@ -53,11 +51,11 @@ public class Promotion {
         this.fin = fin;
     }
 
-    public Integer getPourcentage_remise() {
-        return pourcentage_remise;
+    public Float getPourcentageRemise() {
+        return pourcentageRemise;
     }
 
-    public void setPourcentage_remise(Integer pourcentage_remise) {
-        this.pourcentage_remise = pourcentage_remise;
+    public void setPourcentageRemise(Float pourcentageRemise) {
+        this.pourcentageRemise = pourcentageRemise;
     }
 }

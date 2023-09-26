@@ -19,8 +19,8 @@ public class ProduitServiceImplementation implements ProduitService {
     }
 
     @Override
-    public void supprimerProduit(Integer id) {
-        produitRepertoire.deleteById(id);
+    public void supprimerProduit(Long id) {
+        produitRepertoire.deleteById(Math.toIntExact(id));
     }
 
     @Override

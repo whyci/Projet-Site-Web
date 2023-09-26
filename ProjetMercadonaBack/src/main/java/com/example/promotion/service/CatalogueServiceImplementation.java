@@ -20,7 +20,12 @@ public class CatalogueServiceImplementation implements CatalogueService {
     }
 
     @Override
-    public Optional<Produit> afficherCatalogueFiltre(Integer id) {
-        return produitRepertoire.findById(id);
+    public Optional<Produit> afficherCatalogueFiltre(Long id) {
+        return produitRepertoire.findById(Math.toIntExact(id));
+    }
+
+    @Override
+    public List<Produit> afficherCatalogueFiltreCategorie(String categorie) {
+        return produitRepertoire.findProduitByCategorie(categorie);
     }
 }
