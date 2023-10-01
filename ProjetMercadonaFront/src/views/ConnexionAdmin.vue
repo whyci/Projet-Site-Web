@@ -30,12 +30,14 @@
     placeholder="Mot de passe *"
   />
 <br>
+      <!--
   <input
     type="text"
     v-model="keyword"
     class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
     placeholder="Numéro identifiant admin *"
   />
+  -->
     <div class="text-center p-2">
       <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
        btn, et btn-success permettent de créer un carré et le mettre en couleur

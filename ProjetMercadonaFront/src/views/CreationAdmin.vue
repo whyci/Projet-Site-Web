@@ -21,45 +21,42 @@
          focus:border-green-800 de rendre le bordure verte quand le carré est sélectionné
          mb-4 de créer des marges autour de la barre et w-full de générer la barre sur toute la longueur de la fenêtre-->
       <!-- placeholder permet d'écrire dans la barre ce que l'utilisateur devra remplir -->
-    <input
+      <br>
+      <input
     type="text"
     v-model="keyword"
-    class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
+    class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 "
     placeholder="Nom *"
   />
-    <br>
-  <input
-    type="text"
-    v-model="keyword"
-    class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-    placeholder="Prénom *"
-  />
+
   <input
     type="text"
     v-model="keyword"
     class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
-    placeholder="Date de naissance *"
+    placeholder="Prénom *"
   />
-    <br>
+      <br>
   <input
     type="text"
     v-model="keyword"
-    class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-    placeholder="Numéro identifiant admin *"
+    class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 "
+    placeholder="Date de naissance *"
   />
+
   <input
     type="text"
     v-model="keyword"
     class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
     placeholder="Adresse mail *"
   />
-    <br>
+      <br>
   <input
     type="text"
     v-model="keyword"
     class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
     placeholder="Téléphone *"
   />
+
   <input
     type="text"
     v-model="keyword"
@@ -67,6 +64,15 @@
     placeholder="Mot de passe *"
   />
   <br>
+      <!--
+        <br>
+        <input
+        type="text"
+        v-model="keyword"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+        placeholder="Numéro identifiant admin *"
+        />
+      -->
       <div class="p-2 text-center">
         <br>
         <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande

@@ -5,6 +5,7 @@ export default defineConfig({
     devServer: {
       framework: "vue",
       bundler: "vite",
+      defaultCommandTimeout : 10000
     },
   },
 });

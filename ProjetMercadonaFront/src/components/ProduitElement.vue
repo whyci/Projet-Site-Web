@@ -2,7 +2,14 @@
 
   <div class="p-3 bg-white shadow rounded-xl hover:scale-105 transition-all h-96">
     <div class="">
-    <img class="rounded-xl border-8 border-white ml-auto h-40 mr-auto" v-if="produit.image" :src="image" alt="Select image"></div>
+      <template v-if="store.state.connexionBack">
+        <img v-if="imageReconstruit !== null" :src="imageReconstruit" alt="Image" />
+        <img v-else alt="IMAGE NULLE !" src="">
+      </template>
+      <template v-else>
+        <img class="rounded-xl border-8 border-white ml-auto h-40 mr-auto" v-if="produit.image" :src="image" alt="Select image">
+      </template>
+    </div>
     <br>
     <p class="font-bold text-xl-center text-2xl">{{ produit.libelle }}</p>
     <p class="font-semibold text-xl-center">Categorie : {{ produit.categorie }}</p>
@@ -44,6 +51,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as $filters from "../filters/index.js";
 import {ref} from "vue";
+import store from "../store/index.js";
 
 const appliquerPromo = ref(false);
 
@@ -53,9 +61,13 @@ const produit = defineProps({
   categorie: String,
   prix: Number,
   nouveauprix: Number,
-  image: ImageData,
+  // Si connexionBack vrai, image est String, sinon c'est ImageData.
+  image: (store.state.connexionBack) ? String: ImageData,
   pageGrandParent: String,
 })
+
+// Si connexionBack vrai, pour chaque produit ajoute les propriétés d'une image en début de chaine de caractère de l'image.
+const imageReconstruit = ref("data:image/jpeg;base64," + produit.image);
 
 const pourcentageRemise = ref(0);
 

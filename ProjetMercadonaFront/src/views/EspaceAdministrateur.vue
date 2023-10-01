@@ -5,10 +5,10 @@
     <h1 class="text-4xl font-bold text-green-900">Espace administrateur</h1>
     <br>
     <div>
-  <p>Veuillez remplir le formulaire ci-dessous pour créer un produit.</p>
+      <p className="text-test">Veuillez remplir le formulaire ci-dessous pour créer un produit.</p>
     <br>
   </div>
-  <div class="">
+  <div class="text-center">
     <div class="form-group">
       <br>
       <input
@@ -20,10 +20,10 @@
         name="libelle"
         placeholder="Ecrire le libelle du produit *"
       />
-      <br>
+
       <input
         type="text"
-        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
         id="description"
         required
         v-model="ajoutProduit.categorie"
@@ -40,18 +40,26 @@
         name="prix"
         placeholder="Ecrire le prix du produit *"
       />
-      <br>
+
       <input
         type="text"
-        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-50"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
         id="description"
         required
         v-model="ajoutProduit.description"
         name="description"
         placeholder="Ecrire la description du produit *"
       />
+      <br>
+      <input
+        type="file"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
+        id="image"
+        accept=".jpg, .jpeg, .png"
+        @change="enregistrerImage"
+        required>
     </div>
-    <div class="">
+    <div>
     <br>
       <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
       btn, et btn-success permettent de créer un carré et le mettre en couleur
@@ -62,37 +70,8 @@
     <br><br>
     </div>
   </div>
-    <!--
-    <br>
-    <template v-if="!askedPromo">
-        <input
-          type="text"
-          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-          id="idProduitPromotionString"
-          required
-          v-model="idProduitPromotionString"
-          name="idProduitPromotion"
-          placeholder="UN TRUC EN ATTENDANT"
-        />
-      <br>
-    <div class="text-center">
-    <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-              class="btn btn-success" @click="demanderPromo">Demander promo</button>
-      <br><br/>
-    </div>
-    </template>
-
-    <template v-else>
-      <Promotion :id="idProduitPromotionInt" :ancien-prix="ancienPrixPromo"></Promotion>
-      <button style="border : 1px solid #000; padding : 5px;
-      max-width: 300px;
-      margin: auto;"
-              class="btn btn-success" @click="terminerPromo">Terminer promo</button>
-      <br><br/>
-    </template>
-    -->
     <!-- permet d'importer le fichier produits et d'afficher les données -->
-    <Produits :page-parent="'EspaceAdministrateur'"/>
+    <Produits :page-parent="'EspaceAdministrateur'" :resultat-recherche-categorie="null"/>
   </div>
 
   <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
@@ -125,26 +104,107 @@ const ajoutProduit = ref({
   prix: 0
 });
 
+// Image du produit que l'on souhaite ajouter
+const ajoutProduitImage = ref(null);
+// Aperçu de l'image que l'on affiche quand l'utilisateur choisi une image.
+const imageApercu = ref();
+
+// Encodage de l'image
+function enregistrerImage(event) {
+  // Stockage de l'image prêt pour l'envoi à la base de donnée.
+  ajoutProduitImage.value = event.target.files[0];
+
+  // Préparation de l'aperçu de l'image. Vérifier si elle existe, puis la lie pour pouvoir l'afficher.
+  if (ajoutProduitImage.value) {
+    // Prépare le convertisseur pour pouvoir afficher l'image.
+    const reader = new FileReader();
+    reader.readAsDataURL(ajoutProduitImage.value);
+    reader.onload = () => {
+      // Enregistrement de l'image convertie et prête pour affichage.
+      imageApercu.value = reader.result;
+    };
+  }
+}
+
 function ajoutProduitValide() {
-  return !( (ajoutProduit.value.libelle == "") || (ajoutProduit.value.categorie == "") ||
-    (ajoutProduit.value.prix <=0) || (ajoutProduit.value.description == ""));
+  return !( (ajoutProduit.value.libelle === "") || (ajoutProduit.value.categorie === "") ||
+    (ajoutProduit.value.prix <=0) || (ajoutProduit.value.description === ""));
 }
 
 function ajouterProduit() {
-  if (ajoutProduitValide()) {
-    // Ajoute le produit dans la base de donnée.
-    Service.ajouterProduit(ajoutProduit.value)
-      .then(response => {
-        console.log(response.data);
-        console.log("ajout effectué !");
-        alert("Ajout du produit " + ajoutProduit.value.libelle+" !");
-      })
-      .catch(e => {
-        console.log("Erreur détectée, malheureusement ...");
-        console.log(e);
-        alert("ECHEC de l'ajout du produit "+ajoutProduit.value.libelle+" !!");
-      })
+  if (!ajoutProduitImage.value) {
+    return null;
   }
+
+  var idProduit;
+  const formulaireDonneeImage = new FormData();
+  if (ajoutProduitImage.value) {
+    formulaireDonneeImage.append('image', ajoutProduitImage.value);
+  } else {
+    // Ajouter l'image par defaut si il n'y a pas d'image.
+  }
+  console.log("fichier image: " + ajoutProduitImage.value);
+
+  // Création d'un produit - Etape 1: Ajout d'un produit dans la base de donnée avec une image.
+  Service.serviceAjouterProduitImage(formulaireDonneeImage)
+    .then(response => {
+      console.log(response.data);
+      idProduit = parseInt(ajoutProduitTraitementIntermediaire(response.data.message), 10);
+      console.log("Création produit - Etape 1 terminée");
+      deuxiemeEtapeAjoutProduit(idProduit);
+    })
+    .catch(e => {
+      console.log("Erreur détectée, malheureusement ...");
+      console.log(e);
+    })
+}
+
+/**
+ * Deuxième étape d'ajout d'un produit dans la BDD. Envoie cette fois-ci les données du produit (libellé, prix, etc.).
+ * @param idProduit Id du produit que l'on a récupéré par la première requête d'ajout d'un produit.
+ */
+function deuxiemeEtapeAjoutProduit(idProduit) {
+
+  // Création d'un produit - Etape 2: Association des paramètres du produit que l'on souahite ajouter.
+  Service.serviceAjouterProduitParametres(ajoutProduit.value, idProduit)
+    .then(response => {
+      console.log(response.data);
+      console.log("Création produit - Etape 2 terminée");
+      alert("Création produit - Etape 2 terminée");
+    })
+    .catch(e => {
+      console.log("Erreur détectée, malheureusement ...");
+      console.log(e);
+    })
+}
+
+/**
+ * Récupère l'id du produit donné par la réponse du back de la première requête d'ajout d'un produit.
+ * @param responseData Les données de réponse de la requête auprès du back.
+ * @returns {string} Retourne l'id du produit.
+ */
+function ajoutProduitTraitementIntermediaire(responseData) {
+  let idProduit = "";
+  let indexString;
+  for (indexString = responseData.length - 1; indexString > 0; indexString--) {
+    if (responseData[indexString] === "=") {
+      break;
+    }
+    idProduit = responseData[indexString] + idProduit;
+  }
+  console.log("Id du produit : " + idProduit);
+  return idProduit;
+}
+
+function nouveauProduit() {
+  submitted.value = false;
+  console.log("nouveau produit. submitted: " + submitted.value);
+  ajoutProduit.value = {
+    libelle: "",
+    description: "",
+    categorie: "",
+    prix: 0
+  };
 }
 
 /**
@@ -178,3 +238,10 @@ function terminerPromo() {
   askedPromo.value = false;
 }
 </script>
+
+<style>
+text-test {
+  color: black;
+}
+
+</style>

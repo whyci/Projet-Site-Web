@@ -8,9 +8,29 @@
                  :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
       </div>
     </template>
+    <!-- Si la liste resultatRechercheCategorie n'est pas vide, on rentre dans la boucle for et affiche chaque produit -->
+    <template v-else-if="produits.resultatRechercheCategorie !== null">
+      <template v-if="produits.resultatRechercheCategorie.length !== 0">
+        <div v-for="(produit, index) in produits.resultatRechercheCategorie">
+          <Produit :libelle="produit.libelle" :description="produit.description"
+                   :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix"
+                   :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
+        </div>
+      </template>
+      <template v-else-if="catalogue.length !== 0">
+        <div v-for="(produit, index) in catalogue">
+          <Produit :libelle="produit.libelle" :description="produit.description"
+                   :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix"
+                   :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
+        </div>
+      </template>
+      <template v-else>
+        Liste de produit vide
+      </template>
+    </template>
     <template v-else-if="catalogue.length !== 0">
       <div v-for="(produit, index) in catalogue">
-          <Produit :libelle="produit.libelle" :description="produit.description"
+        <Produit :libelle="produit.libelle" :description="produit.description"
                  :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix"
                  :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
       </div>
@@ -34,18 +54,21 @@ const catalogue = ref(store.state.catalogue);
 
 const produits = defineProps({
   pageParent: String,
+  resultatRechercheCategorie: Array
 });
 
 const listePromotions = ref([]);
 
+const resultatRechercheCategorie = ref([]);
+
 // On remplie la listePromotions des produits en promotion.
 function creationListePromotion() {
   // On parcourt la liste catalogue. length récupère la taille de la liste (nombre d'éléments=produits dans la liste).
-  for (let indexProduit = 0; indexProduit < catalogue.length; indexProduit ++) {
+  for (let indexProduit = 0; indexProduit < catalogue._rawValue.length; indexProduit ++) {
     // Si le produit courant possède un nouveau prix, on ajoute ce produit dans la liste des promotions.
-    if (catalogue[indexProduit].nouveauprix > 0) {
+    if (catalogue._rawValue[indexProduit].nouveauprix > 0) {
       // On ajoute le produit dans la liste des promotions.
-      listePromotions.value.push(catalogue[indexProduit]);
+      listePromotions.value.push(catalogue._rawValue[indexProduit]);
     }
   }
 }
@@ -57,7 +80,6 @@ onMounted(async () => {
     // On crée la liste de promotion
     creationListePromotion();
   }
-
 });
 
 </script>

@@ -1,19 +1,40 @@
-import axiosClient from '../axiosClient.js';
+import axiosClient from '../axiosClient';
 
-class Service {
-  afficherCatalogue() {
+class Index {
+  serviceDemanderCatalogue() {
     return axiosClient.get("/catalogue/complet");
   }
 
-  chercherProduit(rechercheCategorie) {
-    console.log("Recherche catégorie " + rechercheCategorie);
-    return axiosClient.get("/catalogue/filtre/categorie/"+rechercheCategorie);
+  serviceDemanderPromotions() {
+    return axiosClient.get("/promotion/complet");
   }
 
-  ajouterProduit(produit) {
-    console.log("produit: " + produit.libelle+", cat: "+produit.categorie+", desc: "+produit.description+", prix: "+produit.prix);
-    return axiosClient.post("/produit/ajouter", produit);
+  serviceFiltrerParCategorie(catalogue) {
+    return axiosClient.get("/catalogue/filtre/categorie/"+catalogue);
+  }
+
+  serviceAjouterProduitImage(formulaireDonneeImage, libelle, categorie, desccription, prix) {
+    console.log("formulaire : "+formulaireDonneeImage+", image : "+formulaireDonneeImage.get("image"));
+    return axiosClient.post("/produit/ajouter/image", formulaireDonneeImage);
+  }
+
+  serviceAjouterProduitParametres(produit, idProduit) {
+    console.log("Envoie des paramètres avec id : " + idProduit);
+    return axiosClient.post("/produit/ajouter/produit/"+idProduit, produit);
+  }
+
+  serviceAjouterPromotion(promotion, idProduit) {
+    return axiosClient.post("/promotion/admin/ajouter/"+idProduit, promotion);
+  }
+
+  serviceInscrireAdministrateur(administrateur) {
+    return axiosClient.post("/administrateur/inscrire", administrateur);
+  }
+
+  serviceConnecterAdministrateur(adresseMail, motDePasse) {
+    console.log(adresseMail, motDePasse);
+    return axiosClient.get("/administrateur/connecter/"+adresseMail+"/"+motDePasse);
   }
 }
 
-export default new Service();
+export default new Index();

@@ -14,7 +14,7 @@
         placehorder permet de voir en gris clair dans la barre de recherche -->
         <input
             type="text"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 w-50 "
+            class="rounded border-2 border-gray-200 focus:border-green-800 bg-white w-50 "
             id="rechercheCategorie"
             required
             v-model="rechercheCategorie"
@@ -26,26 +26,17 @@
     <!-- permet de gérer la taille de la barre de recherche-->
     <div class="text-center">
       <br>
-      <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
-       btn, et btn-success permettent de créer un carré et le mettre en couleur
-       les autres informations permettent de rechercher un produit selon sa catégorie
+      <!-- permet de gérer l'espace du carré pour soumettre la demande btn, et btn-success permettent de créer un carré
+      et le mettre en couleur. Les autres informations permettent de rechercher un produit selon sa catégorie
        quand l'on click sur la bouton la recherche est lancée-->
-      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-              class="btn btn-success" @click="filtreCategorie()">Rechercher categorie</button>
-      <br><br/>
+      <button style="border: 1px; padding : 12px; background-color : darkgreen; color :white"
+              class="btn btn-success" @click="resultatRechercheCategorie=filtreCategorie(ancienFiltre, rechercheCategorie)">Recherche categorie
+      </button>
     </div>
-    <!-- permet d'importer le fichier produits et d'afficher les données -->
-    <template v-if="resultatRechercheCategorie.length !== 0">
-      <li v-for="(produit, index) in resultatRechercheCategorie">
-        <Produit :libelle="produit.libelle" :description="produit.description"
-                 :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix">
-        </Produit>
-        <br><br/>
-      </li>
-    </template>
-    <template v-else>
-      <Produits :page-parent="'Catalogue'"/>
-    </template>
+    <br>
+
+    <!-- permet d'appeller le fichier produits et d'afficher les données -->
+    <Produits :page-parent="'Catalogue'" :resultat-recherche-categorie="resultatRechercheCategorie"/>
   </div>
   <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
   <footer class="footer-bg">
@@ -60,25 +51,16 @@ import Produits from "../components/Produits.vue";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Service from "../services/service.js";
 import Produit from "../components/ProduitElement.vue";
+import {filtreCategorie} from "../filters/index.js";
 
 const rechercheCategorie = ref("");
+
+// Liste vide, dans le cas où l'on souhaiterait appliquer plusieurs filtres en même temps, il faudra reprendre cette variable.
+const ancienFiltre = ref([]);
 const resultatRechercheCategorie = ref([]);
 
-function filtreCategorie() {
-  if (rechercheCategorie.value !== "") {
-    Service.chercherProduit(rechercheCategorie.value)
-      .then(response => {
-        console.log(response.data);
-        resultatRechercheCategorie.value = response.data.produits;
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    console.log("recherche produit categorie: "+rechercheCategorie.value);
-  } else {
-    resultatRechercheCategorie.value = [];
-  }
-}
+// Tableau des produits filtrés.
+const filtre = ref([]);
 
 onMounted(() => {
 });

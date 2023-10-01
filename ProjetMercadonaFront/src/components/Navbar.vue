@@ -53,7 +53,7 @@
 
                   Catalogue
                 </router-link>
-
+                <!--
                 <router-link
                   :to="{ name: 'creationUtilisateur' }"
                   class="inline-flex items-center px-3 h-full hover:bg-green-800 hover:text-white text-gray-700"
@@ -74,7 +74,7 @@
                 >
                   Se créer un compte Admin
                 </router-link>
-
+                -->
                 <router-link
                   :to="{ name: 'connexionAdmin' }"
                   class="inline-flex items-center px-3 h-full hover:bg-green-800 hover:text-white text-gray-700"

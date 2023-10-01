@@ -5,5 +5,7 @@ export default {
   // Active ou pas la connexion avec le back. true = connecté au back, false = non connecté au back.
   connexionBack: localStorage.getItem("connexionBack") || false,
   // Répertorie tous les produits.
-  catalogue: localStorage.getItem("catalogue") || []
+  catalogue: localStorage.getItem("catalogue") || [],
+  // Répertorie toutes les promotions.
+  promotions: localStorage.getItem("promotions") || []
 }
