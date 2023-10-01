@@ -5,6 +5,8 @@ import com.example.promotion.repertoire.AdministrateurRepertoire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdministrateurServiceImplementation implements AdministrateurService {
 
@@ -12,12 +14,12 @@ public class AdministrateurServiceImplementation implements AdministrateurServic
     private AdministrateurRepertoire administrateurRepertoire;
 
     @Override
-    public Administrateur connecter(Administrateur administrateur) {
-        return administrateurRepertoire.save(administrateur);
+    public List<Administrateur> connecterAdministrateur(String adresseMail, String motDePasse) {
+        return administrateurRepertoire.findAdministrateursByAdresseMailAndMotDePasse(adresseMail, motDePasse);
     }
 
     @Override
-    public Administrateur inscription(Administrateur administrateur) {
+    public Administrateur inscrireAdministrateur(Administrateur administrateur) {
         return administrateurRepertoire.save(administrateur);
     }
 }

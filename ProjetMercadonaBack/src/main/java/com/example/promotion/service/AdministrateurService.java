@@ -1,7 +1,6 @@
 package com.example.promotion.service;
 
 import com.example.promotion.modele.Administrateur;
-import com.example.promotion.modele.Produit;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 @Service
 public interface AdministrateurService {
 
-    Administrateur connecter(Administrateur administrateur);
+    List<Administrateur> connecterAdministrateur(String adresseMail, String motDePasse);
 
-    Administrateur inscription(Administrateur administrateur);
+    Administrateur inscrireAdministrateur(Administrateur administrateur);
 }

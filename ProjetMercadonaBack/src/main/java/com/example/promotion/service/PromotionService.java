@@ -1,6 +1,5 @@
 package com.example.promotion.service;
 
-import com.example.promotion.modele.Produit;
 import com.example.promotion.modele.Promotion;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +10,8 @@ public interface PromotionService {
 
     void ajouterPromotion(Promotion promotion, Long id);
 
+    List<Promotion> afficherPromotions();
+
     void supprimerPromotion(Long id);
+
 }

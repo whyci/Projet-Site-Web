@@ -14,9 +14,31 @@ public class ProduitServiceImplementation implements ProduitService {
     private ProduitRepertoire produitRepertoire;
 
     @Override
-    public void enregistrerProduit(Produit produit) {
+    public Long enregistrerProduitImage(Produit produit) {
         produitRepertoire.save(produit);
+        return produit.getId();
     }
+
+    @Override
+    public void enregistrerProduitParametres(Produit produit, Long id) {
+
+        // Vérifie si le produit existe dans la base de donnée. Si non, ne fait rien.
+        if (produitRepertoire.findById(Math.toIntExact(id)).isPresent()) {
+
+            // Récupère le produit à ajouter
+            Produit produitAAjouter = produitRepertoire.findById(Math.toIntExact(id)).get();
+
+            // Associe tous les paramètres du produit existant à celui qu'on souhaite ajouter.
+            produitAAjouter.setLibelle(produit.getLibelle());
+            produitAAjouter.setCategorie(produit.getCategorie());
+            produitAAjouter.setDescription(produit.getDescription());
+            produitAAjouter.setPrix(produit.getPrix());
+
+            // Enregistre le changement dans la base de donnée.
+            produitRepertoire.save(produitAAjouter);
+        }
+    }
+
 
     @Override
     public void supprimerProduit(Long id) {

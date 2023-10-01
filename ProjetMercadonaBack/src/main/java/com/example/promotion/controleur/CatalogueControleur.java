@@ -1,17 +1,14 @@
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Produit;
-import com.example.promotion.response.ProduitResponse;
+import com.example.promotion.reponse.ReponseProduits;
 import com.example.promotion.service.CatalogueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -26,6 +23,10 @@ public class CatalogueControleur {
     public ResponseEntity<List<Produit>> afficherComplet() {
         // Your logic to retrieve a List of Produit objects
         List<Produit> produits = catalogueService.afficherCatalogueComplet();
+        /*
+        for (Produit produit : produits) {
+            System.out.println(Arrays.toString(produit.getImage()));
+        }*/
 
         // Create a ResponseEntity and return the List of Produits
         return ResponseEntity.ok(produits);
@@ -49,9 +50,9 @@ public class CatalogueControleur {
     }
 
     @GetMapping("/filtre/categorie/{categorie}")
-    public ResponseEntity<ProduitResponse> afficherFiltreCategorie(@PathVariable String categorie) {
+    public ResponseEntity<ReponseProduits> afficherFiltreCategorie(@PathVariable String categorie) {
         List<Produit> produitList = catalogueService.afficherCatalogueFiltreCategorie(categorie);
-        ProduitResponse response = new ProduitResponse(produitList);
+        ReponseProduits response = new ReponseProduits(produitList);
 
         return ResponseEntity.ok(response);
     }

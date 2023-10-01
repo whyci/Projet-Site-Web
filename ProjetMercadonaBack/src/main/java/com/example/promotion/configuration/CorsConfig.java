@@ -23,4 +23,5 @@ public class CorsConfig {
         source.registerCorsConfiguration("/catalogue/filtre/**", configuration); // Configurez l'URL appropriée
         return source;
     }
+
 }

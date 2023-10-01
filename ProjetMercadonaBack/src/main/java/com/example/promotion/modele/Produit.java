@@ -19,6 +19,17 @@ public class Produit {
 
     private Long promotionIdCle;
 
+    @Column(name = "image", columnDefinition = "bytea")
+    private byte[] image;
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public Long getPromotionIdCle() {
         return promotionIdCle;
     }
