@@ -53,22 +53,24 @@
       <br>
       <input
         type="file"
-        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
+        class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
         id="image"
         accept=".jpg, .jpeg, .png"
         @change="enregistrerImage"
         required>
     </div>
+      <img v-if="imageApercu !== null" :src="imageApercu" alt="Aucune image sélectionné">
     <div>
-    <br>
-      <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
-      btn, et btn-success permettent de créer un carré et le mettre en couleur
-      les autres informations permettent de rechercher un produit selon sa catégorie
-      quand l'on click sur la bouton ça valide le formulaire -->
-    <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-            class="btn btn-success" @click="ajouterProduit">Créer le produit</button>
-    <br><br>
+      <br>
+        <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
+        btn, et btn-success permettent de créer un carré et le mettre en couleur
+        les autres informations permettent de rechercher un produit selon sa catégorie
+        quand l'on click sur la bouton ça valide le formulaire -->
+      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+              class="btn btn-success" @click="ajouterProduit">Créer le produit</button>
+      <br><br>
     </div>
+    <br>
   </div>
     <!-- permet d'importer le fichier produits et d'afficher les données -->
     <Produits :page-parent="'EspaceAdministrateur'" :resultat-recherche-categorie="null"/>

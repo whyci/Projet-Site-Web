@@ -17,7 +17,7 @@
       <!-- placeholder permet d'écrire dans la barre ce que l'utilisateur devra remplir -->
   <input
     type="text"
-    v-model="keyword"
+    v-model="adresseMail"
     class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
     placeholder="Adresse mail *"
   />
@@ -25,7 +25,7 @@
 <br>
   <input
     type="text"
-    v-model="keyword"
+    v-model="motDePasse"
     class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
     placeholder="Mot de passe *"
   />
@@ -71,4 +71,10 @@
   </div>
 </template>
 <script setup>
+
+import {ref} from "vue";
+
+const adresseMail = ref("");
+const motDePasse = ref("");
+
 </script>

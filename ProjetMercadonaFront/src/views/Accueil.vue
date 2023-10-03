@@ -6,6 +6,7 @@
     <br>
   <p>Voici les produits en promotion de notre magasin toutes catégories confondus, l'alimentaire, traiteur, hygiènes, loisirs ...</p>
     <br>
+    <br>
     <div>
       <!-- permet d'importer le fichier produits et d'afficher les données -->
    <Produits :page-parent="'Accueil'" :resultat-recherche-categorie="null"/>
@@ -31,7 +32,7 @@ onMounted(async () => {
 
 <style>
 .submit-form {
-  max-width: 300px;
+  max-width: 250px;
   margin: auto;
 }
 
@@ -42,6 +43,5 @@ onMounted(async () => {
   min-height:80px; /* Adjust this height as needed */
   min-width:1400px; /* Adjust this height as needed */
   margin-left: 0;
-
 }
 </style>

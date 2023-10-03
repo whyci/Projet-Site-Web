@@ -14,12 +14,12 @@
         placehorder permet de voir en gris clair dans la barre de recherche -->
         <input
             type="text"
-            class="rounded border-2 border-gray-200 focus:border-green-800 bg-white w-50 "
+            class="rounded border-2 border-gray-200 focus:border-green-900 bg-white w-50 "
             id="rechercheCategorie"
             required
             v-model="rechercheCategorie"
             name="rechercheProduit"
-            placeholder="nom recherche categorie"
+            placeholder="Recherche par categorie"
           />
       </div>
     </div>
@@ -29,11 +29,11 @@
       <!-- permet de gérer l'espace du carré pour soumettre la demande btn, et btn-success permettent de créer un carré
       et le mettre en couleur. Les autres informations permettent de rechercher un produit selon sa catégorie
        quand l'on click sur la bouton la recherche est lancée-->
-      <button style="border: 1px; padding : 12px; background-color : darkgreen; color :white"
-              class="btn btn-success" @click="resultatRechercheCategorie=filtreCategorie(ancienFiltre, rechercheCategorie)">Recherche categorie
+      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+              class="btn btn-success" @click="resultatRechercheCategorie=filtreCategorie(ancienFiltre, rechercheCategorie)">Lancer la recherche
       </button>
     </div>
-    <br>
+    <br><br>
 
     <!-- permet d'appeller le fichier produits et d'afficher les données -->
     <Produits :page-parent="'Catalogue'" :resultat-recherche-categorie="resultatRechercheCategorie"/>
