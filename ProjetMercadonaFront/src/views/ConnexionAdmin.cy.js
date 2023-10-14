@@ -1,7 +1,8 @@
 import ConnexionAdmin from './ConnexionAdmin.vue'
+import CreationUtilisateur from "./CreationUtilisateur.vue";
 
 describe('<ConnexionAdmin />', () => {
-  it('renders', () => {
+  it('renvoie la page', () => {
     // see: https://on.cypress.io/mounting-vue
     cy.mount(ConnexionAdmin)
   })
@@ -21,10 +22,30 @@ describe('<ConnexionAdmin />', () => {
 
     cy.get('.btn').click() // Click on button
     cy.focused().click() // Click on el with focus
+
+    cy.get('router-link > button').click() // Click on button
   })
 });
 
+it('can navigate around the website (final)', () => {
+  cy.visit('http://localhost:5173');
 
+  cy.get('[data-cy="header-link-creation-admin"]').should('be.visible').click();
+  cy.location('pathname').should('match', /\/creation-admin$/)
+  cy.contains('main h1', 'creation-admin').should('be.visible');
+
+});
+
+/*
+describe('<ConnexionAdmin />', () => {
+  it("test du click du bouton se créer un compte", () => {
+    //cy.visit('http://localhost:5173');
+
+    cy.get('router-link > button').click() // Click on button
+    cy.location('pathname').should('match', /\/creation-admin$/)
+    cy.contains('main h1', 'Se créer un compte Administrateur').should('be.visible');
+  })
+});*/
 
 /*
 describe('<ConnexionAdmin />', () => {
