@@ -15,7 +15,7 @@ app.config.globalProperties.$filters = filters
 
 // Paramètre la valeur connexionBack dans toute l'application. Elle permet de savoir si on veut connecter le front
 // avec le back. true = connecté au back, false = non connecté au back.
-store.state.connexionBack = true;
+store.state.connexionBack = false;
 
 // Si connexion avec le back; récupère le catalogue et les promotions provenant du back. Sinon, il stocke en dur les
 // valeurs dans le code.
