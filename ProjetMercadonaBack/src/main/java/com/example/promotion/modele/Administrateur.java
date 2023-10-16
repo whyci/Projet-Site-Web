@@ -58,7 +58,7 @@ public class Administrateur {
     }
 
     public void setAdresseMail(String adresseMail) {
-        this.adresseMail = this.adresseMail;
+        this.adresseMail = adresseMail;
     }
 
     public String getMotDePasse() {

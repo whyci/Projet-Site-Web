@@ -24,7 +24,7 @@ public class AdministrateurControleur {
 
     @GetMapping("/connecter/{adresseMail}/{mdp}")
     public ResponseEntity<ReponseAdministrateur> connecterAdministrateur(@PathVariable("adresseMail") String adresseMail,
-                                                                   @PathVariable("mdp") String motDePasse) {
+                                                                         @PathVariable("mdp") String motDePasse) {
 
         System.out.println("Connexion à l'adresse : " + adresseMail + " et mdp : " + motDePasse);
 
@@ -55,7 +55,8 @@ public class AdministrateurControleur {
     @PostMapping("/inscrire")
     public ResponseEntity<ReponseString> inscrireAdministrateur(@RequestBody Administrateur administrateur) {
         administrateurService.inscrireAdministrateur(administrateur);
-        String message = "Création administrateur : " + administrateur.getPrenom() + " " + administrateur.getNom() + " terminé !";
+        String message = "Création administrateur : " + administrateur.getPrenom() + " " + administrateur.getNom() + " terminé avec mail : " +
+                administrateur.getAdresseMail() + ", mdp : " + administrateur.getMotDePasse() + " !";
         return ResponseEntity.ok(new ReponseString(message));
     }
 

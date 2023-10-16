@@ -172,7 +172,7 @@ function deuxiemeEtapeAjoutProduit(idProduit) {
     .then(response => {
       console.log(response.data);
       console.log("Création produit - Etape 2 terminée");
-      alert("Création produit - Etape 2 terminée");
+      alert("Création produit terminée !");
     })
     .catch(e => {
       console.log("Erreur détectée, malheureusement ...");
