@@ -12,7 +12,7 @@
   npm install
  
 ## Utilisation de Vue.Js.3 en local sur le port 3000
-  npm start dev
+  npm run dev
 
   Pour lancer le site avec la base de données il faut changer la variable de connexionBack sur true sinon il y a une liste de produits fixe dans le front  
   store.state.connexionBack = false; -> true;   
