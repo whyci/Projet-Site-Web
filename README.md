@@ -12,7 +12,7 @@
   npm install
  
 ## Utilisation de Vue JS3 en local sur le port 3000
-  npm start dev
+  npm run dev
 
 ## Lancer des test
   npm start test
