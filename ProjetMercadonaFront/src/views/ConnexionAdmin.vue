@@ -70,6 +70,7 @@
       <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
               @click="navigate"
               role="link"
+              cy-testing="CreationAdmin"
       >
         <!-- le texte du bouton -->
         Pas encore de compte ? Clique ici

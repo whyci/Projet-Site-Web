@@ -10,6 +10,7 @@
     "dev": "vite --port=3000"
   },
   "dependencies": {
+    "@cypress/vue": "^6.0.0",
     "axios": "^1.1.2",
     "bootstrap": "^5.3.1",
     "core-js": "^3.8.3",
