@@ -42,3 +42,17 @@ export function deconnexionAdmin() {
 export function getEtatConnexion() {
   return localStorage.getItem("token") !== "null";
 }
+
+/**
+ * Retourne le nouveau prix associé
+ * @param idPromotion Id de la promotion que l'on souhaite avoir
+ */
+export function getPromotionAssocie(idPromotion) {
+  let listePromotions = store.state.promotions;
+  for (let indexPromotion = 0; indexPromotion < listePromotions.length; indexPromotion ++) {
+    // Si l'id de la promotion correspond à l'id que l'on cherche
+    if (listePromotions[indexPromotion].id === idPromotion) {
+      return JSON.parse(JSON.stringify(listePromotions[indexPromotion])).pourcentageRemise;
+    }
+  }
+}

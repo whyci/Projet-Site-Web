@@ -65,18 +65,3 @@ export function filtreLibelle(ancienFiltre, libelle) {
   return filtre;
 }
 
-/**
- * Filtre les produits qui sont en promotion. Il est possible que cette fonctionnalité soit induite dans le template
- * des composants Vue.
- * @param catalogue
- * @returns {*[]}
- */
-export function filtreProduitEnPromotion(catalogue) {
-  let filtre = [];
-  for (let indexProduit = 0; indexProduit < catalogue.length; indexProduit++) {
-    if (catalogue[indexProduit].promotionIdCle) {
-      filtre.push(catalogue[indexProduit]);
-    }
-  }
-  return filtre;
-}

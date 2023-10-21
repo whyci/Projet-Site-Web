@@ -1,16 +1,12 @@
 import axiosInstance from '../axiosClient';
 
-class Index {
+class Service {
   serviceDemanderCatalogue() {
     return axiosInstance.get("/catalogue/complet");
   }
 
   serviceDemanderPromotions() {
     return axiosInstance.get("/promotion/complet");
-  }
-
-  serviceFiltrerParCategorie(catalogue) {
-    return axiosInstance.get("/catalogue/filtre/categorie/"+catalogue);
   }
 
   serviceAjouterProduitImage(formulaireDonneeImage, libelle, categorie, desccription, prix) {
@@ -41,4 +37,4 @@ class Index {
   }
 }
 
-export default new Index();
+export default new Service();

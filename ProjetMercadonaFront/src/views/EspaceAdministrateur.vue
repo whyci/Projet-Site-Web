@@ -100,10 +100,10 @@ const catalogue = ref(store.state.catalogue);
 // Produit que l'on souhaite ajouter
 const ajoutProduit = ref({
   id: 0,
-  libelle: "",
-  description: "",
-  categorie: "",
-  prix: 0
+  libelle: ref(),
+  description: ref(),
+  categorie: ref(),
+  prix: ref()
 });
 
 // Image du produit que l'on souhaite ajouter
@@ -197,6 +197,7 @@ function deuxiemeEtapeAjoutProduit(idProduit) {
     .catch(e => {
       console.log("Erreur détectée, malheureusement ...");
       console.log(e);
+      location.reload();
     })
 }
 

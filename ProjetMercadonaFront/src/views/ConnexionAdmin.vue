@@ -114,6 +114,8 @@ function connecterAdministrateur() {
         console.log("Token enregistré : " + localStorage.getItem("token"));
         // Popup de connexion acceptée
         alert("Connexion acceptée !");
+
+        location.reload();
       }
     })
     .catch(e => {

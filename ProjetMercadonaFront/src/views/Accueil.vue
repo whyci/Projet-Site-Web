@@ -1,5 +1,4 @@
 <template>
-
   <div class="p-10 ">
     <!-- text-4xl permet d'agrandir le texte et font-bold de le mettre en gras;
    text-green-900 permet de mettre le texte en vert foncée -->
