@@ -1,5 +1,4 @@
 <template>
-
   <div class="p-3 bg-white shadow rounded-xl hover:scale-105 transition-all h-96">
     <div class="">
       <!-- permet de gérer l'appel de l'image et son affichage -->
@@ -13,6 +12,7 @@
       </template>
     </div>
     <br>
+
     <!-- permet de gérer la taille, mettre en gras et centrer les libelles -->
     <p class="font-bold text-xl-center text-2xl">{{ produit.libelle }}</p>
     <!-- permet de gérer la taille, mettre en semi gras et centrer les categories -->
@@ -33,12 +33,15 @@
   <br>
   <!-- permet de cerntrer -->
     <div class="text-center" v-if="produit.pageGrandParent === 'EspaceAdministrateur'">
+
       <!-- vérifie si la valeur est faux -->
+      <!-- Vrai = affichage en cours des champs d'ajout de promotion. Faux = Non affichage des champs d'ajout de promotion -->
       <template v-if="!appliquerPromo">
         <!-- permet de gérer le stuyle du bouton, et lorsque l'on clique on active la promotion -->
       <button style="border: 1px; padding: 12px; background-color : lightgray; color :black"
             class="btn btn-success" @click="activerPromo">Promotion</button>
       </template>
+
       <template v-else>
         <!-- permet de creer des espaces permettant d'écrire le nouveau prix, et de gérer le style de l'input-->
         <input
@@ -63,6 +66,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as $filters from "../filters/index.js";
 import {ref} from "vue";
 import store from "../store/index.js";
+import {accesEspaceAdmin} from "../store/mutations.js";
 
 const appliquerPromo = ref(false);
 
@@ -88,10 +92,12 @@ function enSaisiPromo() {
   saisiNouveauPrix.value = (1-(pourcentageRemise.value / 100)) * produit.prix;
 }
 function activerPromo() {
+  accesEspaceAdmin();
   appliquerPromo.value = true;
 }
 
 function validerPromo() {
+  accesEspaceAdmin();
   appliquerPromo.value = false;
 }
 

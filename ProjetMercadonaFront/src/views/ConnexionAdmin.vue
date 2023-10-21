@@ -3,7 +3,7 @@
   <div class="p-10">
     <!-- text-4xl permet d'agrandir le texte; font-bold permet de mettre en gras;
      text-green-900 permet de mettre en vert foncée -->
-    <h1 class="text-4xl font-bold text-green-900">Se connecter Admin</h1>
+    <h1 class="text-4xl font-bold text-green-900">Se connecter Administrateur</h1>
     <br>
 
     <div>
@@ -82,45 +82,44 @@
 
 <script setup>
 
-  import { ref } from "vue";
-  import Service from "../services/service.js";
+import { ref } from "vue";
+import Service from "../services/service.js";
 
-  const administrateurDemandeConnexion = ref({
+const administrateurDemandeConnexion = ref({
   adresseMail: "",
   motDePasse: ""
 });
 
-  function connecterAdministrateur() {
+function connecterAdministrateur() {
   if ( (administrateurDemandeConnexion.value.adresseMail === "")
-  || ( administrateurDemandeConnexion.value.motDePasse === "") ) {
-  console.log("Not full");
-  return;
-}
-  Service.serviceConnecterAdministrateur(administrateurDemandeConnexion.value.adresseMail, administrateurDemandeConnexion.value.motDePasse)
-  .then(response => {
-  console.log("Connexion administrateur envoyée ! Réponse :");
-  console.log(response.data);
+    || ( administrateurDemandeConnexion.value.motDePasse === "") ) {
+    console.log("Not full");
+    return;
+  }
 
-  if (response.data.token === "No token") {
-  console.log("Echec connexion ...");
-} else {
-  console.log("Connexion acceptée !");
-  alert("Connexion acceptée !");
-  // Sauvegarde le token dans la variable dans le store et le local storage.
-  // Partie non fini, sera développé davantage dans le dépôt final
-  /*
-  store.state.token = response.data.token;
-  localStorage.setItem("token", response.data.token);
-  // Changement pour l'état connecté.
-  store.state.etatConnexion = true;
-  localStorage.setItem("etatConnexion", true);
-   */
-}
-})
-  .catch(e => {
-  console.log("Erreur détectée à la création d'un administrateur, malheureusement ...");
-  console.log(e);
-})
+  Service.serviceConnecterAdministrateur(administrateurDemandeConnexion.value.adresseMail, administrateurDemandeConnexion.value.motDePasse)
+    .then(response => {
+      console.log(response.data);
+
+      // On reçoit KO, soit un echec de connexion.
+      if (response.data.token === "KO") {
+        console.log("Echec connexion ...");
+
+        // Connexion réussie/acceptée
+      } else {
+        console.log("Connexion acceptée !");
+
+        // Sauvegarde le token dans la variable dans le store et le local storage.
+        localStorage.setItem("token", response.data.token);
+        console.log("Token enregistré : " + localStorage.getItem("token"));
+        // Popup de connexion acceptée
+        alert("Connexion acceptée !");
+      }
+    })
+    .catch(e => {
+      console.log("Erreur détectée à la création d'un administrateur, malheureusement ...");
+      console.log(e);
+    })
 }
 
 </script>

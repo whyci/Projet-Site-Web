@@ -5,5 +5,5 @@ import com.example.promotion.modele.Administrateur;
 public interface JwtTokenService {
     String generateToken(Administrateur administrateur);
 
-    boolean validatingToken(String token);
+    String validatingToken(String token);
 }

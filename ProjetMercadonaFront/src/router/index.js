@@ -38,19 +38,19 @@ const routes = [
       {
         path: "/creation-utilisateur",
         name: "creationUtilisateur",
-        component: CreationUtilisateur
+        component: CreationUtilisateur,
       },
 
       {
         path: "/connexion-admin",
         name: "connexionAdmin",
-        component: ConnexionAdmin
+        component: ConnexionAdmin,
       },
 
       {
         path: "/creation-admin",
         name: "creationAdmin",
-        component: CreationAdmin
+        component: CreationAdmin,
       },
     ]
   }

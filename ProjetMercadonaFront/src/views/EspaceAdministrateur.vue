@@ -82,13 +82,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+
+import { onMounted, ref } from "vue";
 import Produits from "../components/Produits.vue";
-import Produit from "../components/ProduitElement.vue";
-import Catalogue from "./Catalogue.vue";
 import EspaceAdministrateur from "./EspaceAdministrateur.vue";
 import Service from "../services/service.js";
 import store from "../store/index.js";
+import {accesEspaceAdmin} from "../store/mutations.js";
 
 const idProduitPromotionString = ref("");
 const idProduitPromotionInt = ref(0);
@@ -111,7 +111,18 @@ const ajoutProduitImage = ref(null);
 // Aperçu de l'image que l'on affiche quand l'utilisateur choisi une image.
 const imageApercu = ref();
 
-// Encodage de l'image
+/**
+ * S'exécute à l'initialisation du composant ; vérifie la validité d'accès à l'espace administrateur par le token.
+ */
+onMounted(() => {
+  // Vérifie l'accès aux ressources de l'espace admin.
+  accesEspaceAdmin();
+})
+
+/**
+ * Etape d'encodage de l'image pour pouvoir la stocker dans la base de donnée.
+ * @param event
+ */
 function enregistrerImage(event) {
   // Stockage de l'image prêt pour l'envoi à la base de donnée.
   ajoutProduitImage.value = event.target.files[0];
@@ -128,14 +139,23 @@ function enregistrerImage(event) {
   }
 }
 
+/**
+ * Vérifie si les champs sont bien remplis
+ * @returns {boolean} Retourne vrai si les champs sont tous remplis, faux sinon.
+ */
 function ajoutProduitValide() {
   return !( (ajoutProduit.value.libelle === "") || (ajoutProduit.value.categorie === "") ||
-    (ajoutProduit.value.prix <=0) || (ajoutProduit.value.description === ""));
+    (ajoutProduit.value.prix <= 0) || (ajoutProduit.value.description === ""));
 }
 
+/**
+ * Première étape d'ajout d'un produit. Elle consiste de vérifier l'accès à l'espace administrateur, de vérifier si
+ * les champs sont bien remplis, et d'envoyer l'image à la base de donnée.
+ */
 function ajouterProduit() {
-  if (!ajoutProduitImage.value) {
-    return null;
+  accesEspaceAdmin();
+  if ( (ajoutProduitValide()) && (!ajoutProduitImage.value) ) {
+    return;
   }
 
   var idProduit;
@@ -198,6 +218,7 @@ function ajoutProduitTraitementIntermediaire(responseData) {
   return idProduit;
 }
 
+/*
 function nouveauProduit() {
   submitted.value = false;
   console.log("nouveau produit. submitted: " + submitted.value);
@@ -208,11 +229,13 @@ function nouveauProduit() {
     prix: 0
   };
 }
+*/
 
 /**
- On récupère l'ancien prix du produit, que l'on souhaite appliquer une promotion, dans le catalogue que l'on possède.
- L'objectif est d'éviter les requêtes inutiles à la base de donnée.
+ * On récupère l'ancien prix du produit, que l'on souhaite appliquer une promotion, dans le catalogue que l'on possède.
+ *  L'objectif est d'éviter les requêtes inutiles à la base de donnée.
  */
+
 function recupereAncienPrix() {
   // On parcours les index du catalogue pour recuperer les id des produits.
   let i;
@@ -230,15 +253,18 @@ function recupereAncienPrix() {
   }
 }
 
+// N'est plus utilisé pour le moment
 function demanderPromo() {
   idProduitPromotionInt.value = parseInt(idProduitPromotionString.value);
   askedPromo.value = true;
   recupereAncienPrix();
 }
 
+// N'est plus utilisé pour le moment
 function terminerPromo() {
   askedPromo.value = false;
 }
+
 </script>
 
 <style>

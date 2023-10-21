@@ -41,7 +41,7 @@ public class AdministrateurControleur {
         } else {
             // Connexion invalide
             System.out.println("Admin not found !");
-            reponseAdministrateur = new ReponseAdministrateur("No token");
+            reponseAdministrateur = new ReponseAdministrateur("KO");
         }
         return ResponseEntity.ok(reponseAdministrateur);
     }
@@ -60,32 +60,22 @@ public class AdministrateurControleur {
         return ResponseEntity.ok(new ReponseString(message));
     }
 
-    // Test d'un accès à une ressource réservés aux administrateurs connectés.
-    @GetMapping("/espaceAdmin")
-    public ResponseEntity<String> accederEspaceAdmin(@RequestHeader(name = "Authorization") String authorizationHeader) {
+    /**
+     * Vérifie la validité d'un token envoyé par l'entête d'authorisation.
+     * @param authorizationHeader L'entête d'authorisation qui contient le token à vérifier.
+     * @return Réponse à envoyé au front. OK accès validé, KO accès non validé.
+     */
+    @GetMapping("/acces")
+    public ResponseEntity<String> accesEspaceAdmin(@RequestHeader(name = "Authorization") String authorizationHeader) {
 
-        String reponse;
-        System.out.println("Authorization header : "+authorizationHeader);
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            // On enlève le prefix 'Bearer'
-            String token = authorizationHeader.substring(7);
-            System.out.println("Token sent from vue : "+token);
+        // Si aucun token reçu, répond par un KO.
+        if (authorizationHeader == null) { return ResponseEntity.ok("KO"); }
 
-            // Vérifie la validité du token
-            if (jwtTokenService.validatingToken(token)) {
-                System.out.println("Token validate YES !");
-                reponse = "Token et connexion OK";
-            } else {
-                System.out.println("Token invalide NO !");
-                reponse = "Connexion KO";
-            }
-        } else {
-            // Token introuvable dans la requête
-            System.out.println("Token invalid sent from vue");
-            reponse = "Token KO";
-        }
+        // Si l'entête est différente de ce qui est attendu, répond par un KO.
+        if (!authorizationHeader.startsWith("Bearer ")) { return ResponseEntity.ok("KO"); }
 
-        return ResponseEntity.ok(reponse);
+        // Vérifie la validité du token
+        return ResponseEntity.ok(jwtTokenService.validatingToken(authorizationHeader.substring(7)));
     }
 
 

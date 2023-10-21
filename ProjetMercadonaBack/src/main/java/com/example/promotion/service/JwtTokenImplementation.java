@@ -46,10 +46,10 @@ public class JwtTokenImplementation implements JwtTokenService {
     /**
      * Vérifie la validité du token renseigné
      * @param token Token que l'on souhaite vérifier.
-     * @return Valeur booléenne correspondant à la validité du token. True = token valide, false = token invalide.
+     * @return OK si le token est valide, KO si le token n'est pas valide.
      */
     @Override
-    public boolean validatingToken(String token) {
+    public String validatingToken(String token) {
 
         System.out.println("Token reçu en validation : "+token);
 
@@ -60,7 +60,7 @@ public class JwtTokenImplementation implements JwtTokenService {
                     .setSigningKey(CLE_SECRETE)
                     .build()
                     .parseClaimsJws(token);
-            return true;
+            return "OK";
         } catch (SignatureException e) {
             System.out.println("Signature token invalide. " + e);
         } catch (MalformedJwtException e) {
@@ -72,7 +72,7 @@ public class JwtTokenImplementation implements JwtTokenService {
         } catch (IllegalArgumentException e) {
             System.out.println("Token illégal argument. " + e);
         }
-        return false;
+        return "KO";
     }
 }
 

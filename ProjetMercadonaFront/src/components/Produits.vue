@@ -8,8 +8,12 @@
                  :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
       </div>
     </template>
-    <!-- Si la liste resultatRechercheCategorie n'est pas vide, on rentre dans la boucle for et affiche chaque produit -->
+
+    <!-- Si la liste resultatRechercheCategorie n'est pas nulle, on rentre dans la boucle for et affiche chaque produit
+    contenu dans cette liste -->
     <template v-else-if="produits.resultatRechercheCategorie !== null">
+
+      <!-- Affiche chaque produit contenu dans le résultat de la liste de la recherche -->
       <template v-if="produits.resultatRechercheCategorie.length !== 0">
         <div v-for="(produit, index) in produits.resultatRechercheCategorie">
           <Produit :libelle="produit.libelle" :description="produit.description"
@@ -17,6 +21,8 @@
                    :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
         </div>
       </template>
+
+      <!-- Si la liste de recherche est vide, on affiche chaque produit contenu dans le catalogue -->
       <template v-else-if="catalogue.length !== 0">
         <div v-for="(produit, index) in catalogue">
           <Produit :libelle="produit.libelle" :description="produit.description"
@@ -24,17 +30,24 @@
                    :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
         </div>
       </template>
+
+      <!-- Si la liste de la recherche et le catalogue sont vides, on affiche le message suivant -->
       <template v-else>
         Liste de produit vide
       </template>
     </template>
+
+    <!-- Si la liste de la recherche est nulle, et que le catalogue n'est pas vide, on affiche le catalogue -->
     <template v-else-if="catalogue.length !== 0">
+      <!-- Affiche chaque produit contenu dans le catalogue -->
       <div v-for="(produit, index) in catalogue">
         <Produit :libelle="produit.libelle" :description="produit.description"
                  :categorie="produit.categorie" :prix="produit.prix" :nouveauprix="produit.nouveauprix"
                  :image="produit.image" :page-grand-parent="produits.pageParent" ></Produit>
       </div>
     </template>
+
+    <!-- Si le catalogue est vide, affiche le message suivant -->
     <template v-else>
       Liste de produit vide
     </template>

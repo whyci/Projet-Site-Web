@@ -12,20 +12,6 @@
               <!-- bg-white permet que le fond de la barre soit blanche, h-16 de gérer la hauteur de la barre
                 et flex permet d'adapter le texte pour qu'il s'aligne droit dans la barre-->
 
-
-
-              <!--
-              <nav>
-                  <router-link to="/">Accueil</router-link>
-                  <router-link to="/Catalogue">Catalogue</router-link>
-                  <router-link :to="{name:'Product', params : {name :nameProduct}}">Produit 1</router-link>
-                  <router-link :to="{name:'Product', params : {name :'Trotinette'}}">Produit 2</router-link>
-                  <button @click="changer">Produit 3</button>
-                  {{ nameProduct }}
-              </nav>
-              -->
-
-
               <router-link
                 :to="{ name: 'accueil' }"
                 class="inline-flex items-center px-5 text-green-900 font-bold text-2xl"
@@ -75,7 +61,8 @@
                   Se créer un compte Admin
                 </router-link>
                 -->
-                <router-link
+                <!-- v-if vérifie que "etatDeConnexion est faux -->
+                <router-link v-if="!etatConnexion"
                   :to="{ name: 'connexionAdmin' }"
                   class="inline-flex items-center px-3 h-full hover:bg-green-800 hover:text-white text-gray-700"
                 >
@@ -88,6 +75,11 @@
                 >
                   Espace administrateur
                 </router-link>
+
+                <!-- condition pour vour si "etatDeConnexion est de vrai -->
+                <button v-if="etatConnexion" style="border:none; margin-bottom:5px "
+                  class="btn btn-success inline-flex items-center h-full bg-gray-200 px-3 hover:bg-green-800 hover:text-white text-gray-700"
+                        @click="deconnexionAdmin()">Se déconnecter</button>
               </div>
               <!-- End of right-aligned button links -->
 
@@ -104,6 +96,10 @@
 <script setup>
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document //
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {ref} from "vue";
+import {deconnexionAdmin, getEtatConnexion} from "../store/mutations.js";
+
+const etatConnexion = ref(localStorage.getItem('token') !== 'null');
 
 const props = defineProps({
   action: {

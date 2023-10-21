@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+/* la classe promotion definis la table qui sera dans la base de données
+   les attributs prives correspondent aux elements de la table promotion
+   les fonctions seront appeles par le repertoire de la classe et sont public */
 @Entity
 @Table(name = "promotion")
 public class Promotion {
