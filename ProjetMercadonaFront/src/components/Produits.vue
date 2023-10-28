@@ -160,7 +160,7 @@ function recupererCatalogue() {
     // Cas de non connexion avec le back.
   } else {
     // Stocke en dur le catalogue.
-    catalogue.value = ref([
+    catalogue.value = [
       {id: 1, libelle: "Artichaut", categorie: "Alimentaire", prix: 6, nouveauprix: 0, description: "légume de saison", image: "./src/assets/Banque_images/artichaut.jpg"},
       {id: 2, libelle: "Dentifrice", categorie: "Hygiène", prix: 4, nouveauprix: 2, description: "Hygiène bucco dentaire", image: "./src/assets/Banque_images/dentifrice.jpg"},
       {id: 3, libelle: "Pains aux fruits secs", categorie: "Alimentaire", prix: 6, description: "Pains idéal pour l'apéro", nouveauprix: 4, image: "./src/assets/Banque_images/pains aux fruits secs.jpg"},
@@ -173,7 +173,7 @@ function recupererCatalogue() {
       {id: 10, libelle: "Citrouille", categorie: "Mobilier", prix: 10, nouveauprix: 8, description: "légume de saison", image: "./src/assets/Banque_images/citrouille.jpg"},
       {id: 11, libelle: "CD", categorie: "Musique", prix: 25, nouveauprix: 15, description: "Musique pop, rock, métal", image: "./src/assets/Banque_images/cd.jpg"},
       {id: 12, libelle: "Café", categorie: "Alimentaire", prix: 6, nouveauprix: 0, description: "Café goût intense", image: "./src/assets/Banque_images/café.jpg"}
-    ]);
+    ];
 
     // Vérifier si l'on est appelé par la page Accueil
     if (produits.pageParent === "Accueil") {
@@ -190,7 +190,6 @@ onMounted(async () => {
   } else {
     catalogue.value = store.state.catalogue;
   }
-  produitsEnPromotions.value = store.state.catalogueEnPromotions;
 });
 
 </script>

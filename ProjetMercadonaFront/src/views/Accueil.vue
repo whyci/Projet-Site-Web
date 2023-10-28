@@ -8,7 +8,7 @@
     <br><br>
     <div>
       <!-- permet d'importer le fichier produits et d'afficher les données -->
-      <Produits :page-parent="'Accueil'" :resultat-recherche-categorie="null"/>
+      <produits :page-parent="'Accueil'" :resultat-recherche-categorie="null"/>
     </div>
   </div>
   <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->

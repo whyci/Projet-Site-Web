@@ -1,6 +1,6 @@
 export default {
   // Active ou pas la connexion avec le back. true = connecté au back, false = non connecté au back.
-  connexionBack: true,
+  connexionBack: false,
   // Répertorie tous les produits.
   catalogue: [],
   // Répertorie toutes les promotions.
