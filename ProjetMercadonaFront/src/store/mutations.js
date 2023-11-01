@@ -36,6 +36,7 @@ export function accesEspaceAdmin() {
 
 export function deconnexionAdmin() {
   localStorage.setItem("token", null);
+  location.reload();
   router.push("/connexion-admin").then(r => {});
 }
 

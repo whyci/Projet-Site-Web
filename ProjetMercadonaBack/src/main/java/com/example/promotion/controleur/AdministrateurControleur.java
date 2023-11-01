@@ -22,6 +22,13 @@ public class AdministrateurControleur {
     @Autowired
     private JwtTokenService jwtTokenService;
 
+    /**
+     * Assure la connexion de l'administrateur en contrôlant ses informations (mail et mdp) et génère un token pour
+     * l'accès aux ressources liées à l'espace admin.
+     * @param adresseMail adresse mail pour se connecter
+     * @param motDePasse mot de passe pour se connecter
+     * @return token pour contrôler l'accès aux ressources liées à l'espace admin
+     */
     @GetMapping("/connecter/{adresseMail}/{mdp}")
     public ResponseEntity<ReponseAdministrateur> connecterAdministrateur(@PathVariable("adresseMail") String adresseMail,
                                                                          @PathVariable("mdp") String motDePasse) {

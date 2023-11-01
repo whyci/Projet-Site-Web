@@ -16,44 +16,24 @@ import static java.lang.Integer.parseInt;
 @RequestMapping("/catalogue")
 @CrossOrigin(origins = "*")
 public class CatalogueControleur {
-    @Autowired
-    private CatalogueService catalogueService;
 
+    private final CatalogueService catalogueService;
+
+    @Autowired
+    public CatalogueControleur(CatalogueService catalogueService) {
+        this.catalogueService = catalogueService;
+    }
+
+    /**
+     * Récupère et renvoie tout le catalogue
+     * @return Entité de réponse contenant la liste des produits
+     */
     @GetMapping("/complet")
     public ResponseEntity<List<Produit>> afficherComplet() {
-        // Your logic to retrieve a List of Produit objects
+        // Récupère le catalogue de la base de donnée en passant par catalogueService
         List<Produit> produits = catalogueService.afficherCatalogueComplet();
-        /*
-        for (Produit produit : produits) {
-            System.out.println(Arrays.toString(produit.getImage()));
-        }*/
 
-        // Create a ResponseEntity and return the List of Produits
+        // Renvoie le catalogue dans une entité de réponse au front
         return ResponseEntity.ok(produits);
-    }
-
-    @GetMapping("/filtre/{id}")
-    public ResponseEntity<Map<String, Produit>> afficherFiltre(@PathVariable Long id) {
-        Optional<Produit> produitOptional = catalogueService.afficherCatalogueFiltre(id);
-        if (produitOptional.isPresent()) {
-            Produit produit = produitOptional.get();
-
-            // Création d'une map pour stocker l'objet Produit
-            Map<String, Produit> responseData = new HashMap<>();
-            responseData.put("data", produit);
-
-            return ResponseEntity.ok(responseData);
-        } else {
-            // Handle the case when the Produit is not found
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/filtre/categorie/{categorie}")
-    public ResponseEntity<ReponseProduits> afficherFiltreCategorie(@PathVariable String categorie) {
-        List<Produit> produitList = catalogueService.afficherCatalogueFiltreCategorie(categorie);
-        ReponseProduits response = new ReponseProduits(produitList);
-
-        return ResponseEntity.ok(response);
     }
 }

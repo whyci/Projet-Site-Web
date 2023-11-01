@@ -84,6 +84,7 @@
 
 import { ref } from "vue";
 import Service from "../services/service.js";
+import router from "../router/index.js";
 
 const administrateurDemandeConnexion = ref({
   adresseMail: "",
@@ -116,6 +117,7 @@ function connecterAdministrateur() {
         alert("Connexion acceptée !");
 
         location.reload();
+        router.push("/espace-admin").then(r => {});
       }
     })
     .catch(e => {

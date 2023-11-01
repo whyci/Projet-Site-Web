@@ -219,19 +219,6 @@ function ajoutProduitTraitementIntermediaire(responseData) {
   return idProduit;
 }
 
-/*
-function nouveauProduit() {
-  submitted.value = false;
-  console.log("nouveau produit. submitted: " + submitted.value);
-  ajoutProduit.value = {
-    libelle: "",
-    description: "",
-    categorie: "",
-    prix: 0
-  };
-}
-*/
-
 /**
  * On récupère l'ancien prix du produit, que l'on souhaite appliquer une promotion, dans le catalogue que l'on possède.
  *  L'objectif est d'éviter les requêtes inutiles à la base de donnée.

@@ -2,6 +2,7 @@ package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Promotion;
 import com.example.promotion.reponse.ReponseString;
+import com.example.promotion.service.ProduitService;
 import com.example.promotion.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,13 @@ import java.util.List;
 @RequestMapping("/promotion")
 @CrossOrigin
 public class PromotionControleur {
+
+    private final PromotionService promotionService;
+
     @Autowired
-    private PromotionService promotionService;
+    public PromotionControleur(PromotionService promotionService) {
+        this.promotionService = promotionService;
+    }
 
     @GetMapping("/complet")
     public ResponseEntity<List<Promotion>> recupererPromotions() {
@@ -41,18 +47,4 @@ public class PromotionControleur {
                 +promotion.getPourcentageRemise()+"%";
         return ResponseEntity.ok(new ReponseString(message));
     }
-
-    /**
-     * Supprime une promotion.
-     * @param id de la promotion que l'on souhaite supprimer.
-     * @return Chaine de caractère qui atteste de la requête concernée.
-     */
-    @PostMapping("/admin/supprimer/{id}")
-    public ResponseEntity<ReponseString> supprimerPromotion(@PathVariable("id") Long id) {
-        promotionService.supprimerPromotion(id);
-
-        String message = "Promotion supprimée à l'id : "+id;
-        return ResponseEntity.ok(new ReponseString(message));
-    }
-
 }

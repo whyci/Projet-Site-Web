@@ -2,6 +2,7 @@ package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Produit;
 import com.example.promotion.reponse.ReponseString;
+import com.example.promotion.service.CatalogueService;
 import com.example.promotion.service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class ProduitControleur {
 
+    private final ProduitService produitService;
+
     @Autowired
-    private ProduitService produitService;
+    public ProduitControleur(ProduitService produitService) {
+        this.produitService = produitService;
+    }
 
     /**
      * Création d'un produit - Etape 1: Ajout d'un produit dans la base de donnée avec une image.
@@ -28,15 +33,16 @@ public class ProduitControleur {
      */
     @PostMapping("/ajouter/image")
     public ResponseEntity<ReponseString> ajouterProduitImage(@RequestPart("image") MultipartFile fichierImage) throws IOException {
-        System.out.println("Image:"+fichierImage.getOriginalFilename());
+
         Produit produit = new Produit();
         // Ajotuer une condition qui traite d'une eventuelle absence d'image. Si le nom du fichier s'appelle [quelque chose] on utilise
         // l'image par défaut qui est stocké dans ce projet. On crée quand même le produit et renvoie l'id du produit.
         produit.setImage(fichierImage.getBytes());
         Long idProduit = produitService.enregistrerProduitImage(produit);
 
-        String message = "Création produit - étape 1 : Image "+fichierImage.getOriginalFilename()+ " enregistré !" +
-                " Passage de l'id produit ="+idProduit;
+        // Le message renvoyé au front comprend un '=' avant l'id du produit, il est nécessaire pour récupérer
+        // correctement l'id du produit dans le front
+        String message = "="+idProduit;
         return ResponseEntity.ok(new ReponseString(message));
     }
 
@@ -54,12 +60,5 @@ public class ProduitControleur {
         String message = "Création produit - étape 1 : Produit "+produit.getLibelle()+" enregistré !";
         return ResponseEntity.ok(new ReponseString(message));
     }
-
-    @DeleteMapping("/supprimer/{id}")
-    public String supprimerProduit(@PathVariable("id") Long id) {
-        produitService.supprimerProduit(id);
-        return "Suppression produit avec id : " + id.toString();
-    }
-
 }
 
