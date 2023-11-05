@@ -67,7 +67,7 @@ import {onMounted, ref} from "vue";
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 import 'bootstrap/dist/css/bootstrap.min.css';
 import store from "../store/index.js";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 
 /**
  * Props du composant Produits qui permet d'informer de quel composant il est appelé (de quel composant il est le fils).

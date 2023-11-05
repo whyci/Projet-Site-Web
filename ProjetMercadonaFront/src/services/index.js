@@ -1,6 +1,6 @@
 import axiosInstance from '../axiosClient';
 
-class Service {
+class Index {
   serviceDemanderCatalogue() {
     return axiosInstance.get("/catalogue/complet");
   }
@@ -37,4 +37,4 @@ class Service {
   }
 }
 
-export default new Service();
+export default new Index();

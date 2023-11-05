@@ -49,7 +49,7 @@ import Produits from "../components/Produits.vue";
 
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 import Produit from "../components/ProduitElement.vue";
 import {filtreCategorie} from "../filters/index.js";
 

@@ -83,7 +83,7 @@
 <script setup>
 
 import { ref } from "vue";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 import router from "../router/index.js";
 
 const administrateurDemandeConnexion = ref({

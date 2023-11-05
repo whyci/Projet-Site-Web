@@ -111,7 +111,8 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
+import {validerMailCreationAdmin, validerMotDePasse, validerNom} from "../control/index.js";
 
 const administrateurInscription = ref({
   adresseMail: "",
@@ -122,19 +123,14 @@ const administrateurInscription = ref({
   prenom: ""
 });
 
-function champsObligatoireRemplis() {
-  /*
-  console.log("Nom: "+administrateurInscription.value.nom + ". Prénom: "+ administrateurInscription.value.prenom + ". Age: "+
-    administrateurInscription.value.age+ ". Mail: "+administrateurInscription.value.adresseMail+ ". Numéro: "+
-    administrateurInscription.value.numeroTelephone+ ". Mdp: "+administrateurInscription.value.motDePasse);
-  */
-  return administrateurInscription.value.nom !== "" && administrateurInscription.value.prenom !== "" &&
-    administrateurInscription.value.age > 0 && administrateurInscription.value.adresseMail !== "" &&
-    administrateurInscription.value.numeroTelephone !== "" && administrateurInscription.value.motDePasse !== "";
+function verificationChampsObligatoires() {
+  return validerNom(administrateurInscription.value.nom) && validerNom(administrateurInscription.value.prenom) &&
+    administrateurInscription.value.age > 0 && validerMailCreationAdmin(administrateurInscription.value.adresseMail) &&
+    administrateurInscription.value.numeroTelephone !== "" && validerMotDePasse(administrateurInscription.value.motDePasse);
 }
 
 function inscrireAdministrateur() {
-  if (!champsObligatoireRemplis())
+  if (!verificationChampsObligatoires())
     return
   Service.serviceInscrireAdministrateur(administrateurInscription.value)
     .then(response => {

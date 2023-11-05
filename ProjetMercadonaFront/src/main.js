@@ -4,7 +4,7 @@ import "./style.css";
 import App from "./App.vue";
 import * as filters from './filters'
 import store from "./store/index.js";
-import Service from "./services/service.js";
+import Service from "./services/index.js";
 
 const app = createApp(App);
 app.use(router).use(store).mount("#app");

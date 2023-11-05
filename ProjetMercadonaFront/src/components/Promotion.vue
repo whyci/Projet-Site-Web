@@ -34,7 +34,7 @@
 <script setup>
 
 import {ref} from "vue";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 import Datepicker from 'vue3-datepicker';
 import {accesEspaceAdmin} from "../store/mutations.js";
 

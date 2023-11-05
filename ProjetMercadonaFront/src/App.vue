@@ -6,7 +6,8 @@
 import { RouterView } from "vue-router";
 import {onMounted, ref} from "vue";
 import store from "./store/index.js";
-import Service from "./services/service.js";
+import Service from "./services/index.js";
+import {validerMotDePasse, validerNom} from "./control/index.js";
 
 onMounted(() => {
   console.log("App started");

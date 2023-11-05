@@ -86,7 +86,7 @@
 import { onMounted, ref } from "vue";
 import Produits from "../components/Produits.vue";
 import EspaceAdministrateur from "./EspaceAdministrateur.vue";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 import store from "../store/index.js";
 import {accesEspaceAdmin} from "../store/mutations.js";
 

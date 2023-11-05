@@ -76,7 +76,7 @@ import * as $filters from "../filters/index.js";
 import {onMounted, ref} from "vue";
 import store from "../store/index.js";
 import {accesEspaceAdmin, getPromotionAssocie} from "../store/mutations.js";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 import Promotion from "./Promotion.vue";
 
 const appliquerPromo = ref(false);
