@@ -112,7 +112,7 @@
 <script setup>
 import { ref } from "vue";
 import Service from "../services/index.js";
-import {validerMailCreationAdmin, validerMotDePasse, validerNom} from "../control/index.js";
+import {validerMailCreationAdmin, validerMotDePasse, validerNom, validerNumeroTelephone} from "../control/index.js";
 
 const administrateurInscription = ref({
   adresseMail: "",
@@ -125,8 +125,8 @@ const administrateurInscription = ref({
 
 function verificationChampsObligatoires() {
   return validerNom(administrateurInscription.value.nom) && validerNom(administrateurInscription.value.prenom) &&
-    administrateurInscription.value.age > 0 && validerMailCreationAdmin(administrateurInscription.value.adresseMail) &&
-    administrateurInscription.value.numeroTelephone !== "" && validerMotDePasse(administrateurInscription.value.motDePasse);
+    administrateurInscription.value.age > 17 && validerMailCreationAdmin(administrateurInscription.value.adresseMail) &&
+    validerNumeroTelephone(administrateurInscription.value.numeroTelephone) && validerMotDePasse(administrateurInscription.value.motDePasse);
 }
 
 function inscrireAdministrateur() {

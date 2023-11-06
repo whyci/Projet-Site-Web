@@ -4,7 +4,9 @@
  * Autrement dit, il devra contenir un nom de mail, un seul caractère '@', et enfin un domaine (contenant un seul '.').
  * Chaque exigence est définie sous forme de condition. Si une des conditions n'est pas validée, l'adresse mail est
  * considérée invalide.
+ * Retourne vrai si l'adresse mail est valide. Sinon, retourne faux.
  * @param mail Adresse mail que l'on souhaite vérifier.
+ * @return boolean
  */
 export function validerMailCreationAdmin(mail) {
 
@@ -113,7 +115,9 @@ export function validerMailCreationAdmin(mail) {
 
 /**
  * Vérifie que le nom ou le prénom est valide, soit ne possèdant pas de chiffre.
- * @param nom Nom ou prénom que l'on souhaite valider.
+ * Retourne vrai si le nom (ou prénom) est valide. Sinon, retourne faux.
+ * @param nom Nom (ou prénom) que l'on souhaite valider.
+ * @return boolean
  */
 export function validerNom(nom) {
   // Si aucun caractère dans le nom
@@ -143,7 +147,9 @@ export function validerNom(nom) {
 /**
  * Vérifie que le mot de passe valide les conditions suffisantes. Il doit contenir au moins :
  * 8 caractères ; une lettre en majuscule ; une lettre en minuscule ; un chiffre ; un caractère spécial ;
+ * Retourne vrai si le mdp est valide. Sinon, retourne faux.
  * @param mdp Mot de passe que l'on souhaite valider.
+ * @return boolean
  */
 export function validerMotDePasse(mdp) {
   // Si aucun caractère dans le mdp
@@ -201,4 +207,38 @@ export function validerMotDePasse(mdp) {
   // Si toutes les conditions sont respectées, on valide le mdp
   return conditionChiffre && conditionLettreMajuscule && conditionLettreMinuscule && conditionCaractereSpecial &&
     mdp.length >= 8;
+}
+
+/**
+ * Vérifie que le numéro de téléphone comporte uniquement des nombres (au moins 9), des espaces ou un signe '+' au début.
+ * Retourne vrai si le numéro de téléphone est valide. Sinon, retourne faux.
+ * @param numeroTel Numéro de téléphone à valider.
+ * @return boolean
+ */
+export function validerNumeroTelephone(numeroTel) {
+  // Vérifie que le numéro n'est pas vide
+  if (numeroTel === "") {
+    return false;
+  }
+
+  // Compteur du nombre de chiffres qui doit être au minimum supérieur à 9.
+  let cptNbChiffres = 0;
+
+  // Boucle pour analyser chaque élément du numéro de téléphone. Si un élément ne rentre pas dans les conditions, on
+  // invalide le numéro.
+  for (let caractere in numeroTel) {
+    // On vérifie si le caractère est un chiffre.
+    if (Number.isInteger(Number.parseInt(numeroTel[caractere]))) {
+      // Le caractère est un chiffre, on incrément le compteur du nombre de chiffre pour valider les 9 chiffres min.
+      cptNbChiffres ++;
+      console.log("chiffre : " + numeroTel[caractere]);
+    } else {
+      // Si le caractère n'est pas un chiffre, on vérifie qu'il ne s'agit pas d'un espace ou bien qu'un '+' en
+      // première position. Sinon, on considère que le numéro est invalide et l'on renvoie faux.
+      if (numeroTel[caractere] !== " ") {
+        if (!(numeroTel[caractere] === "+" && Number.parseInt(caractere) === 0)) return false;
+      }
+    }
+  }
+  return cptNbChiffres >= 9;
 }

@@ -4,10 +4,7 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import {onMounted, ref} from "vue";
-import store from "./store/index.js";
-import Service from "./services/index.js";
-import {validerMotDePasse, validerNom} from "./control/index.js";
+import { onMounted } from "vue";
 
 onMounted(() => {
   console.log("App started");
