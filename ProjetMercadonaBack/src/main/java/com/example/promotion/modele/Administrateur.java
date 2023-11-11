@@ -2,6 +2,8 @@ package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 /**
  * la classe administrateur definis la table qui sera dans la base de données
  * les attributs prives correspondent aux elements de la table administrateur
@@ -18,7 +20,7 @@ public class Administrateur {
 
     private String prenom;
 
-    private Integer age;
+    private Date dateNaissance;
 
     private String adresseMail;
 
@@ -50,12 +52,12 @@ public class Administrateur {
         this.prenom = prenom;
     }
 
-    public Integer getAge() {
-        return age;
+    public Date getDateNaissance() {
+        return dateNaissance;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
     }
 
     public String getAdresseMail() {

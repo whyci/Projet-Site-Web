@@ -1,7 +1,5 @@
 package com.example.promotion.modele;
 
-import org.springframework.security.core.parameters.P;
-
 import java.util.Date;
 
 public class CreationPromotion {
@@ -25,25 +23,5 @@ public class CreationPromotion {
         promotion.setProduitIdCle(idProduit);
 
         return promotion;
-    }
-
-    /**
-     * Méthode de création des produits utilisées pour les tests, n'utilisant pas toutes les propriétés d'un Produit
-     * @param libelle Nom du produit
-     * @param prix Prix du produit
-     * @param categorie Categorie du produit
-     * @param description Description du produit
-     * @return Le produit créé avec les paramètres
-     */
-    public static Produit creationPartieDTProduit(String libelle, Float prix, String categorie,
-                                                  String description) {
-
-        Produit produit = new Produit();
-        produit.setLibelle(libelle);
-        produit.setPrix(prix);
-        produit.setCategorie(categorie);
-        produit.setDescription(description);
-
-        return produit;
     }
 }

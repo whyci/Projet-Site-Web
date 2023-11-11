@@ -131,12 +131,12 @@ export function validerNom(nom) {
     // Si le caractère n'est pas dans l'alphabet
     if (!(nom[lettre] >= 'A' && nom[lettre] <= 'Z') && !(nom[lettre] >= 'a' && nom[lettre] <= 'z'))
       // S'il n'est pas un tiret, on invalide le nom (ou prénom)
-      if (nom[lettre] !== "-") {
-        alert("Aucun caractère spécial autorisé, uniquement alphabet et le tiret");
+      if (nom[lettre] !== '-') {
+        alert("Aucun caractère spécial autorisé, uniquement alphabet et le tiret au milieu du nom/prénom");
         return false;
       }
       // Si c'est un tiret et qu'il est placé en première ou dernière position dans le nom (ou prénom), on l'invalide
-      else if (lettre === 0 || Number.parseFloat(lettre) === nom.length-1) {
+      else if (Number.parseInt(lettre) === 0 || Number.parseFloat(lettre) === nom.length-1) {
         return false;
       }
   }
@@ -241,4 +241,51 @@ export function validerNumeroTelephone(numeroTel) {
     }
   }
   return cptNbChiffres >= 9;
+}
+
+/**
+ * Vérifie que la date de naissance équivaut à ce que l'administrateur ait au moins 18 ans, et moins de 120 ans.
+ * @param dateNaissance Date de naissance que l'on vérifie.
+ */
+export function validerDateNaissance(dateNaissance) {
+
+  // Récupère le jour actuel
+  let instantActuel = new Date();
+
+  // Année moins de 18 ans ou plus de 120 ans, invalide la date de naissance
+  if ( (dateNaissance.getFullYear() > instantActuel.getFullYear() - 18) ||
+    (dateNaissance.getFullYear() < instantActuel.getFullYear() - 120) ) {
+    return false;
+  }
+  // Si égal à l'année d'il y a 18 ans, on regarde le mois
+  else if (dateNaissance.getFullYear() === instantActuel.getFullYear() - 18) {
+    // Mois supérieur à l'actuel donc plus jeune que 18 ans, invalide la date de naissance
+    if (dateNaissance.getMonth() > instantActuel.getMonth()) {
+      return false;
+    }
+    // Si égal, on regarde le jour
+    else if (dateNaissance.getMonth() === instantActuel.getMonth()) {
+      // Jour supérieur à l'actuel donc plus jeune que 18 ans, invalide la date de naissance
+      if (dateNaissance.getDate() > instantActuel.getDate()) {
+        return false;
+      }
+    }
+  }
+  // Si égal à l'année d'il y a 120 ans, on regarde le mois
+  else if (dateNaissance.getFullYear() === instantActuel.getFullYear() - 120) {
+    // Mois inférieur à l'actuel donc plus vieux que 120 ans, invalide la date de naissance
+    if (dateNaissance.getMonth() < instantActuel.getMonth()) {
+      return false;
+    }
+    // Si égal, on regarde le jour
+    else if (dateNaissance.getMonth() === instantActuel.getMonth()) {
+      // Jour inférieur à l'actuel donc plus vieux que 120 ans, invalide la date de naissance
+      if (dateNaissance.getDate() <= instantActuel.getDate()) {
+        return false;
+      }
+    }
+  }
+
+  // La date de naissance est valide
+  return true;
 }

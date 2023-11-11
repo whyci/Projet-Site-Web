@@ -12,7 +12,7 @@
       <div class="submit-form">
         <div class="form-group">
           <!-- permet de pouvoir sélectionner sa civilité selon les 3 options définies, et le class de design, et le v-model permet de choisir celui de sélection -->
-          <select v-model="selected" class="border-gray-200 rounded border-2 focus:border-green-800 mb-4 w-25">
+          <select v-model="civilite" class="border-gray-200 rounded border-2 focus:border-green-800 mb-4 w-25">
             <option disabled value=""> Choisissez votre civilité </option>
             <option>Madame</option>
             <option>Monsieur</option>
@@ -39,11 +39,10 @@
             placeholder="Prénom *"
           />
           <br>
-          <input
-            type="number"
-            v-model="administrateurInscription.age"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 "
-            placeholder="Date de naissance *"
+          <datepicker style=""
+                      class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
+                      v-model="administrateurInscription.dateNaissance"
+                      inputFormat="dd/MM/yyyy"
           />
           <input
             type="text"
@@ -66,6 +65,8 @@
           />
         </div>
         <br>
+
+      </div>
         <!--
           <br>
           <input
@@ -75,15 +76,14 @@
           placeholder="Numéro identifiant admin *"
           />
         -->
-        <div class="p-2 text-center">
-          <br>
-          <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
-            btn, et btn-success permettent de créer un carré et le mettre en couleur
-            les autres informations permettent de rechercher un produit selon sa catégorie
-            quand l'on click sur la bouton ça valide le formulaire -->
-          <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-                  class="btn btn-success" @click="inscrireAdministrateur">Valider</button>
-        </div>
+      <div class="p-2 text-center">
+        <br>
+        <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
+          btn, et btn-success permettent de créer un carré et le mettre en couleur
+          les autres informations permettent de rechercher un produit selon sa catégorie
+          quand l'on click sur la bouton ça valide le formulaire -->
+        <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+                class="btn btn-success" @click="inscrireAdministrateur">Valider</button>
       </div>
     </div>
   </div>
@@ -110,22 +110,36 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 import Service from "../services/index.js";
-import {validerMailCreationAdmin, validerMotDePasse, validerNom, validerNumeroTelephone} from "../control/index.js";
+import Datepicker from 'vue3-datepicker';
+
+import {
+  validerDateNaissance,
+  validerMailCreationAdmin,
+  validerMotDePasse,
+  validerNom,
+  validerNumeroTelephone
+} from "../control/index.js";
+
+const civilite = ref();
 
 const administrateurInscription = ref({
   adresseMail: "",
-  age: Number,
+  dateNaissance: new Date(),
   motDePasse: "",
   nom: "",
   numeroTelephone: "",
   prenom: ""
 });
 
+onMounted(async () => {
+  administrateurInscription.value.dateNaissance.setFullYear(new Date().getFullYear() - 18);
+});
+
 function verificationChampsObligatoires() {
   return validerNom(administrateurInscription.value.nom) && validerNom(administrateurInscription.value.prenom) &&
-    administrateurInscription.value.age > 17 && validerMailCreationAdmin(administrateurInscription.value.adresseMail) &&
+    validerDateNaissance(administrateurInscription.value.dateNaissance) && validerMailCreationAdmin(administrateurInscription.value.adresseMail) &&
     validerNumeroTelephone(administrateurInscription.value.numeroTelephone) && validerMotDePasse(administrateurInscription.value.motDePasse);
 }
 
