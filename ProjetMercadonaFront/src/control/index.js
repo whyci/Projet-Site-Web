@@ -121,7 +121,7 @@ export function validerMailCreationAdmin(mail) {
  */
 export function validerNom(nom) {
   // Si aucun caractère dans le nom
-  if (nom.length === "") {
+  if (nom === "") {
     alert("Les champs obligatoires sont à remplir");
     return false;
   }

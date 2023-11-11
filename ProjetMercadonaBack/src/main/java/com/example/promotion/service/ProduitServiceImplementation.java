@@ -38,15 +38,4 @@ public class ProduitServiceImplementation implements ProduitService {
             produitRepertoire.save(produitAAjouter);
         }
     }
-
-
-    @Override
-    public void supprimerProduit(Long id) {
-        produitRepertoire.deleteById(Math.toIntExact(id));
-    }
-
-    @Override
-    public List<Produit> afficherProduits() {
-        return produitRepertoire.findAll();
-    }
 }

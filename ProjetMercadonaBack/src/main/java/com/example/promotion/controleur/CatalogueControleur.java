@@ -1,7 +1,6 @@
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Produit;
-import com.example.promotion.reponse.ReponseProduits;
 import com.example.promotion.service.CatalogueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,16 @@ import static java.lang.Integer.parseInt;
 @CrossOrigin(origins = "*")
 public class CatalogueControleur {
 
+    /**
+     * Instance de CatalogueService, interface d'accès à la base de donnée concernant la récupération de produit.
+     */
     private final CatalogueService catalogueService;
 
+    /**
+     * Constructeur de la classe pour initialiser les instances de services qu'il utilise. Nécessaire pour les tests,
+     * instancier les services mockés.
+     * @param catalogueService Service du catalogue.
+     */
     @Autowired
     public CatalogueControleur(CatalogueService catalogueService) {
         this.catalogueService = catalogueService;

@@ -15,8 +15,4 @@ public interface ProduitService {
     Long enregistrerProduitImage(Produit produit);
 
     void enregistrerProduitParametres(Produit produit, Long id);
-
-    List<Produit> afficherProduits();
-
-    void supprimerProduit(Long id);
 }

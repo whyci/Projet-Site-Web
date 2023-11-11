@@ -2,10 +2,11 @@ package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
-/* la classe administrateur definis la table qui sera dans la base de données
-   les attributs prives correspondent aux elements de la table administrateur
-   les fonctions seront appeles par le repertoire de la classe et sont public */
-
+/**
+ * la classe administrateur definis la table qui sera dans la base de données
+ * les attributs prives correspondent aux elements de la table administrateur
+ * les fonctions seront appeles par le repertoire de la classe et sont public
+ */
 @Entity
 @Table(name = "administrateur")
 public class Administrateur {

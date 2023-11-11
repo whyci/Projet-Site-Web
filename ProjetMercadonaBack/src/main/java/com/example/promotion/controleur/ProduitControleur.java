@@ -2,7 +2,6 @@ package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Produit;
 import com.example.promotion.reponse.ReponseString;
-import com.example.promotion.service.CatalogueService;
 import com.example.promotion.service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +10,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 @RequestMapping("/produit")
 @CrossOrigin(origins = "*")
 public class ProduitControleur {
 
+    /**
+     * Instance de ProduitService, interface d'accès à la base de donnée concernant les produits.
+     */
     private final ProduitService produitService;
 
+    /**
+     * Constructeur de la classe pour initialiser les instances de services qu'il utilise. Nécessaire pour les tests,
+     * instancier les services mockés.
+     * @param produitService Service de produit.
+     */
     @Autowired
     public ProduitControleur(ProduitService produitService) {
         this.produitService = produitService;
@@ -57,7 +63,7 @@ public class ProduitControleur {
                                                                   @PathVariable("id") Long id) {
         System.out.println("Produit paramètres : "+produit.getLibelle());
         produitService.enregistrerProduitParametres(produit, id);
-        String message = "Création produit - étape 1 : Produit "+produit.getLibelle()+" enregistré !";
+        String message = "Ajout Produit OK";
         return ResponseEntity.ok(new ReponseString(message));
     }
 }

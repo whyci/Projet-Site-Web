@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
@@ -37,37 +38,83 @@ public class TestProduitControleur {
             0x1, 0x78, 0x64, 0x12, 0x51, 0x22, 0x69, 0x79, 0x1, 0x71, 0x21, 0x40, 0x32, 0x6, 0x0, 0x0,
             0x0, 0x04, 0x3, 0x70, 0x08, 0x24, 0x29, 0x26, 0x40, 0x4, 0x2, 0x7, 0x0, 0x35, 0x50, 0x40
     });
-    private final Long idProduit1 = 1L;
-    private final Long idProduit2 = 2L;
     private final MultipartFile fichierImageVide = new MockMultipartFile("Image vide", new byte[]{});
-
-    /**
-     * Identifiant du produit du test courant
-     */
-    private Long idProduitEnCours;
 
     @Mock
     private ProduitService produitService;
 
+    /**
+     * Classe que l'on veut tester.
+     */
     @InjectMocks
     @Resource
     private ProduitControleur produitControleur;
 
-    private Long recupereIdProduit() {
-        return this.idProduitEnCours;
-    }
-
     @BeforeEach
     public void prepTestProduitControleur() throws IOException {
-
         // Initialise le mock de produitService
         MockitoAnnotations.initMocks(this);
+    }
 
-        /* - - - - Données de test (P = Produit) - - - - */
+    /**
+     * Test d'ajout d'un produit avec une image remplie.
+     */
+    @Test
+    public void testAjoutProduitImageRemplie() throws IOException {
 
-        // Produit avec une image
+        /* - - - - Données de test - - - - */
+        // Id du produit
+        Long idProduit1 = 1L;
+        // Autres informations du produit
         Produit produit1 = CreationProduit.creationPartieDTProduit("Salade", 3.5F, "Aliment",
                 "Salade iceberg, au kg, produit frais de saison");
+
+        /* - - - - Comportement du mock - - - - */
+
+        // Remplacement du résultat de enregistrerProduitImage en retournant l'id du produit 1
+        when(produitService.enregistrerProduitImage(any(Produit.class)))
+                .thenReturn(idProduit1);
+
+        // Instance d'objet à tester
+        produitControleur = new ProduitControleur(produitService);
+
+        /* - - - - ETAPE 1 : Ajout d'image - - - - - */
+
+        /* - - - - Exécution des tests - - - - - */
+
+        ResponseEntity<ReponseString> resReponseEtape1AjoutImageProduit1 = produitControleur.ajouterProduitImage(fichierImageRempli);
+
+        /* - - - - Assertions des résultats de tests - - - - */
+
+        // Assertion du résultat de id produit que l'on obtient
+        assertEquals("[Echec -> Test Produit Controleur] produit 1 - étape 1 ajout image",
+                idProduit1, Long.parseLong(
+                        Objects.requireNonNull(resReponseEtape1AjoutImageProduit1.getBody()).message().substring(1)
+                ));
+
+        // Vérifie que la fonction mockée a bien été appelée
+        verify(produitService).enregistrerProduitImage(any(Produit.class));
+
+        /* - - - - ETAPE 2 : Ajout paramètres - - - - - */
+
+        /* - - - - Exécution des tests - - - - - */
+
+        produitControleur.ajouterProduitParametres(produit1, idProduit1);
+
+        /* - - - - Assertions des résultats de tests - - - - */
+
+        // Vérifie que la fonction enregistrerProduitParametres du mock a bien été appelée avec les bons paramètres
+        verify(produitService).enregistrerProduitParametres(produit1, idProduit1);
+    }
+
+    /**
+     * Test d'ajout d'un produit avec une image vide.
+     */
+    @Test
+    public void testAjoutProduitImageVide() throws IOException {
+
+        /* - - - - Exécution des tests - - - - - */
+        Long idProduit2 = 2L;
 
         // Produit sans image
         Produit produit2 = CreationProduit.creationPartieDTProduit("Paprika", 15.0F, "Condiment",
@@ -75,37 +122,39 @@ public class TestProduitControleur {
 
         /* - - - - Comportement du mock - - - - */
 
-        // Remplace le comportement de la fonction enregistrerProduitImage pour renvoyer les id des produits en données de tests
-        when(produitService.enregistrerProduitImage(any(Produit.class)))
-                .thenReturn(idProduit1);
-    }
-
-    /**
-     * Test d'ajout des produits
-     */
-    @Test
-    public void testAjoutProduit() throws IOException {
-
-        /* - - - - Exécution des tests - - - - - */
-        produitControleur = new ProduitControleur(produitService);
-        ResponseEntity<ReponseString> resReponseAjoutImageProduit1 = produitControleur.ajouterProduitImage(fichierImageRempli);
-
-        produitControleur = new ProduitControleur(produitService);
-        ResponseEntity<ReponseString> resReponseAjoutImageProduit2 = produitControleur.ajouterProduitImage(fichierImageVide);
-
-        /* - - - - Assertions des résultats de tests - - - - */
-        //this.idProduitEnCours = idProduit1;
-        assertEquals("[Echec -> Test Produit Controleur] produit 1 - étape 1 ajout image",
-                idProduit1, Long.parseLong(
-                        Objects.requireNonNull(resReponseAjoutImageProduit1.getBody()).message().substring(1)
-                ));
-
+        // Remplacement du résultat de enregistrerProduitImage en retournant l'id du produit 2
         when(produitService.enregistrerProduitImage(any(Produit.class)))
                 .thenReturn(idProduit2);
+
+        // Instance d'objet à tester
+        produitControleur = new ProduitControleur(produitService);
+
+        /* - - - - ETAPE 1 : Ajout d'image - - - - - */
+
+        /* - - - - Exécution des tests - - - - - */
+
+        ResponseEntity<ReponseString> resReponseEtape1AjoutImageProduit2 = produitControleur.ajouterProduitImage(fichierImageVide);
+
+        /* - - - - Assertions des résultats de tests - - - - */
+
         assertEquals("[Echec -> Test Produit Controleur] produit 2 - étape 1 ajout image",
                 idProduit2, Long.parseLong(
-                        Objects.requireNonNull(resReponseAjoutImageProduit2.getBody()).message().substring(1)
+                        Objects.requireNonNull(resReponseEtape1AjoutImageProduit2.getBody()).message().substring(1)
                 ));
+
+        // Vérifie que la fonction mockée a bien été appelée
+        verify(produitService).enregistrerProduitImage(any(Produit.class));
+
+        /* - - - - ETAPE 2 : Ajout autres informations - - - - - */
+
+        /* - - - - Exécution des tests - - - - - */
+
+        produitControleur.ajouterProduitParametres(produit2, idProduit2);
+
+        /* - - - - Assertions des résultats de tests - - - - */
+
+        // Vérifie que la fonction enregistrerProduitParametres du mock a bien été appelée avec les bons paramètres
+        verify(produitService).enregistrerProduitParametres(produit2, idProduit2);
 
     }
 }

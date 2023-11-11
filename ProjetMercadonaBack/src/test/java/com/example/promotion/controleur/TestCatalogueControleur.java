@@ -34,7 +34,7 @@ public class TestCatalogueControleur {
 
 
     /**
-     * Mock de catalogueService
+     * Instance du mock de CatalogueService pour intercepter les appels de fonctions.
      */
     @Mock
     private CatalogueService catalogueService;
@@ -95,7 +95,6 @@ public class TestCatalogueControleur {
         ResponseEntity<List<Produit>> actReponseListeProduits = catalogueControleur.afficherComplet();
 
         /* - - - - Assertions des résultats de tests - - - - */
-
 
         // Vérification des appels du mock
         Mockito.verify(catalogueService).afficherCatalogueComplet();

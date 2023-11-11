@@ -11,16 +11,34 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/administrateur")
 @CrossOrigin(origins = "*")
 public class AdministrateurControleur {
-    @Autowired
-    private AdministrateurService administrateurService;
 
+    /**
+     * Instance de AdministrateurService, interface d'accès à la base de donnée concernant les administrateurs.
+     */
+    private final AdministrateurService administrateurService;
+
+    /**
+     * Instance de JwtTokenService, pour la gestion de token.
+     */
+    private final JwtTokenService jwtTokenService;
+
+    /**
+     * Constructeur de la classe pour initialiser les instances de services qu'il utilise. Nécessaire pour les tests,
+     * instancier les services mockés.
+     * @param administrateurService Service de adminitrateur.
+     * @param jwtTokenService Service de JwToken.
+     */
     @Autowired
-    private JwtTokenService jwtTokenService;
+    public AdministrateurControleur(AdministrateurService administrateurService, JwtTokenService jwtTokenService) {
+        this.administrateurService = administrateurService;
+        this.jwtTokenService = jwtTokenService;
+    }
 
     /**
      * Assure la connexion de l'administrateur en contrôlant ses informations (mail et mdp) et génère un token pour
@@ -33,7 +51,8 @@ public class AdministrateurControleur {
     public ResponseEntity<ReponseAdministrateur> connecterAdministrateur(@PathVariable("adresseMail") String adresseMail,
                                                                          @PathVariable("mdp") String motDePasse) {
 
-        System.out.println("Connexion à l'adresse : " + adresseMail + " et mdp : " + motDePasse);
+        if (Objects.equals(adresseMail, "") || Objects.equals(motDePasse, ""))
+            return ResponseEntity.ok(new ReponseAdministrateur("KO"));
 
         // Récupère le résultat de la recherche dans la base de donnée des identifiants donnés.
         List<Administrateur> administrateur = administrateurService.connecterAdministrateur(adresseMail.toLowerCase(), motDePasse);
