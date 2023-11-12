@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 import {createApp, ref} from "vue";
 import router from "./router";
 import "./style.css";

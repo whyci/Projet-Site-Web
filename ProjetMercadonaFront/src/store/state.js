@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
+
 /**
  * Expose les variables partagées dans toute la partie front du projet.
  */

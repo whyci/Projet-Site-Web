@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 import { createStore } from 'vuex'
 import state from './state'
 import * as mutations from './mutations'

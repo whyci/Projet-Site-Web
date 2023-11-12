@@ -1,3 +1,8 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
   <header class="header-bg">
     <div class="container d-flex justify-content-center position-fixed top-3">

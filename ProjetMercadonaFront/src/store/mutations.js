@@ -1,4 +1,8 @@
-
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 import Service from "../services/index.js";
 import router from "../router/index.js";
 import store from "./index.js";

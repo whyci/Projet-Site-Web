@@ -1,3 +1,8 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
   <div className="submit-form">
     <div className="form-group">

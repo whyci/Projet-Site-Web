@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 
 /**
  * Vérifie que l'adresse mail correspond au format suivant : exemple@domaine.com.

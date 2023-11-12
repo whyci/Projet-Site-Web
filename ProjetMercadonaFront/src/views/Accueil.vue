@@ -1,3 +1,8 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
   <div class="p-10 ">
     <!-- text-4xl permet d'agrandir le texte et font-bold de le mettre en gras;

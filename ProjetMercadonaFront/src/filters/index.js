@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 import store from "../store/index.js";
 
 export function truncateWords(str, count) {

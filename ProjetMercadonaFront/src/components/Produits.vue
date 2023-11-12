@@ -1,3 +1,8 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
 
   <div class="grid grid-cols-1 md:grid-cols-5 gap-10">

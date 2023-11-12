@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.reponse;
 
 import com.example.promotion.modele.Produit;

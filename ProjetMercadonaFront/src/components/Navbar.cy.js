@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 import Navbar from './Navbar.vue'
 import ConnexionAdmin from "../views/ConnexionAdmin.vue";
 import CreationAdmin from "../views/CreationAdmin.vue";
@@ -5,12 +10,18 @@ import Accueil from "../views/Accueil.vue";
 import Catalogue from "../views/Catalogue.vue";
 import EspaceAdministrateur from "../views/EspaceAdministrateur.vue";
 
+/**
+ * Test composant de Navbar.
+ */
 describe('<Navbar />', () => {
   it('Renvoie la page Navbar', () => {
     cy.mount(Navbar)
   })
 })
 
+/**
+ * Test composant de Accueil.
+ */
 describe('<Accueil />', () => {
   it('Test le titre de la page Accueil', () => {
 
@@ -20,6 +31,9 @@ describe('<Accueil />', () => {
   })
 })
 
+/**
+ * Test composant de Catalogue.
+ */
 describe('<Catalogue />', () => {
   it('Test le titre de la page Catalogue', () => {
 
@@ -29,6 +43,9 @@ describe('<Catalogue />', () => {
   })
 })
 
+/**
+ * Test composant de CreationAdmin.
+ */
 describe('<CreationAdmin />', () => {
   it('Test le titre de la page CreationAdmin', () => {
 
@@ -38,6 +55,9 @@ describe('<CreationAdmin />', () => {
   })
 })
 
+/**
+ * Test composant de ConnexionAdmin.
+ */
 describe('<ConnexionAdmin />', () => {
   it('Test le titre de la page ConnexionAdmin', () => {
 
@@ -47,6 +67,9 @@ describe('<ConnexionAdmin />', () => {
   })
 })
 
+/**
+ * Test composant de ConnexionAdmin changement de page vers inscription.
+ */
 describe('<ConnexionAdmin />', () => {
   it('Test le click et le focus du bouton "Pas encore de compte ? Clique ici"', () => {
 
@@ -62,6 +85,9 @@ describe('<ConnexionAdmin />', () => {
   })
 })
 
+/**
+ * Test composant de EspaceAdministrateur.
+ */
 describe('<EspaceAdministrateur />', () => {
   it('Test le titre de la page EspaceAdministrateur', () => {
 

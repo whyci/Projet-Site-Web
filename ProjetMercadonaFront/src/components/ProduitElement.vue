@@ -1,3 +1,8 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
   <div class="p-3 bg-white shadow rounded-xl hover:scale-105 transition-all h-96">
     <div class="">

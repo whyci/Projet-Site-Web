@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 import {filtreCategorie} from "../../src/filters/index.js";
 
 /*describe de la fonction filtreCategorie, it nous informe des tests que l'on va passer, expect nous permet de tester les attendus
