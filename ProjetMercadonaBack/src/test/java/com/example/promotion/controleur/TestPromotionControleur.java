@@ -57,11 +57,14 @@ public class TestPromotionControleur {
     @Resource
     private PromotionControleur promotionControleur;
 
+    /**
+     * Préparation des tests et étapes exécutés systématiquement avant chaque fonction de test.
+     */
     @BeforeEach
     public void prepTestPromotionControleur() {
 
         // Initialise le mock de promotionService
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         /* - - - - Données de test - - - - */
         /* Les produits ont des valeurs aléatoires à part la première (id du produit) */

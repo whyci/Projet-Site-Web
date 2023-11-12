@@ -5,7 +5,7 @@
     <h1 class="text-4xl font-bold text-green-900">Catalogue</h1>
     <br>
     <div>
-      <p>Voici les produits en promotion de notre magasin toutes catégories confondus, l'alimentaire, traiteur, hygiènes, loisirs ...</p>
+      <p>Voici tous les produits de notre magasin l'alimentaire, traiteur, hygiènes, loisirs ...</p>
       <!-- br pour créer un espace en sautant une ligne -->
       <br> <br>
       <!-- permet de gérer la taille de la barre de recherche-->
@@ -49,8 +49,6 @@ import Produits from "../components/Produits.vue";
 
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Service from "../services/index.js";
-import Produit from "../components/ProduitElement.vue";
 import {filtreCategorie} from "../filters/index.js";
 
 const rechercheCategorie = ref("");

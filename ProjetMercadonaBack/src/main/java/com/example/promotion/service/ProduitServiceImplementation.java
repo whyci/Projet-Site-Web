@@ -5,8 +5,10 @@ import com.example.promotion.repertoire.ProduitRepertoire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
+/**
+ * Implémentation des fonctions de ProduitService.
+ */
 @Service
 public class ProduitServiceImplementation implements ProduitService {
 

@@ -32,7 +32,6 @@ public class TestCatalogueControleur {
      */
     private final List<Produit> expListeProduits = new ArrayList<>();
 
-
     /**
      * Instance du mock de CatalogueService pour intercepter les appels de fonctions.
      */
@@ -54,7 +53,7 @@ public class TestCatalogueControleur {
     public void prepTestCatalogueControleur() {
 
         // Initialise le mock de catalogueService
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         /* - - - - Données de test - - - - */
 
@@ -98,7 +97,6 @@ public class TestCatalogueControleur {
 
         // Vérification des appels du mock
         Mockito.verify(catalogueService).afficherCatalogueComplet();
-        Mockito.verify(catalogueService, never()).afficherCatalogueFiltre(anyLong());
 
         // Vérification pour chaque élément de la liste de actual
         for (int indexProduitAct = 0;

@@ -59,7 +59,12 @@
         @change="enregistrerImage"
         required>
     </div>
-      <img v-if="imageApercu !== null" :src="imageApercu" alt="Aucune image sélectionné">
+    <div v-if="imageApercu !== null">
+      <img
+           class="rounded-xl h-52 ml-auto mr-auto "
+           :src="imageApercu"
+      >
+    </div>
     <div>
       <br>
         <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
@@ -109,7 +114,7 @@ const ajoutProduit = ref({
 // Image du produit que l'on souhaite ajouter
 const ajoutProduitImage = ref(null);
 // Aperçu de l'image que l'on affiche quand l'utilisateur choisi une image.
-const imageApercu = ref();
+const imageApercu = ref(null);
 
 /**
  * S'exécute à l'initialisation du composant ; vérifie la validité d'accès à l'espace administrateur par le token.
@@ -144,8 +149,8 @@ function enregistrerImage(event) {
  * @returns {boolean} Retourne vrai si les champs sont tous remplis, faux sinon.
  */
 function ajoutProduitValide() {
-  return !( (ajoutProduit.value.libelle === "") || (ajoutProduit.value.categorie === "") ||
-    (ajoutProduit.value.prix <= 0) || (ajoutProduit.value.description === ""));
+  return ( (ajoutProduit.value.libelle !== "") && (ajoutProduit.value.categorie !== "") &&
+    (ajoutProduit.value.prix > 0) && (ajoutProduit.value <= 1000000) && (ajoutProduit.value.description !== ""));
 }
 
 /**
@@ -154,7 +159,7 @@ function ajoutProduitValide() {
  */
 function ajouterProduit() {
   accesEspaceAdmin();
-  if ( (ajoutProduitValide()) && (!ajoutProduitImage.value) ) {
+  if ( !ajoutProduitValide() || !ajoutProduitImage.value ) {
     return;
   }
 
@@ -165,14 +170,11 @@ function ajouterProduit() {
   } else {
     // Ajouter l'image par defaut si il n'y a pas d'image.
   }
-  console.log("fichier image: " + ajoutProduitImage.value);
 
   // Création d'un produit - Etape 1: Ajout d'un produit dans la base de donnée avec une image.
   Service.serviceAjouterProduitImage(formulaireDonneeImage)
     .then(response => {
-      console.log(response.data);
       idProduit = parseInt(ajoutProduitTraitementIntermediaire(response.data.message), 10);
-      console.log("Création produit - Etape 1 terminée");
       deuxiemeEtapeAjoutProduit(idProduit);
     })
     .catch(e => {
@@ -190,9 +192,8 @@ function deuxiemeEtapeAjoutProduit(idProduit) {
   // Création d'un produit - Etape 2: Association des paramètres du produit que l'on souahite ajouter.
   Service.serviceAjouterProduitParametres(ajoutProduit.value, idProduit)
     .then(response => {
-      console.log(response.data);
-      console.log("Création produit - Etape 2 terminée");
       alert("Création produit terminée !");
+      location.reload();
     })
     .catch(e => {
       console.log("Erreur détectée, malheureusement ...");
@@ -215,7 +216,6 @@ function ajoutProduitTraitementIntermediaire(responseData) {
     }
     idProduit = responseData[indexString] + idProduit;
   }
-  console.log("Id du produit : " + idProduit);
   return idProduit;
 }
 

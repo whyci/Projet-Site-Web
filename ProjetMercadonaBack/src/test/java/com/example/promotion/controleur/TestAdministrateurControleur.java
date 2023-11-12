@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,11 +51,6 @@ public class TestAdministrateurControleur {
     private final String expKO = "KO";
 
     /**
-     * Donnée de test : Réponse "OK" pour un bon contrôle d'accès à l'espace admin.
-     */
-    private final String expOK = "OK";
-
-    /**
      * Instance du mock de Administrateur pour intercepter les appels de fonctions.
      */
     @Mock
@@ -74,20 +70,20 @@ public class TestAdministrateurControleur {
     private AdministrateurControleur administrateurControleur;
 
     /**
-     * Précondition et étapes exécutés systématiquement avant chaque fonction de test.
+     * Préparation des tests et étapes exécutés systématiquement avant chaque fonction de test.
      */
     @BeforeEach
     public void prepTestAdminControleur() {
 
         // Initialise le mock de produitService
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         // Instance d'objet à tester
         administrateurControleur = new AdministrateurControleur(administrateurService, jwtTokenService);
     }
 
     /**
-     * Test d'inscription d'un administrateur
+     * Test d'inscription d'un administrateur.
      */
     @Test
     public void testInscriptionAdmin() {
@@ -108,8 +104,9 @@ public class TestAdministrateurControleur {
     }
 
     /**
-     * Crée l'administrateur pour les tests
-     * @return Instance de Administrateur
+     * Crée l'administrateur pour les tests. La génération de l'identifiant de l'administrateur est automatiquement
+     * pris en charge par Spring du fait de l'auto-incrémentation, on ne le teste pas.
+     * @return Instance de Administrateur que l'on créé.
      */
     private Administrateur creationDTAdmin() {
         // Création de l'instance
@@ -118,7 +115,8 @@ public class TestAdministrateurControleur {
         // Affecte l'adresse mail en fonction des paramètres de la fonction
         admin.setAdresseMail(expMail);
         admin.setMotDePasse(expMdp);
-        admin.setAge(42);
+        admin.setDateNaissance(new Date());
+        admin.setCivilite("Monsieur");
         admin.setNom("Nom");
         admin.setPrenom("Prénom");
         admin.setNumeroTelephone("0612345678");
@@ -127,7 +125,7 @@ public class TestAdministrateurControleur {
     }
 
     /**
-     * Test de connexion d'un administrateur
+     * Test de connexion d'un administrateur.
      */
     @Test
     public void testConnexionAdmin() {
@@ -151,7 +149,7 @@ public class TestAdministrateurControleur {
                 .thenReturn(listeAdmin);
 
         // Remplacement du résultat de enregistrerProduitImage en retournant l'id du produit 1
-        when(jwtTokenService.generateToken(any(Administrateur.class)))
+        when(jwtTokenService.genererToken(any(Administrateur.class)))
                 .thenReturn(expJWToken);
 
         /* - - - - Exécution des tests - - - - - */
@@ -223,15 +221,18 @@ public class TestAdministrateurControleur {
         // Les entêtes d'autorisation, valide ou non, contenant le token précédé du préfix "Bearer "
         String expEnteteAutorisationTokenOK = "Bearer " + expJWToken;
         String expEnteteAutorisationTokenKOVide = "";
-        String expEnteteAutorisationTokenKOPrefix = expJWToken;
         String expEnteteAutorisationTokenKOToken = "Bearer MauvaisToken111vah4vabeb654b8d8b64";
+
+        // Réponse OK attendue.
+        String expOK = "OK";
 
         /* - - - - Comportement du mock - - - - */
 
         // Remplacement du résultat de enregistrerProduitImage en retournant l'id du produit 1
-        when(jwtTokenService.validatingToken(anyString()))
+        when(jwtTokenService.validerToken(anyString()))
                 .thenReturn(expKO);
-        when(jwtTokenService.validatingToken(expJWToken))
+
+        when(jwtTokenService.validerToken(expJWToken))
                 .thenReturn(expOK);
 
         /* - - - - Exécution des tests - - - - - */
@@ -243,7 +244,7 @@ public class TestAdministrateurControleur {
                 administrateurControleur.accesEspaceAdmin(expEnteteAutorisationTokenKOVide);
 
         ResponseEntity<String> resAccesKOPrefix =
-                administrateurControleur.accesEspaceAdmin(expEnteteAutorisationTokenKOPrefix);
+                administrateurControleur.accesEspaceAdmin(expJWToken);
 
         ResponseEntity<String> resAccesKOToken =
                 administrateurControleur.accesEspaceAdmin(expEnteteAutorisationTokenKOToken);
@@ -267,6 +268,6 @@ public class TestAdministrateurControleur {
         );
 
         // Vérifie que la fonction inscrireAdministrateur du mock a bien été appelée avec l'administrateur donné
-        verify(jwtTokenService, times(2)).validatingToken(anyString());
+        verify(jwtTokenService, times(2)).validerToken(anyString());
     }
 }

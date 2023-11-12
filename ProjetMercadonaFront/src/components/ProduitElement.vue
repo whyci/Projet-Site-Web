@@ -2,18 +2,11 @@
   <div class="p-3 bg-white shadow rounded-xl hover:scale-105 transition-all h-96">
     <div class="">
       <!-- permet de gérer l'appel de l'image et son affichage -->
-       <template v-if="store.state.connexionBack">
-        <!-- permet de gérer l'affichage de l'image, gérer les bordures, la taille etc -->
-        <img class="rounded-xl border-8 border-white ml-auto h-40 mr-auto" v-if="imageReconstruit !== null" :src="imageReconstruit" alt="Image" />
-        <img v-else alt="IMAGE NULLE !" src="">
-      </template>
-      <template v-else>
-        <!-- permet de gérer l'affichage de l'image, gérer les bordures, la taille etc -->
-        <img class="rounded-xl border-8 border-white ml-auto h-40 mr-auto" v-if="produit.image" :src="image" alt="Select image">
-      </template>
+      <!-- permet de gérer l'affichage de l'image, gérer les bordures, la taille etc -->
+      <img class="rounded-xl border-8 border-white ml-auto h-40 mr-auto" v-if="imageReconstruit !== null" :src="imageReconstruit" alt="Image" />
+      <img v-else alt="IMAGE NULLE !" src="">
     </div>
     <br>
-
     <!-- permet de gérer la taille, mettre en gras et centrer les libelles -->
     <p class="font-bold text-xl-center text-2xl">{{ produit.libelle }}</p>
     <!-- permet de gérer la taille, mettre en semi gras et centrer les categories -->
@@ -22,31 +15,16 @@
     <p class="mb-2 text-center">
           {{ $filters.truncateWords( produit.description , 20) }}
     </p>
-    <template v-if="!store.state.connexionBack">
-      <!-- permet de mettre en gras et rayer le prix s'il y a une promotion -->
-      <p v-if="produit.nouveauprix" class="font-bold text-decoration-line-through">{{ produit.prix }}€ </p>
-      <!-- permet de mettre en gras et gérer la taille du texte s'il n'y a pas de promotion -->
-      <p v-else class="font-bold text-2xl ">{{ produit.prix }}€ </p>
-
-      <!-- permet de mettre en gras, mettre en rouge et gérer la taille du texte de la promotion -->
-      <p v-if="produit.nouveauprix >0" class="font-bold text-red-600 text-3xl">{{ produit.nouveauprix }}€</p>
-
-      <!-- permet d'afficher le nouveau prix s'il existe une promotion associé au produit -->
-      <p v-else-if="saisiNouveauPrix > 0" class="font-bold text-red-600 text-3xl">{{ saisiNouveauPrix }}€</p>
+    <!-- Vérifie s'il existe une promotion au produit -->
+    <template v-if="nouveauPrix > 0">
+      <!-- Il existe une promotion : on met en gras et on raye l'ancien prix -->
+      <p class="font-bold text-decoration-line-through">{{ produit.prix }}€</p>
+      <!-- On met en gras et en rouge le nouveau prix de la promotion -->
+      <p class="font-bold text-red-600 text-3xl">{{ nouveauPrix }}€</p>
     </template>
-
     <template v-else>
-      <!-- Vérifie s'il existe une promotion au produit -->
-      <template v-if="nouveauPrix > 0">
-        <!-- Il existe une promotion : on met en gras et on raye l'ancien prix -->
-        <p class="font-bold text-decoration-line-through">{{ produit.prix }}€</p>
-        <!-- On met en gras et en rouge le nouveau prix de la promotion -->
-        <p class="font-bold text-red-600 text-3xl">{{ nouveauPrix }}€</p>
-      </template>
-      <template v-else>
-        <!-- Il n'y a pas de promotion associée, on met en gras l'ancien prix-->
-        <p class="font-bold text-2xl ">{{ produit.prix }}€ </p>
-      </template>
+      <!-- Il n'y a pas de promotion associée, on met en gras l'ancien prix-->
+      <p class="font-bold text-2xl ">{{ produit.prix }}€ </p>
     </template>
   </div>
   <br>
@@ -74,9 +52,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as $filters from "../filters/index.js";
 import {onMounted, ref} from "vue";
-import store from "../store/index.js";
-import {accesEspaceAdmin, getPromotionAssocie} from "../store/mutations.js";
-import Service from "../services/index.js";
+import {accesEspaceAdmin, calculNouveauPrix, getPromotionAssocie} from "../store/mutations.js";
 import Promotion from "./Promotion.vue";
 
 const appliquerPromo = ref(false);
@@ -88,16 +64,12 @@ const produit = defineProps({
   categorie: String,
   prix: Number,
   nouveauprix: Number,
-  // Si connexionBack vrai, image est String, sinon c'est ImageData.
-  image: (store.state.connexionBack) ? String: ImageData,
+  image: String,
   pageGrandParent: String,
   idPromotionAssocie: Number
 })
 
-// Si connexionBack vrai, pour chaque produit ajoute les propriétés d'une image en début de chaine de caractère de l'image.
 const imageReconstruit = ref("data:image/jpeg;base64," + produit.image);
-
-const saisiNouveauPrix = ref(0);
 
 const nouveauPrix = ref(0);
 
@@ -117,8 +89,7 @@ function validerPromo() {
  */
 onMounted(() => {
   if (produit.idPromotionAssocie !== null) {
-    console.log(produit.idPromotionAssocie);
-    nouveauPrix.value = getPromotionAssocie(produit.idPromotionAssocie);
+    nouveauPrix.value = calculNouveauPrix(produit.prix, getPromotionAssocie(produit.idPromotionAssocie));
   }
 })
 

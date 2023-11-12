@@ -39,28 +39,7 @@
 
                   Catalogue
                 </router-link>
-                <!--
-                <router-link
-                  :to="{ name: 'creationUtilisateur' }"
-                  class="inline-flex items-center px-3 h-full hover:bg-green-800 hover:text-white text-gray-700"
-                >
-                  Se créer un compte User
-                </router-link>
 
-                <router-link
-                  :to="{ name: 'connexionUtilisateur' }"
-                  class="inline-flex items-center px-3 h-full hover:bg-green-800 hover:text-white text-gray-700"
-                >
-                  Se connecter Utilisateur
-                </router-link>
-
-                <router-link
-                  :to="{ name: 'creationAdmin' }"
-                  class="inline-flex items-center px-3 h-full hover:bg-green-800 hover:text-white text-gray-700"
-                >
-                  Se créer un compte Admin
-                </router-link>
-                -->
                 <!-- v-if vérifie que "etatDeConnexion est faux -->
                 <router-link v-if="!etatConnexion"
                   :to="{ name: 'connexionAdmin' }"
@@ -79,7 +58,7 @@
                 <!-- condition pour vour si "etatDeConnexion est de vrai -->
                 <button v-if="etatConnexion" style="border:none; margin-bottom:5px "
                   class="btn btn-success inline-flex items-center h-full bg-gray-200 px-3 hover:bg-green-800 hover:text-white text-gray-700"
-                        @click="deconnexionAdmin()">Se déconnecter</button>
+                        @click="deconnexionAdmin">Se déconnecter</button>
               </div>
               <!-- End of right-aligned button links -->
 
@@ -97,7 +76,7 @@
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document //
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {ref} from "vue";
-import {deconnexionAdmin, getEtatConnexion} from "../store/mutations.js";
+import {deconnexionAdmin} from "../store/mutations.js";
 
 const etatConnexion = ref(localStorage.getItem('token') !== 'null');
 

@@ -4,7 +4,7 @@
       text-green-900 permet de mettre en vert foncée -->
     <h1 class="text-4xl font-bold text-green-900">Se créer un compte Administrateur</h1>
     <br>
-    <p>Veuillez remplir le formulaire ci-dessous afin de vous créer un compte administrateur les informations comportants un signe * sont obligatoire.</p>
+    <p>Veuillez remplir le formulaire ci-dessous afin de vous créer un compte administrateur, les informations comportants un signe * sont obligatoires.</p>
     <!-- br permet de sauter une ligne -->
     <br> <br>
     <!-- permet de centrer toutes les informations de la page -->
@@ -12,38 +12,40 @@
       <div class="submit-form">
         <div class="form-group">
           <!-- permet de pouvoir sélectionner sa civilité selon les 3 options définies, et le class de design, et le v-model permet de choisir celui de sélection -->
-          <select v-model="civilite" class="border-gray-200 rounded border-2 focus:border-green-800 mb-4 w-25">
-            <option disabled value=""> Choisissez votre civilité </option>
-            <option>Madame</option>
-            <option>Monsieur</option>
-            <option>Autre</option>
-          </select>
+
           <!-- rounded border-2 permet d'arrondir légérement les angles, bg-white de mettre le fond en blanc
              border-gray-200 de griser la bordure de base du carré
              focus:border-green-800 de rendre le bordure verte quand le carré est sélectionné
              mb-4 de créer des marges autour de la barre et w-full de générer la barre sur toute la longueur de la fenêtre-->
           <!-- placeholder permet d'écrire dans la barre ce que l'utilisateur devra remplir -->
+          <datepicker
+            style=""
+            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 "
+            v-model="administrateurInscription.dateNaissance"
+            input-format="dd/MM/yyyy *"
+          />
         </div>
         <br>
-        <div class="form-group">
+        <select v-model="civilite" class="border-gray-200 rounded border-2 focus:border-green-800 mb-4 w-25">
+          <option disabled value=""> Choisissez votre civilité </option>
+          <option>Madame</option>
+          <option>Monsieur</option>
+          <option>Autre</option>
+        </select>
           <input
             type="text"
             v-model="administrateurInscription.nom"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 "
+            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20 "
             placeholder="Nom *"
           />
+        <br>
           <input
             type="text"
             v-model="administrateurInscription.prenom"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
+            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
             placeholder="Prénom *"
           />
-          <br>
-          <datepicker style=""
-                      class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
-                      v-model="administrateurInscription.dateNaissance"
-                      inputFormat="dd/MM/yyyy"
-          />
+
           <input
             type="text"
             v-model="administrateurInscription.adresseMail"
@@ -63,19 +65,11 @@
             class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-3 w-25 ml-20"
             placeholder="Mot de passe *"
           />
-        </div>
+
         <br>
 
       </div>
-        <!--
-          <br>
-          <input
-          type="text"
-          v-model="keyword"
-          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-          placeholder="Numéro identifiant admin *"
-          />
-        -->
+
       <div class="p-2 text-center">
         <br>
         <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
@@ -148,8 +142,6 @@ function inscrireAdministrateur() {
     return
   Service.serviceInscrireAdministrateur(administrateurInscription.value)
     .then(response => {
-      console.log(response.data);
-      console.log("Création administrateur terminée !");
       alert("Création administrateur terminée !");
     })
     .catch(e => {

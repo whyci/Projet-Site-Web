@@ -1,40 +1,71 @@
 import axiosInstance from '../axiosClient';
 
-class Index {
+/**
+ * Expose les fonctions d'intéractions avec la base de donnée.
+ */
+export default {
+  /**
+   * Demande le catalogue des produits au back.
+   * @returns AxiosResponse
+   */
   serviceDemanderCatalogue() {
     return axiosInstance.get("/catalogue/complet");
-  }
+  },
 
+  /**
+   * Demande toutes les promotions au back.
+   * @returns AxiosResponse
+   */
   serviceDemanderPromotions() {
     return axiosInstance.get("/promotion/complet");
-  }
+  },
 
-  serviceAjouterProduitImage(formulaireDonneeImage, libelle, categorie, desccription, prix) {
-    console.log("formulaire : "+formulaireDonneeImage+", image : "+formulaireDonneeImage.get("image"));
+  /**
+   * Ajoute un produit contenant son image. Première partie d'ajout d'un produit.
+   * @returns AxiosResponse
+   */
+  serviceAjouterProduitImage(formulaireDonneeImage) {
     return axiosInstance.post("/produit/ajouter/image", formulaireDonneeImage);
-  }
+  },
 
+  /**
+   * Ajoute les paramètres d'un produit (libellé, prix, etc.). Deuxième partie d'ajout d'un produit.
+   * @returns AxiosResponse
+   */
   serviceAjouterProduitParametres(produit, idProduit) {
-    console.log("Envoie des paramètres avec id : " + idProduit);
     return axiosInstance.post("/produit/ajouter/produit/"+idProduit, produit);
-  }
+  },
 
+  /**
+   * Ajoute une promotion dans la base de donnée. Identifie le produit associé à la promotion en envoyant son identifiant.
+   * @returns AxiosResponse
+   */
   serviceAjouterPromotion(promotion, idProduit) {
     return axiosInstance.post("/promotion/admin/ajouter/"+idProduit, promotion);
-  }
+  },
 
+  /**
+   * Inscription d'un administrateur, en l'ajoutant dans la base de donnée.
+   * @returns AxiosResponse
+   */
   serviceInscrireAdministrateur(administrateur) {
     return axiosInstance.post("/administrateur/inscrire", administrateur);
-  }
+  },
 
+  /**
+   * Connexion d'un administrateur en vérifiant son adresse mail et mdp pour ensuite générer un token en cas de bonne
+   * connexion.
+   * @returns AxiosResponse
+   */
   serviceConnecterAdministrateur(adresseMail, motDePasse) {
-    console.log(adresseMail, motDePasse);
     return axiosInstance.get("/administrateur/connecter/"+adresseMail+"/"+motDePasse);
-  }
+  },
 
+  /**
+   * Accès à l'espace admin en vérifiant l'authenticité du token envoyé dans l'entête de la requête.
+   * @returns AxiosResponse
+   */
   serviceAccesEspaceAdmin() {
     return axiosInstance.get("/administrateur/acces");
   }
 }
-
-export default new Index();

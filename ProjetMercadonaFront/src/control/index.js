@@ -32,7 +32,6 @@ export function validerMailCreationAdmin(mail) {
 
   // On regarde chaque caractère contenu dans l'adresse mail
   for (let lettre in mail) {
-    //console.log(mail[lettre]);
 
     // Le caractère est avant l'arobase
     if (cptArobase === 0) {
@@ -181,9 +180,10 @@ export function validerMotDePasse(mdp) {
     // Le caractère est un nombre, on valide la condition correspondante si elle ne l'était pas déjà
     if (Number.isInteger(number)) {
       if (!conditionChiffre) conditionChiffre = true;
-    } else {
-      // Le caractère n'est pas un nombre
-      //console.log("Not number : " + mdp[caractere]);
+    }
+    // Le caractère n'est pas un nombre
+    else {
+
 
       // Vérifie si le caractère est une lettre en majuscule, et valide la condition correspondante si elle ne l'était pas
       if (mdp[caractere] >= 'A' && mdp[caractere] <= 'Z') {
@@ -195,15 +195,11 @@ export function validerMotDePasse(mdp) {
       }
       // On déduit que le caractère est un caractère spécial, on valide la condition correspondante si elle ne l'était pas
       else if (!conditionCaractereSpecial) {
-        //console.log("Spe : " + mdp[caractere]);
         conditionCaractereSpecial = true;
       }
     }
   }
 
-  //console.log(mdp.length);
-  //console.log("chiffre : " + conditionChiffre + " maj " + conditionLettreMajuscule + " min " + conditionLettreMinuscule
-  // + " spe " + conditionCaractereSpecial);
   // Si toutes les conditions sont respectées, on valide le mdp
   return conditionChiffre && conditionLettreMajuscule && conditionLettreMinuscule && conditionCaractereSpecial &&
     mdp.length >= 8;
@@ -231,7 +227,6 @@ export function validerNumeroTelephone(numeroTel) {
     if (Number.isInteger(Number.parseInt(numeroTel[caractere]))) {
       // Le caractère est un chiffre, on incrément le compteur du nombre de chiffre pour valider les 9 chiffres min.
       cptNbChiffres ++;
-      console.log("chiffre : " + numeroTel[caractere]);
     } else {
       // Si le caractère n'est pas un chiffre, on vérifie qu'il ne s'agit pas d'un espace ou bien qu'un '+' en
       // première position. Sinon, on considère que le numéro est invalide et l'on renvoie faux.

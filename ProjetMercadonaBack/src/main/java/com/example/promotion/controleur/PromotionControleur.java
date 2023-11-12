@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controleur de Promotion qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilités principales : Renvoyer toutes les promotions, ainsi que l'ajout de promotions.
+ */
 @Controller
 @RequestMapping("/promotion")
-@CrossOrigin
 public class PromotionControleur {
 
     /**

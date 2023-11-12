@@ -2,6 +2,9 @@ package com.example.promotion.modele;
 
 import java.util.Date;
 
+/**
+ * Crée une promotion qui est utilisée pour les tests des contrôleurs.
+ */
 public class CreationPromotion {
 
     /**

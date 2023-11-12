@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controleur de Administrateur qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilités principales : Assure l'inscription et la connexion des administrateurs, ainsi que la vérification de
+ * token pour l'accès aux ressources de l'espace admin.
+ */
 @Controller
 @RequestMapping("/administrateur")
-@CrossOrigin(origins = "*")
 public class AdministrateurControleur {
 
     /**
@@ -62,8 +66,7 @@ public class AdministrateurControleur {
         // Vérifie si un administrateur a été trouvé dans la base de donnée avec les bons identifiants.
         if (!administrateur.isEmpty()) {
             // Connexion valide
-            System.out.println("Admin found !");
-            reponseAdministrateur = new ReponseAdministrateur(jwtTokenService.generateToken(administrateur.get(0)));
+            reponseAdministrateur = new ReponseAdministrateur(jwtTokenService.genererToken(administrateur.get(0)));
         } else {
             // Connexion invalide
             System.out.println("Admin not found !");
@@ -101,7 +104,7 @@ public class AdministrateurControleur {
         if (!authorizationHeader.startsWith("Bearer ")) { return ResponseEntity.ok("KO"); }
 
         // Vérifie la validité du token
-        return ResponseEntity.ok(jwtTokenService.validatingToken(authorizationHeader.substring(7)));
+        return ResponseEntity.ok(jwtTokenService.validerToken(authorizationHeader.substring(7)));
     }
 
 

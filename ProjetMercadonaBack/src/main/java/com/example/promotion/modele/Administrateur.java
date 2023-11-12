@@ -16,6 +16,8 @@ public class Administrateur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String civilite;
+
     private String nom;
 
     private String prenom;
@@ -35,6 +37,10 @@ public class Administrateur {
     private void setId(Long id) {
         this.id = id;
     }
+
+    public String getCivilite() { return civilite;}
+
+    public void setCivilite(String civilite) {this.civilite = civilite;}
 
     public String getNom() {
         return nom;

@@ -2,9 +2,11 @@ package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
-/* la classe produit definis la table qui sera dans la base de données
-   les attributs prives correspondent aux elements de la table produit
-   les fonctions seront appeles par le repertoire de la classe et sont public */
+/**
+ * la classe produit definis la table qui sera dans la base de données
+ * les attributs prives correspondent aux elements de la table produit
+ * les fonctions seront appeles par le repertoire de la classe et sont public
+ */
 @Entity
 @Table(name = "produit")
 public class Produit {
@@ -41,10 +43,6 @@ public class Produit {
         this.promotionIdCle = promotionIdCle;
     }
 
-    /**
-     * Getter : Récupère l'identifiant du produit.
-     * @return Identifiant du produit.
-     */
     public Long getId() {
         return id;
     }

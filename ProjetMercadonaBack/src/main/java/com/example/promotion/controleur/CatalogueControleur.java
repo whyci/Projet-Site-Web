@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static java.lang.Integer.parseInt;
-
+/**
+ * Controleur du catalogue qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilité principale et unique : Transmettre tous les produits au front.
+ */
 @Controller
 @RequestMapping("/catalogue")
-@CrossOrigin(origins = "*")
 public class CatalogueControleur {
 
     /**

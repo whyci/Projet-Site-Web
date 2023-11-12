@@ -40,6 +40,9 @@ public class TestProduitControleur {
     });
     private final MultipartFile fichierImageVide = new MockMultipartFile("Image vide", new byte[]{});
 
+    /**
+     * Instance du mock de ProduitService pour intercepter les appels de fonctions.
+     */
     @Mock
     private ProduitService produitService;
 
@@ -50,10 +53,13 @@ public class TestProduitControleur {
     @Resource
     private ProduitControleur produitControleur;
 
+    /**
+     * Préparation des tests et étapes exécutés systématiquement avant chaque fonction de test.
+     */
     @BeforeEach
     public void prepTestProduitControleur() throws IOException {
         // Initialise le mock de produitService
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     /**

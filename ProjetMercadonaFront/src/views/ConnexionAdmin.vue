@@ -28,21 +28,25 @@
           />
 
           <br>
-          <input
-            type="text"
-            v-model="administrateurDemandeConnexion.motDePasse"
-            class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
-            placeholder="Mot de passe *"
-          />
+          <template v-if="!afficherMdp">
+            <input
+              type="password"
+              v-model="administrateurDemandeConnexion.motDePasse"
+              class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
+              placeholder="Mot de passe *"
+            />
+          </template>
+          <template v-else>
+            <input
+              type="text"
+              v-model="administrateurDemandeConnexion.motDePasse"
+              class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
+              placeholder="Mot de passe *"
+            />
+          </template>
           <br>
-          <!--
-          <input
-            type="text"
-            v-model="keyword"
-            class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 mb-4 w-50"
-            placeholder="Numéro identifiant admin *"
-          />
-      -->
+          <button class="button" @click="afficherMdp = !afficherMdp">Voir mdp</button>
+          <br><br>
         </div>
         <div class="text-center p-2">
           <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
@@ -91,33 +95,31 @@ const administrateurDemandeConnexion = ref({
   motDePasse: ""
 });
 
+const afficherMdp = ref(false);
+
 function connecterAdministrateur() {
   if ( (administrateurDemandeConnexion.value.adresseMail === "")
     || ( administrateurDemandeConnexion.value.motDePasse === "") ) {
-    console.log("Not full");
     return;
   }
 
   Service.serviceConnecterAdministrateur(administrateurDemandeConnexion.value.adresseMail, administrateurDemandeConnexion.value.motDePasse)
     .then(response => {
-      console.log(response.data);
 
       // On reçoit KO, soit un echec de connexion.
       if (response.data.token === "KO") {
-        console.log("Echec connexion ...");
+        console.log("Echec de connexion");
 
-        // Connexion réussie/acceptée
-      } else {
-        console.log("Connexion acceptée !");
+
+      }
+      // Connexion réussie/acceptée
+      else {
 
         // Sauvegarde le token dans la variable dans le store et le local storage.
         localStorage.setItem("token", response.data.token);
-        console.log("Token enregistré : " + localStorage.getItem("token"));
         // Popup de connexion acceptée
         alert("Connexion acceptée !");
-
         location.reload();
-        router.push("/espace-admin").then(r => {});
       }
     })
     .catch(e => {

@@ -8,12 +8,9 @@ import store from "./index.js";
  * Si le token est valide, retourne true, sinon retourne faux.
  */
 export function accesEspaceAdmin() {
-  if (!store.state.connexionBack) {return;}
 
   // Vérifie si l'existence d'un token dans le stockage local
-  console.log("Acces : "+localStorage.getItem("token"));
   if (localStorage.getItem("token") === "null") {
-    console.log("Accès Espace Admin - Aucun token enregistré");
     router.push("/connexion-admin").then(r => {});
     return;
   }
@@ -22,7 +19,7 @@ export function accesEspaceAdmin() {
   Service.serviceAccesEspaceAdmin()
     .then(response => {
       // Si connexion accepté
-      if (response.data === "OK") { console.log("Acces Admin OK"); return; }
+      if (response.data === "OK") return;
 
       // Sinon, on désenregitre le token et on redirige sur la page de connexion
       deconnexionAdmin();
@@ -34,14 +31,13 @@ export function accesEspaceAdmin() {
     })
 }
 
+/**
+ * Déconnexion d'un administrateur, qui consiste à supprimer le token enregistré et redirigé vers la page de connexion.
+ */
 export function deconnexionAdmin() {
   localStorage.setItem("token", null);
   location.reload();
   router.push("/connexion-admin").then(r => {});
-}
-
-export function getEtatConnexion() {
-  return localStorage.getItem("token") !== "null";
 }
 
 /**
@@ -56,4 +52,17 @@ export function getPromotionAssocie(idPromotion) {
       return JSON.parse(JSON.stringify(listePromotions[indexPromotion])).pourcentageRemise;
     }
   }
+}
+
+/**
+ * Calcul du nouveau prix :
+ * 1. On le divise par 100 pour avoir un nombre entre 0.99 et 0.01
+ * 2. On le soustrait à 1 pour l'inverser "symétriquement par 0.5"
+ * 3. On le multiplie par l'ancien prix pour avoir le nouveau prix
+ * 4. On le parse en float de 2 chiffres après la virgule pour avoir un prix qui se limite à des centimes : X€XX
+ */
+export function calculNouveauPrix(ancienPrix, pourcentageRemise) {
+  return parseFloat( ( ancienPrix * ( 1 - (pourcentageRemise / 100) ) )
+    .toFixed(2)
+  );
 }

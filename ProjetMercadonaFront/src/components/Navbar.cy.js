@@ -7,7 +7,6 @@ import EspaceAdministrateur from "../views/EspaceAdministrateur.vue";
 
 describe('<Navbar />', () => {
   it('Renvoie la page Navbar', () => {
-    // see: https://on.cypress.io/mounting-vue
     cy.mount(Navbar)
   })
 })

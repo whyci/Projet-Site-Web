@@ -3,7 +3,10 @@ package com.example.promotion.reponse;
 import com.example.promotion.modele.Produit;
 import java.util.List;
 
-/* permet de définir les données comme immutable afin qu'elles ne puissent pas etre changées
-   ces donnees seront renvoyées en réponse à la requete */
+/** SUPPRESSION !!!
+ * Permet de définir les données comme immutable afin qu'elles ne puissent pas etre changées
+ * ces donnees seront renvoyées en réponse de la requete.
+ * @param produits Liste de produits que l'on
+ */
 public record ReponseProduits(List<Produit> produits) {
 }

@@ -85,101 +85,50 @@ const produitsEnPromotions = ref([]);
 // Liste des différentes promotions
 const promotions = ref([]);
 
-const resultatRechercheCategorie = ref([]);
-
 /**
  * On remplie la listePromotions des produits en promotion. On utilise des paramètres différents pour récupérer
  * les produits en promotions en fonction de la connexion avec le back.
  */
 function creationListePromotion() {
+  // Récupère la liste des produits dans l'objet JSON du catalogue.
+  let listeDesProduits = JSON.parse(JSON.stringify(catalogue.value));
 
-  // Si connexion avec le back
-  if (store.state.connexionBack) {
-    // Récupère la liste des produits dans l'objet JSON du catalogue.
-    let listeDesProduits = JSON.parse(JSON.stringify(catalogue.value));
-
-    // On parcourt la liste catalogue. length récupère la taille de la liste (nombre d'éléments=produits dans la liste).
-    for (let indexProduit = 0; indexProduit < listeDesProduits.length; indexProduit ++) {
-      // Si le produit courant possède un nouveau prix, on ajoute ce produit dans la liste des promotions.
-      if (listeDesProduits[indexProduit].promotionIdCle > 0) {
-        // On ajoute le produit dans la liste des promotions.
-        produitsEnPromotions.value.push(listeDesProduits[indexProduit]);
-      }
+  // On parcourt la liste catalogue. length récupère la taille de la liste (nombre d'éléments=produits dans la liste).
+  for (let indexProduit = 0; indexProduit < listeDesProduits.length; indexProduit ++) {
+    // Si le produit courant possède un nouveau prix, on ajoute ce produit dans la liste des promotions.
+    if (listeDesProduits[indexProduit].promotionIdCle > 0) {
+      // On ajoute le produit dans la liste des promotions.
+      produitsEnPromotions.value.push(listeDesProduits[indexProduit]);
     }
-    store.state.catalogueEnPromotions = produitsEnPromotions.value;
-
-  // Si pas de connexion avec le back
-  } else {
-    // On parcourt la liste catalogue. length récupère la taille de la liste (nombre d'éléments=produits dans la liste).
-    for (let indexProduit = 0; indexProduit < catalogue._rawValue.length; indexProduit ++) {
-      // Si le produit courant possède un nouveau prix, on ajoute ce produit dans la liste des promotions.
-      if (catalogue._rawValue[indexProduit].nouveauprix > 0) {
-        // On ajoute le produit dans la liste des promotions.
-        produitsEnPromotions.value.push(catalogue._rawValue[indexProduit]);
-      }
-    }
-
   }
-  console.log("Liste promotions : " + produitsEnPromotions.value);
+  store.state.catalogueEnPromotions = produitsEnPromotions.value;
 }
 
 function recupererCatalogue() {
-  // Si connexion avec le back; récupère le catalogue et les promotions provenant du back. Sinon, il stocke en dur les
-  // valeurs dans le code.
-  if (store.state.connexionBack) {
-    // Demande le catalague au back
-    Service.serviceDemanderCatalogue()
-      .then(response => {
-        console.log("Catalogue :");
-        console.log(response.data);
-        // Enregistrement du catalogue dans la variable du composant et dans le store.
-        catalogue.value = response.data;
-        store.state.catalogue = response.data;
+  // Demande le catalague au back
+  Service.serviceDemanderCatalogue()
+    .then(response => {
+      // Enregistrement du catalogue dans la variable du composant et dans le store.
+      catalogue.value = response.data;
+      store.state.catalogue = response.data;
 
-        // On crée la liste de promotion
-        creationListePromotion();
+      // On crée la liste de promotion
+      creationListePromotion();
+    })
+    .catch(e => {
+      console.log(e);
+    });
+
+  // Demande des promotions
+  if (store.state.promotions.length === 0) {
+    Service.serviceDemanderPromotions()
+      .then(response => {
+        promotions.value = response.data;
+        store.state.promotions = response.data;
       })
       .catch(e => {
         console.log(e);
       });
-
-    // Demande des promotions
-    if (store.state.promotions.length === 0) {
-      Service.serviceDemanderPromotions()
-        .then(response => {
-          console.log("Promotions:");
-          console.log(response.data);
-          promotions.value = response.data;
-          store.state.promotions = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
-
-    // Cas de non connexion avec le back.
-  } else {
-    // Stocke en dur le catalogue.
-    catalogue.value = [
-      {id: 1, libelle: "Artichaut", categorie: "Alimentaire", prix: 6, nouveauprix: 0, description: "légume de saison", image: "./src/assets/Banque_images/artichaut.jpg"},
-      {id: 2, libelle: "Dentifrice", categorie: "Hygiène", prix: 4, nouveauprix: 2, description: "Hygiène bucco dentaire", image: "./src/assets/Banque_images/dentifrice.jpg"},
-      {id: 3, libelle: "Pains aux fruits secs", categorie: "Alimentaire", prix: 6, description: "Pains idéal pour l'apéro", nouveauprix: 4, image: "./src/assets/Banque_images/pains aux fruits secs.jpg"},
-      {id: 4, libelle: "Serviettes", categorie: "Hygiène", prix: 14, nouveauprix: 0, description: "Linges de maison", image: "./src/assets/Banque_images/Serviettes.jpg"},
-      {id: 5, libelle: "Teléphone", categorie: "Electronique", prix: 999, nouveauprix:0, description: "8 Giga RAM, 128 GO", image: "./src/assets/Banque_images/Tell.jpg"},
-      {id: 6, libelle: "Peinture", categorie: "Loisirs", prix: 35, nouveauprix: 30, description: "Loisirs créatif", image: "./src/assets/Banque_images/Peinture.jpg"},
-      {id: 7, libelle: "Savon", categorie: "Hygiène", prix: 6, nouveauprix: 0, description: "Hygiène corporel", image: "./src/assets/Banque_images/savon.jpg"},
-      {id: 8, libelle: "Ecran", categorie: "Electronique", prix: 600, nouveauprix: 500, description: "Ecran 12 pouces", image: "./src/assets/Banque_images/ecran.jpg"},
-      {id: 9, libelle: "Jeux de carte", categorie: "Loisirs", prix: 8,nouveauprix: 0, description: "Jeux de société", image: "./src/assets/Banque_images/jeux de carte.jpg"},
-      {id: 10, libelle: "Citrouille", categorie: "Mobilier", prix: 10, nouveauprix: 8, description: "légume de saison", image: "./src/assets/Banque_images/citrouille.jpg"},
-      {id: 11, libelle: "CD", categorie: "Musique", prix: 25, nouveauprix: 15, description: "Musique pop, rock, métal", image: "./src/assets/Banque_images/cd.jpg"},
-      {id: 12, libelle: "Café", categorie: "Alimentaire", prix: 6, nouveauprix: 0, description: "Café goût intense", image: "./src/assets/Banque_images/café.jpg"}
-    ];
-
-    // Vérifier si l'on est appelé par la page Accueil
-    if (produits.pageParent === "Accueil") {
-      // On crée la liste de promotion
-      creationListePromotion();
-    }
   }
 }
 
@@ -189,6 +138,7 @@ onMounted(async () => {
     recupererCatalogue();
   } else {
     catalogue.value = store.state.catalogue;
+    creationListePromotion();
   }
 });
 

@@ -3,11 +3,13 @@ import DefaultLayout from '../components/DefaultLayout.vue';
 import Accueil from '../views/Accueil.vue'
 import Catalogue from '../views/Catalogue.vue'
 import EspaceAdministrateur from '../views/EspaceAdministrateur.vue'
-import ConnexionUtilisateur from "../views/ConnexionUtilisateur.vue"
 import ConnexionAdmin from "../views/ConnexionAdmin.vue";
 import CreationAdmin from "../views/CreationAdmin.vue";
-import CreationUtilisateur from "../views/CreationUtilisateur.vue";
 
+/**
+ * Défini toutes les routes URL que l'application aura accès.
+ * @type {[{path: string, component: {}, children: [{path: string, component: {}, name: string},{path: string, component: {}, name: string},{path: string, component: {}, name: string},{path: string, component: {}, name: string},{path: string, component: {}, name: string}]}]}
+ */
 const routes = [
   {
     path: '/',
@@ -24,23 +26,10 @@ const routes = [
         component: Catalogue,
       },
       {
-        path: "/connexion-utilisateur",
-        name: "connexionUtilisateur",
-        component: ConnexionUtilisateur,
-        props : name ,
-      },
-      {
         path: "/espace-admin",
         name: "espaceAdmin",
         component: EspaceAdministrateur,
       },
-
-      {
-        path: "/creation-utilisateur",
-        name: "creationUtilisateur",
-        component: CreationUtilisateur,
-      },
-
       {
         path: "/connexion-admin",
         name: "connexionAdmin",
@@ -56,6 +45,10 @@ const routes = [
   }
 ];
 
+/**
+ * Crée le router qui permet de changer de page
+ * @type {Router}
+ */
 const router = createRouter({
   history: createWebHistory(),
   routes,

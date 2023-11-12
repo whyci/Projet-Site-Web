@@ -5,7 +5,7 @@
       <!-- permet de creer des espaces permettant d'écrire le nouveau prix, et de gérer le style de l'input-->
       <input
         type="text"
-        @change="calculNouveauPrix"
+        @change="nouveauPrix = calculNouveauPrix(produit.ancienPrix, pourcentageRemise)"
         v-model="pourcentageRemise"
         class="rounded border-2 bg-white border-gray-200 focus:bg-green-800 focus:border-green-800 "
         placeholder="De 1 à 99"
@@ -36,7 +36,7 @@
 import {ref} from "vue";
 import Service from "../services/index.js";
 import Datepicker from 'vue3-datepicker';
-import {accesEspaceAdmin} from "../store/mutations.js";
+import {accesEspaceAdmin, calculNouveauPrix} from "../store/mutations.js";
 
 const produit = defineProps({
   idProduit: Number,
@@ -54,7 +54,6 @@ function signalerFinPromotion() {
 
 const nouveauPrix = ref();
 const pourcentageRemise = ref();
-
 const dateDebut = ref(new Date());
 const dateFin = ref(new Date());
 
@@ -65,19 +64,6 @@ const dateFin = ref(new Date());
  */
 function validationPourcentageRemise() {
   return (pourcentageRemise.value > 0) && (pourcentageRemise.value < 100);
-}
-
-/**
- * Calcul du nouveau prix :
- * 1. On le divise par 100 pour avoir un nombre entre 0.99 et 0.01
- * 2. On le soustrait à 1 pour l'inverser "symétriquement par 0.5"
- * 3. On le multiplie par l'ancien prix pour avoir le nouveau prix
- * 4. On le parse en float de 2 chiffres après la virgule pour avoir un prix qui se limite à des centimes : X€XX
- */
-function calculNouveauPrix() {
-  nouveauPrix.value = parseFloat( ( produit.ancienPrix * ( 1 - (pourcentageRemise.value / 100) ) )
-    .toFixed(2)
-  );
 }
 
 /**
@@ -104,13 +90,10 @@ function applicationPromotion() {
 
   // Envoi de la demande d'ajout à la base de donnée.
   Service.serviceAjouterPromotion(donneePromotion.value, produit.idProduit)
-    .then(response => {
-      console.log(response.data);
-      console.log("Promotion début: " + donneePromotion.value.debut + ", fin: " + donneePromotion.value.fin + ", remise de: " +
-        donneePromotion.value.pourcentage_remise + "% !");
-
+    .then(() => {
       // Si la promotion est finie, on averti le composant parent ProduitElement par un emit.
       signalerFinPromotion();
+      location.reload();
     })
     .catch(e => {
       console.log("Erreur détectée : ajout d'une promotion.");

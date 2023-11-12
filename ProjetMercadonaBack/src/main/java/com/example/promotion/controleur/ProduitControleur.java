@@ -9,11 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import java.io.IOException;
 
+/**
+ * Controleur de Produit qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilité principale : Ajout de produits. Se fait en deux étapes, l'ajout de l'image, puis des autres informations.
+ */
 @Controller
 @RequestMapping("/produit")
-@CrossOrigin(origins = "*")
 public class ProduitControleur {
 
     /**
@@ -38,7 +42,8 @@ public class ProduitControleur {
      * @throws IOException Exception relatif à form-data.
      */
     @PostMapping("/ajouter/image")
-    public ResponseEntity<ReponseString> ajouterProduitImage(@RequestPart("image") MultipartFile fichierImage) throws IOException {
+    public ResponseEntity<ReponseString> ajouterProduitImage(@RequestPart("image") MultipartFile fichierImage)
+            throws IOException {
 
         Produit produit = new Produit();
         // Ajotuer une condition qui traite d'une eventuelle absence d'image. Si le nom du fichier s'appelle [quelque chose] on utilise
@@ -61,7 +66,6 @@ public class ProduitControleur {
     @PostMapping("/ajouter/produit/{id}")
     public ResponseEntity<ReponseString> ajouterProduitParametres(@RequestBody Produit produit,
                                                                   @PathVariable("id") Long id) {
-        System.out.println("Produit paramètres : "+produit.getLibelle());
         produitService.enregistrerProduitParametres(produit, id);
         String message = "Ajout Produit OK";
         return ResponseEntity.ok(new ReponseString(message));

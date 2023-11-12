@@ -1,5 +1,8 @@
 package com.example.promotion.modele;
 
+/**
+ * Crée un produit qui est utilisé pour les tests des contrôleurs.
+ */
 public class CreationProduit {
 
     /**
