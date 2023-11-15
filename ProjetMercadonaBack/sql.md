@@ -1,7 +1,7 @@
 
 # Base de donnée promotion
 
-### Creation des tables 
+### Creation des tables
 
 ```sql
 Administrateur, Produit, Promotion : 
@@ -29,7 +29,7 @@ CREATE TABLE promotion (
 );  
 ```
 
-### Insertion des valeurs 
+### Insertion des valeurs
 
 Administrateur
 ```sql
@@ -78,4 +78,27 @@ INSERT INTO promotion (debut, fin, pourcentage_remise) VALUES ('2023-09-01', '20
 INSERT INTO promotion (debut, fin, pourcentage_remise) VALUES ('2022-01-01', '2025-01-01', 15);
 INSERT INTO promotion (debut, fin, pourcentage_remise) VALUES ('2023-08-01', '2023-08-31', 75);
 INSERT INTO promotion (debut, fin, pourcentage_remise) VALUES ('2023-05-01', '2023-11-01', 30);
+```
+
+CodeAdministrateur
+```sql
+INSERT INTO code_administrateur (code) VALUES ('Ceci est un coooooode');
+INSERT INTO code_administrateur (code) VALUES ('Noooooooope');
+INSERT INTO code_administrateur (code) VALUES ('vybisufognvufsdhbjk');
+INSERT INTO code_administrateur (code) VALUES ('v16b4984bb98ez4bw8b');
+```
+
+### Suppression des contenus des tables
+```sql
+TRUNCATE TABLE promotion, produit, administrateur, code_administrateur
+```
+
+### Suppression des tables
+```sql
+drop table promotion, produit, administrateur, code_administrateur
+```
+
+### Suppression de la base de donnée
+```sql
+drop database [database]
 ```

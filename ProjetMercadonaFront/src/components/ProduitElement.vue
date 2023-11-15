@@ -71,7 +71,7 @@ const produit = defineProps({
   nouveauprix: Number,
   image: String,
   pageGrandParent: String,
-  idPromotionAssocie: Number
+  idPromotionAssocie: Object || null
 })
 
 const imageReconstruit = ref("data:image/jpeg;base64," + produit.image);
@@ -94,7 +94,7 @@ function validerPromo() {
  */
 onMounted(() => {
   if (produit.idPromotionAssocie !== null) {
-    nouveauPrix.value = calculNouveauPrix(produit.prix, getPromotionAssocie(produit.idPromotionAssocie));
+    nouveauPrix.value = calculNouveauPrix(produit.prix, getPromotionAssocie(produit.idPromotionAssocie.id));
   }
 })
 

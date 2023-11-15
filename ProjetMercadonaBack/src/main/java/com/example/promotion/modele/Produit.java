@@ -9,8 +9,8 @@ import jakarta.persistence.*;
 
 /**
  * la classe produit definis la table qui sera dans la base de données
- * les attributs prives correspondent aux elements de la table produit
- * les fonctions seront appeles par le repertoire de la classe et sont public
+ * les attributs prives correspondent aux elements de la table produit.
+ * Les fonctions seront appeles par le repertoire de la classe et sont publiques.
  */
 @Entity
 @Table(name = "produit")
@@ -27,7 +27,9 @@ public class Produit {
 
     private Float prix;
 
-    private Long promotionIdCle;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "promotion_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "promotion_fkey"))
+    private Promotion promotion;
 
     @Column(name = "image", columnDefinition = "bytea")
     private byte[] image;
@@ -40,12 +42,12 @@ public class Produit {
         this.image = image;
     }
 
-    public Long getPromotionIdCle() {
-        return promotionIdCle;
+    public Promotion getPromotionIdCle() {
+        return promotion;
     }
 
-    public void setPromotionIdCle(Long promotionIdCle) {
-        this.promotionIdCle = promotionIdCle;
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
     public Long getId() {

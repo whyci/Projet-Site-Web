@@ -6,15 +6,19 @@ All rights reserved.
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Administrateur;
+import com.example.promotion.modele.CodeAdmin;
 import com.example.promotion.reponse.ReponseAdministrateur;
 import com.example.promotion.reponse.ReponseString;
 import com.example.promotion.service.AdministrateurService;
+import com.example.promotion.service.CodeAdminService;
 import com.example.promotion.service.JwtTokenService;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +37,11 @@ public class AdministrateurControleur {
     private final AdministrateurService administrateurService;
 
     /**
+     * Instance de CodeAdminService, interface d'accès à la base de donnée concernant les codeAdmin.
+     */
+    private final CodeAdminService codeAdminService;
+
+    /**
      * Instance de JwtTokenService, pour la gestion de token.
      */
     private final JwtTokenService jwtTokenService;
@@ -44,9 +53,12 @@ public class AdministrateurControleur {
      * @param jwtTokenService Service de JwToken.
      */
     @Autowired
-    public AdministrateurControleur(AdministrateurService administrateurService, JwtTokenService jwtTokenService) {
+    public AdministrateurControleur(AdministrateurService administrateurService,
+                                    JwtTokenService jwtTokenService,
+                                    CodeAdminService codeAdminService) {
         this.administrateurService = administrateurService;
         this.jwtTokenService = jwtTokenService;
+        this.codeAdminService = codeAdminService;
     }
 
     /**
@@ -81,17 +93,48 @@ public class AdministrateurControleur {
     }
 
     /**
-     * Inscription d'un administrateur et enregistrement dans la base de donnée. Il est possible ici d'ajouter un code
-     * administrateur à condition de modifier la base de donnée. Il servira à vérifier que l'inscription est valable.
+     * Inscription d'un administrateur et enregistrement dans la base de donnée. Un code est aussi donné en paramètre
+     * pour assurer le droit de création d'un administrateur. Une vérification du codeAdmin est faite avant d'ajouter
+     * l'administrateur et de l'associer au codeAdmin donné.
+     * Amélioration possible : vérifier si un administrateur existe déjà avec ces identifiants.
      * @param administrateur Informations concernants l'administrateur.
+     * @param code Code admin utilisé pour la création de l'administrateur.
      * @return Réponse relative à la réussite de l'inscription.
      */
-    @PostMapping("/inscrire")
-    public ResponseEntity<ReponseString> inscrireAdministrateur(@RequestBody Administrateur administrateur) {
+    @PostMapping("/inscrire/{code}")
+    public ResponseEntity<ReponseString> inscrireAdministrateur(@RequestBody Administrateur administrateur,
+                                                                @PathVariable("code") String code) {
+
+        // S'il n'y a pas de code dans la requête, on retourne KO_code_vide
+        if (Objects.equals(code, "")) {
+            return ResponseEntity.ok(new ReponseString("KO_code_vide"));
+        }
+
+        // Récupère le codeAdmin donné
+        List<CodeAdmin> listeCodeAdmin = codeAdminService.verifierDisponibitilite(code);
+
+        // S'il n'existe pas, retourne : KO_code_incorrect
+        if (listeCodeAdmin.isEmpty()) {
+            return ResponseEntity.ok(new ReponseString("KO_code_incorrect"));
+        }
+
+        // Sinon, récupère le (seul) code admin dans la liste
+        CodeAdmin codeAdmin = listeCodeAdmin.get(0);
+
+        // Vérifie s'il est libre
+        if (codeAdmin.getAdministrateur() != null) {
+            // Pas libre, retourne : KO_dispo_code
+            return ResponseEntity.ok(new ReponseString("KO_dispo_code"));
+        }
+
+        // Tout est ok, on inscrit l'administrateur
         administrateurService.inscrireAdministrateur(administrateur);
-        String message = "Création administrateur : " + administrateur.getPrenom() + " " + administrateur.getNom() + " terminé avec mail : " +
-                administrateur.getAdresseMail() + ", mdp : " + administrateur.getMotDePasse() + " !";
-        return ResponseEntity.ok(new ReponseString(message));
+
+        // Associe l'administrateur au code
+        codeAdminService.associationAdmin(codeAdmin.getId(), administrateur);
+
+        // Création terminé, on retourne OK
+        return ResponseEntity.ok(new ReponseString("OK"));
     }
 
     /**

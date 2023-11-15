@@ -53,8 +53,8 @@ export default {
    * Inscription d'un administrateur, en l'ajoutant dans la base de donnée.
    * @returns AxiosResponse
    */
-  serviceInscrireAdministrateur(administrateur) {
-    return axiosInstance.post("/administrateur/inscrire", administrateur);
+  serviceInscrireAdministrateur(administrateur, code) {
+    return axiosInstance.post("/administrateur/inscrire/"+code, administrateur);
   },
 
   /**

@@ -31,20 +31,18 @@ import store from "../store/index.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Produits from "../components/Produits.vue";
 
-// Appelé au démarrage du composant Accueil.vue
-onMounted(async () => {
-});
+
 
 </script>
 
 <style>
 
 .footer-bg {
-  background-image: url('/nat.png'); /* Adjust the path accordingly */
+  background-image: url('/nat.png');
   background-position: center;
   background-repeat: repeat;
-  min-height:80px; /* Adjust this height as needed */
-  min-width:1400px; /* Adjust this height as needed */
+  min-height:80px;
+  min-width:1400px;
   margin-left: 0;
 }
 </style>

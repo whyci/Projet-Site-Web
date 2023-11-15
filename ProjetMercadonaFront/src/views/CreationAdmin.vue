@@ -31,48 +31,65 @@ All rights reserved.
           />
         </div>
         <br>
-        <select v-model="civilite" class="border-gray-200 rounded border-2 focus:border-green-800 mb-4 w-25">
+        <select v-model="administrateurInscription.civilite" class="border-gray-200 rounded border-2 focus:border-green-800 mb-4 w-25">
           <option disabled value=""> Choisissez votre civilité </option>
           <option>Madame</option>
           <option>Monsieur</option>
           <option>Autre</option>
         </select>
-          <input
-            type="text"
-            v-model="administrateurInscription.nom"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20 "
-            placeholder="Nom *"
-          />
+        <input
+          type="text"
+          v-model="administrateurInscription.nom"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20 "
+          placeholder="Nom *"
+        />
         <br>
-          <input
-            type="text"
-            v-model="administrateurInscription.prenom"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-            placeholder="Prénom *"
-          />
+        <input
+          type="text"
+          v-model="administrateurInscription.prenom"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          placeholder="Prénom *"
+        />
 
+        <input
+          type="text"
+          v-model="administrateurInscription.adresseMail"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
+          placeholder="Adresse mail *"
+        />
+        <br>
+        <input
+          type="text"
+          v-model="administrateurInscription.numeroTelephone"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          placeholder="Téléphone *"
+        />
+        <input
+          type="text"
+          v-model="codeAdmin"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-3 w-25 ml-20"
+          placeholder="Code admin *"
+        />
+        <br>
+        <template v-if="!afficherMdp">
           <input
-            type="text"
-            v-model="administrateurInscription.adresseMail"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25 ml-20"
-            placeholder="Adresse mail *"
+            type="password"
+            v-model="administrateurInscription.motDePasse"
+            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-3 w-25 ml-20"
+            placeholder="Mot de passe *"
           />
-          <br>
-          <input
-            type="text"
-            v-model="administrateurInscription.numeroTelephone"
-            class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
-            placeholder="Téléphone *"
-          />
+        </template>
+        <template v-else>
           <input
             type="text"
             v-model="administrateurInscription.motDePasse"
             class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-3 w-25 ml-20"
             placeholder="Mot de passe *"
           />
-
+        </template>
         <br>
-
+        <button class="button" @click="afficherMdp = !afficherMdp">Voir mdp</button>
+        <br><br>
       </div>
 
       <div class="p-2 text-center">
@@ -112,6 +129,7 @@ All rights reserved.
 import {onMounted, ref} from "vue";
 import Service from "../services/index.js";
 import Datepicker from 'vue3-datepicker';
+import router from "../router/index.js";
 
 import {
   validerDateNaissance,
@@ -121,9 +139,8 @@ import {
   validerNumeroTelephone
 } from "../control/index.js";
 
-const civilite = ref();
-
 const administrateurInscription = ref({
+  civilite: "",
   adresseMail: "",
   dateNaissance: new Date(),
   motDePasse: "",
@@ -132,22 +149,41 @@ const administrateurInscription = ref({
   prenom: ""
 });
 
+const afficherMdp = ref(false);
+
+const codeAdmin = ref("");
+
 onMounted(async () => {
   administrateurInscription.value.dateNaissance.setFullYear(new Date().getFullYear() - 18);
 });
 
+/**
+ * Vérification de la validité des champs remplis.
+ * @return {boolean} vrai si tous les champs sont correctement remplis, sinon faux.
+ */
 function verificationChampsObligatoires() {
   return validerNom(administrateurInscription.value.nom) && validerNom(administrateurInscription.value.prenom) &&
     validerDateNaissance(administrateurInscription.value.dateNaissance) && validerMailCreationAdmin(administrateurInscription.value.adresseMail) &&
-    validerNumeroTelephone(administrateurInscription.value.numeroTelephone) && validerMotDePasse(administrateurInscription.value.motDePasse);
+    validerNumeroTelephone(administrateurInscription.value.numeroTelephone) && validerMotDePasse(administrateurInscription.value.motDePasse) &&
+    codeAdmin.value !== "";
 }
 
+/**
+ * Inscription de l'administrateur en validant les champs et envoyant une requête au back.
+ */
 function inscrireAdministrateur() {
   if (!verificationChampsObligatoires())
     return
-  Service.serviceInscrireAdministrateur(administrateurInscription.value)
+  Service.serviceInscrireAdministrateur(administrateurInscription.value, codeAdmin.value)
     .then(response => {
-      alert("Création administrateur terminée !");
+      if (response.data.message === "OK") {
+        router.push("/connexion-admin");
+        alert("Création administrateur terminée !");
+      } else if (response.data.message === "KO_code_incorrect") {
+        alert("Code admin erroné.");
+      } else if (response.data.message === "KO_dispo_code") {
+        alert("Code admin déjà pris.");
+      }
     })
     .catch(e => {
       console.log("Erreur détectée à la création d'un administrateur, malheureusement ...");

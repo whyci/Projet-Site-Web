@@ -80,10 +80,10 @@ All rights reserved.
 <script setup>
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document //
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {deconnexionAdmin} from "../store/mutations.js";
 
-const etatConnexion = ref(localStorage.getItem('token') !== 'null');
+const etatConnexion = ref();
 
 const props = defineProps({
   action: {
@@ -113,14 +113,19 @@ const props = defineProps({
     default: false
   }
 });
+
+// Appelé au démarrage du composant Accueil.vue
+onMounted(async () => {
+  etatConnexion.value = localStorage.getItem('token') !== 'null';
+});
 </script>
 
 <style scoped>
 /* CSS for the background image */
 .header-bg{
-  background-image: url('/nat.png'); /* Adjust the path accordingly */
+  background-image: url('/nat.png');
   background-position: center;
   background-repeat: repeat;
-  min-height:300px; /* Adjust this height as needed */
+  min-height:300px;
 }
 </style>

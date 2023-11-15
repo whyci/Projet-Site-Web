@@ -135,8 +135,8 @@ public class TestPromotionControleur {
 
             // Identifiant du produit associé
             assertEquals("[Echec -> Test Promotion Controleur] id produit associé",
-                    expListePromotion.get(indexPromotion).getProduitIdCle(),
-                    resReponseListePromotion.getBody().get(indexPromotion).getProduitIdCle());
+                    expListePromotion.get(indexPromotion).getProduit(),
+                    resReponseListePromotion.getBody().get(indexPromotion).getProduit());
 
             // Comparaison identifiant avec produit inexistant
             assertNotEquals("[Echec -> Test Promotion Controleur] identifiant promotion inexistant",
@@ -171,8 +171,8 @@ public class TestPromotionControleur {
 
             // Identifiant du produit associé
             assertEquals("[Echec -> Test Promotion Controleur] id produit associé",
-                    expListePromotion.get(indexPromotion).getProduitIdCle(),
-                    resReponseListePromotion.getBody().get(indexPromotion).getProduitIdCle());
+                    expListePromotion.get(indexPromotion).getProduit(),
+                    resReponseListePromotion.getBody().get(indexPromotion).getProduit());
 
             // Comparaison identifiant avec produit inexistant
             assertNotEquals("[Echec -> Test Promotion Controleur] identifiant promotion inexistant",

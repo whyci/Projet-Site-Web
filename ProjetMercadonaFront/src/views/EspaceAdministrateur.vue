@@ -155,7 +155,7 @@ function enregistrerImage(event) {
  */
 function ajoutProduitValide() {
   return ( (ajoutProduit.value.libelle !== "") && (ajoutProduit.value.categorie !== "") &&
-    (ajoutProduit.value.prix > 0) && (ajoutProduit.value <= 1000000) && (ajoutProduit.value.description !== ""));
+    (ajoutProduit.value.prix > 0) && (ajoutProduit.value.prix <= 1000000) && (ajoutProduit.value.description !== ""));
 }
 
 /**
@@ -163,6 +163,7 @@ function ajoutProduitValide() {
  * les champs sont bien remplis, et d'envoyer l'image à la base de donnée.
  */
 function ajouterProduit() {
+  console.log("Ajout produit");
   accesEspaceAdmin();
   if ( !ajoutProduitValide() || !ajoutProduitImage.value ) {
     return;

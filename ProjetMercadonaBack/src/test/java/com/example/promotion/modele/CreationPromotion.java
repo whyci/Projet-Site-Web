@@ -28,7 +28,9 @@ public class CreationPromotion {
         promotion.setDebut(debut);
         promotion.setFin(fin);
         promotion.setPourcentageRemise(pourcentageRemise);
-        promotion.setProduitIdCle(idProduit);
+        Produit produit = new Produit();
+        produit.setId(idProduit);
+        promotion.setProduit(produit);
 
         return promotion;
     }

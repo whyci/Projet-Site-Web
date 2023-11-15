@@ -101,7 +101,7 @@ function creationListePromotion() {
   // On parcourt la liste catalogue. length récupère la taille de la liste (nombre d'éléments=produits dans la liste).
   for (let indexProduit = 0; indexProduit < listeDesProduits.length; indexProduit ++) {
     // Si le produit courant possède un nouveau prix, on ajoute ce produit dans la liste des promotions.
-    if (listeDesProduits[indexProduit].promotionIdCle > 0) {
+    if (listeDesProduits[indexProduit].promotionIdCle !== null) {
       // On ajoute le produit dans la liste des promotions.
       produitsEnPromotions.value.push(listeDesProduits[indexProduit]);
     }

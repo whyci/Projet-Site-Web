@@ -6,8 +6,11 @@ All rights reserved.
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Administrateur;
+import com.example.promotion.modele.CodeAdmin;
 import com.example.promotion.reponse.ReponseAdministrateur;
+import com.example.promotion.reponse.ReponseString;
 import com.example.promotion.service.AdministrateurService;
+import com.example.promotion.service.CodeAdminService;
 import com.example.promotion.service.JwtTokenService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +71,12 @@ public class TestAdministrateurControleur {
     private JwtTokenService jwtTokenService;
 
     /**
+     * Instance du mock de CodeAdminService pour intercepter les appels de fonctions.
+     */
+    @Mock
+    private CodeAdminService codeAdminService;
+
+    /**
      * Instance de AdministrateurControleur, objet que l'on teste.
      */
     @InjectMocks
@@ -84,28 +93,166 @@ public class TestAdministrateurControleur {
         MockitoAnnotations.openMocks(this);
 
         // Instance d'objet à tester
-        administrateurControleur = new AdministrateurControleur(administrateurService, jwtTokenService);
+        administrateurControleur = new AdministrateurControleur(administrateurService, jwtTokenService, codeAdminService);
     }
 
     /**
-     * Test d'inscription d'un administrateur.
+     * Test d'inscription d'un administrateur en cas de réussite.
      */
     @Test
-    public void testInscriptionAdmin() {
+    public void testInscriptionAdminOK() {
 
         /* - - - - Données de test - - - - */
+        // Résultat attendu
+        String expOK = "OK";
+
+        // Code admin que l'on donne pour l'inscription
+        String codeAdmin = "154895154861489";
+
+        // Objet CodeAdmin que l'on donne par le mock
+        CodeAdmin expCodeAdmin = new CodeAdmin();
+        expCodeAdmin.setCode(codeAdmin);
 
         // Admin que l'on veut inscrire et que l'on s'attend à transmettre au service (Exp pour expected)
-        final Administrateur adminInscriptionExp = creationDTAdmin();
+        final Administrateur adminInscription = creationDTAdmin();
+
+        // Liste renvoyée par verifierDisponibilite de codeAdminService
+        final List<CodeAdmin> listeCodeAdmin = new ArrayList<>();
+        listeCodeAdmin.add(expCodeAdmin);
+
+        /* - - - - Comportement du mock - - - - */
+
+        // Remplacement du résultat de afficherPromotions en retournant la liste des promotions attendue
+        when(codeAdminService.verifierDisponibitilite(codeAdmin))
+                .thenReturn(listeCodeAdmin);
 
         /* - - - - Exécution des tests - - - - - */
 
-        administrateurControleur.inscrireAdministrateur(adminInscriptionExp);
+        ResponseEntity<ReponseString> resInscriptionAdminOK =
+                administrateurControleur.inscrireAdministrateur(adminInscription, codeAdmin);
+
+        // Assert réponse
+        assertEquals("[Echec -> Test Administrateur Controleur] inscription ok",
+                expOK,
+                Objects.requireNonNull(resInscriptionAdminOK.getBody()).message());
 
         /* - - - - Assertions des résultats de tests - - - - */
 
+        // Vérifie que la fonction verifierDisponibitilite du mock a bien été appelée avec le code admin donné
+        verify(codeAdminService).verifierDisponibitilite(codeAdmin);
+
+        // Vérifie que la fonction verifierDisponibitilite du mock a bien été appelée avec le code admin donné
+        verify(codeAdminService).associationAdmin(expCodeAdmin.getId(), adminInscription);
+
         // Vérifie que la fonction inscrireAdministrateur du mock a bien été appelée avec l'administrateur donné
-        verify(administrateurService).inscrireAdministrateur(adminInscriptionExp);
+        verify(administrateurService).inscrireAdministrateur(adminInscription);
+    }
+
+    /**
+     * Test d'inscription d'un administrateur en cas d'erreur de problème.
+     */
+    @Test
+    public void testInscriptionAdminKO() {
+
+        /* - - - - Données de test - - - - */
+
+        // Code admin que l'on donne pour l'inscription
+        String codeAdmin = "15489515486148946486";
+
+        // Objet CodeAdmin que l'on donne par le mock
+        CodeAdmin expCodeAdmin = new CodeAdmin();
+        expCodeAdmin.setCode(codeAdmin);
+
+        // Identifiant du code admin que l'on modifie dans la base de donnée
+        Long expIdCodeAdmin = 14L;
+
+        // Admin que l'on veut inscrire et que l'on s'attend à transmettre au service (Exp pour expected)
+        final Administrateur adminInscription = creationDTAdmin();
+
+        // Liste renvoyée par verifierDisponibilite de codeAdminService
+        final List<CodeAdmin> listeCodeAdmin = new ArrayList<>();
+        listeCodeAdmin.add(expCodeAdmin);
+
+        /* - - - - Données de test : données qui provoque les erreurs - - - - */
+
+        // Aucun code reçu dans la requête
+        String expErreurCodeVide = "KO_code_vide";
+        // Code n'est pas trouvé dans la base de donnée
+        String expErreurCodeIncorrect = "KO_code_incorrect";
+        // Code n'est pas trouvé dans la base de donnée
+        String expErreurDispoCode = "KO_dispo_code";
+
+        // Liste vide car codeAdmin incorrect donc aucun retour de la base de donnée
+        final List<CodeAdmin> listeCodeAdminVide = new ArrayList<>();
+
+        // CodeAdmin non disponible qui est trouvé avec l'administrateur déjà associé
+        CodeAdmin codeAdminNonDispo = new CodeAdmin();
+        codeAdminNonDispo.setCode(codeAdmin);
+        Administrateur adminDejaAssocie = new Administrateur();
+        adminDejaAssocie.setNom("AutreNom");
+        adminDejaAssocie.setNom("AutrePrenom");
+        codeAdminNonDispo.setAdministrateur(adminDejaAssocie);
+
+        // Liste contenant le codeAdmin non dispo
+        final List<CodeAdmin> listeCodeAdminNonDispo = new ArrayList<>();
+        listeCodeAdminNonDispo.add(codeAdminNonDispo);
+
+        /* - - - - Code vide - - - - */
+
+        // Exécution
+        ResponseEntity<ReponseString> resCodeVide =
+                administrateurControleur.inscrireAdministrateur(adminInscription, "");
+
+        // Assert réponse
+        assertEquals("[Echec -> Test Administrateur Controleur] inscription code vide",
+                expErreurCodeVide,
+                Objects.requireNonNull(resCodeVide.getBody()).message());
+
+        // Vérification pas d'appel aux services
+        verify(codeAdminService, never()).verifierDisponibitilite(anyString());
+        verify(administrateurService, never()).inscrireAdministrateur(any(Administrateur.class));
+        verify(codeAdminService, never()).associationAdmin(anyLong(), any(Administrateur.class));
+
+        /* - - - - Code incorrect - - - - */
+
+        // Mock : remplacement du résultat de afficherPromotions en retournant la liste des promotions attendue
+        when(codeAdminService.verifierDisponibitilite(codeAdmin))
+                .thenReturn(listeCodeAdminVide);
+
+        // Exécution
+        ResponseEntity<ReponseString> resCodeIncorrect =
+                administrateurControleur.inscrireAdministrateur(adminInscription, codeAdmin);
+
+        // Assert réponse
+        assertEquals("[Echec -> Test Administrateur Controleur] inscription code incorrect",
+                expErreurCodeIncorrect,
+                Objects.requireNonNull(resCodeIncorrect.getBody()).message());
+
+        // Vérification pas d'appel aux services
+        verify(codeAdminService, times(1)).verifierDisponibitilite(codeAdmin);
+        verify(administrateurService, never()).inscrireAdministrateur(any(Administrateur.class));
+        verify(codeAdminService, never()).associationAdmin(anyLong(), any(Administrateur.class));
+
+        /* - - - - Code non disponible - - - - */
+
+        // Mock : remplacement du résultat de afficherPromotions en retournant la liste des promotions attendue
+        when(codeAdminService.verifierDisponibitilite(codeAdmin))
+                .thenReturn(listeCodeAdminNonDispo);
+
+        // Exécution
+        ResponseEntity<ReponseString> resCodeNonDispo =
+                administrateurControleur.inscrireAdministrateur(adminInscription, codeAdmin);
+
+        // Assert réponse
+        assertEquals("[Echec -> Test Administrateur Controleur] inscription code non disponible",
+                expErreurDispoCode,
+                Objects.requireNonNull(resCodeNonDispo.getBody()).message());
+
+        // Vérification pas d'appel aux services
+        // 2 fois pour verifierDisponibitilite car les erreurs code incorrect et non disponible l'appelent
+        verify(codeAdminService, times(2)).verifierDisponibitilite(codeAdmin);
+        verify(administrateurService, never()).inscrireAdministrateur(any(Administrateur.class));
+        verify(codeAdminService, never()).associationAdmin(anyLong(), any(Administrateur.class));
     }
 
     /**

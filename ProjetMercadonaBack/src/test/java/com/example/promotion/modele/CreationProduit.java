@@ -31,7 +31,9 @@ public class CreationProduit {
         produit.setCategorie(categorie);
         produit.setDescription(description);
         produit.setImage(image);
-        produit.setPromotionIdCle(promotionIdCle);
+        Promotion promotion = new Promotion();
+        promotion.setId(promotionIdCle);
+        produit.setPromotion(promotion);
 
         return produit;
     }

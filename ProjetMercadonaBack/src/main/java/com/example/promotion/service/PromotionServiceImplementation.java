@@ -36,7 +36,7 @@ public class PromotionServiceImplementation implements PromotionService {
             // Récupère le produit à changer.
             Produit produitAChanger = produitRepertoire.findById(Math.toIntExact(id)).get();
             // Associe la promotion au produit choisi.
-            produitAChanger.setPromotionIdCle(promotion.getId());
+            produitAChanger.setPromotion(promotion);
             // Enregistre le changement dans la base de donnée.
             produitRepertoire.save(produitAChanger);
         }
