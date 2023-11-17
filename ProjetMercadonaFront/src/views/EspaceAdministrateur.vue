@@ -9,12 +9,68 @@ All rights reserved.
       text-green-900 permet de mettre en vert foncée -->
     <h1 class="text-4xl font-bold text-green-900">Espace administrateur</h1>
     <br>
+    <div class="text-center">
+    <div class="form-group">
+      <p className="text-test">Veuillez remplir les champs ci-dessous pour créer un code administrateur :</p>
+      <br>
+      <template v-if="!voirCodes">
+        <input
+          type="password"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeAdmin"
+          required_
+          v-model="ajoutCodeAdmin.code"
+          name="codeAdmin"
+          placeholder="Ecrire le code administrateur*"
+        />
+        <br>
+        <input
+          type="password"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeMaster"
+          required_
+          v-model="ajoutCodeAdmin.codeMaster"
+          name="codeMaster"
+          placeholder="Ecrire le code master *"
+        />
+      </template>
+      <template v-else>
+        <input
+          type="text"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeAdmin"
+          required_
+          v-model="ajoutCodeAdmin.code"
+          name="codeAdmin"
+          placeholder="Ecrire le code administrateur*"
+        />
+        <br>
+        <input
+          type="text"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeMaster"
+          required_
+          v-model="ajoutCodeAdmin.codeMaster"
+          name="codeMaster"
+          placeholder="Ecrire le code master *"
+        />
+      </template>
+      <br>
+      <button class="button" @click="voirCodes = !voirCodes">Voir les codes</button>
+    </div>
     <div>
-      <p className="text-test">Veuillez remplir le formulaire ci-dessous pour créer un produit.</p>
+      <br>
+      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+              class="btn btn-success" @click="ajouterCodeAdmin">Ajouter le code administrateur</button>
+      <br><br>
+    </div>
+    </div>
     <br>
-  </div>
+
   <div class="text-center">
     <div class="form-group">
+      <br>
+      <p className="text-test">Veuillez remplir le formulaire ci-dessous pour créer un produit :</p>
       <br>
       <input
         type="text"
@@ -81,6 +137,7 @@ All rights reserved.
       <br><br>
     </div>
     <br>
+
   </div>
     <!-- permet d'importer le fichier produits et d'afficher les données -->
     <Produits :page-parent="'EspaceAdministrateur'" :resultat-recherche-categorie="null"/>
@@ -99,6 +156,7 @@ import EspaceAdministrateur from "./EspaceAdministrateur.vue";
 import Service from "../services/index.js";
 import store from "../store/index.js";
 import {accesEspaceAdmin} from "../store/mutations.js";
+import {MASTER_CODE} from "../main.js";
 
 const idProduitPromotionString = ref("");
 const idProduitPromotionInt = ref(0);
@@ -116,6 +174,14 @@ const ajoutProduit = ref({
   prix: ref()
 });
 
+// CodeAdmin que l'on souhaite ajouter
+const ajoutCodeAdmin = ref({
+  code: ref(),
+  codeMaster: ref()
+})
+
+const voirCodes = ref(false);
+
 // Image du produit que l'on souhaite ajouter
 const ajoutProduitImage = ref(null);
 // Aperçu de l'image que l'on affiche quand l'utilisateur choisi une image.
@@ -128,6 +194,27 @@ onMounted(() => {
   // Vérifie l'accès aux ressources de l'espace admin.
   accesEspaceAdmin();
 })
+
+/**
+ * Ajoute un codeAdmin dans la base de donnée.
+ */
+function ajouterCodeAdmin() {
+  if (!ajouterCodeAdminValide())
+    return;
+
+  // Ajout d'un codeAdmin dans la base de donnée
+  Service.serviceAjouterCodeAdmin(ajoutCodeAdmin.value.code)
+    .then(response => {
+      if (response.data.message === "OK") {
+        alert("Ajout du code administrateur est terminé !");
+        location.reload();
+      }
+    })
+    .catch(e => {
+      console.log("Erreur détectée, malheureusement ...");
+      console.log(e);
+    })
+}
 
 /**
  * Etape d'encodage de l'image pour pouvoir la stocker dans la base de donnée.

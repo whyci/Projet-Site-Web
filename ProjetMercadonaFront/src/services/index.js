@@ -72,5 +72,13 @@ export default {
    */
   serviceAccesEspaceAdmin() {
     return axiosInstance.get("/administrateur/acces");
+  },
+
+  /**
+   * Ajoute un code administrateur dans la base de donnée.
+   * @returns AxiosResponse
+   */
+  serviceAjouterCodeAdmin(codeAdmin) {
+    return axiosInstance.post("/codeadmin/ajouter/"+codeAdmin);
   }
 }

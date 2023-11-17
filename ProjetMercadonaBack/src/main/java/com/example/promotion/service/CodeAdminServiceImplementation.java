@@ -42,4 +42,11 @@ public class CodeAdminServiceImplementation implements CodeAdminService {
             codeAdminRepertoire.save(codeAdmin);
         }
     }
+
+    @Override
+    public void ajoutCodeAdmin(String code) {
+        CodeAdmin codeAdmin = new CodeAdmin();
+        codeAdmin.setCode(code);
+        codeAdminRepertoire.save(codeAdmin);
+    }
 }

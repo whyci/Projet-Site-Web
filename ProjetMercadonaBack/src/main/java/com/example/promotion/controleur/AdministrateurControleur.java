@@ -51,6 +51,7 @@ public class AdministrateurControleur {
      * instancier les services mockés.
      * @param administrateurService Service de adminitrateur.
      * @param jwtTokenService Service de JwToken.
+     * @param codeAdminService Service de CodeAdmin.
      */
     @Autowired
     public AdministrateurControleur(AdministrateurService administrateurService,
@@ -100,6 +101,10 @@ public class AdministrateurControleur {
      * @param administrateur Informations concernants l'administrateur.
      * @param code Code admin utilisé pour la création de l'administrateur.
      * @return Réponse relative à la réussite de l'inscription.
+     * - Erreur pour aucun code reçu dans la requête : KO_code_vide
+     * - Erreur pour un code qui n'existe pas dans la base de donnée : KO_code_incorrect
+     * - Erreur pour un code qui n'est pas disponible (déjà associé à un administrateur) : KO_dispo_code
+     * - Réussite : OK
      */
     @PostMapping("/inscrire/{code}")
     public ResponseEntity<ReponseString> inscrireAdministrateur(@RequestBody Administrateur administrateur,
