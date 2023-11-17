@@ -77,7 +77,7 @@ public class AdministrateurControleur {
             return ResponseEntity.ok(new ReponseAdministrateur("KO"));
 
         // Récupère le résultat de la recherche dans la base de donnée des identifiants donnés.
-        List<Administrateur> administrateur = administrateurService.connecterAdministrateur(adresseMail.toLowerCase(), motDePasse);
+        List<Administrateur> administrateur = administrateurService.connecterAdministrateur(adresseMail, motDePasse);
 
         ReponseAdministrateur reponseAdministrateur;
 
