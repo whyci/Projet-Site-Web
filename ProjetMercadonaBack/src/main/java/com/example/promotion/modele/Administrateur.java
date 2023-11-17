@@ -1,7 +1,19 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
+/**
+ * la classe administrateur definis la table qui sera dans la base de données
+ * les attributs prives correspondent aux elements de la table administrateur.
+ * Les fonctions seront appeles par le repertoire de la classe et sont publiques.
+ */
 @Entity
 @Table(name = "administrateur")
 public class Administrateur {
@@ -9,11 +21,13 @@ public class Administrateur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String civilite;
+
     private String nom;
 
     private String prenom;
 
-    private Integer age;
+    private Date dateNaissance;
 
     private String adresseMail;
 
@@ -21,13 +35,17 @@ public class Administrateur {
 
     private String numeroTelephone;
 
-    private Long getId() {
+    public Long getId() {
         return id;
     }
 
     private void setId(Long id) {
         this.id = id;
     }
+
+    public String getCivilite() { return civilite;}
+
+    public void setCivilite(String civilite) {this.civilite = civilite;}
 
     public String getNom() {
         return nom;
@@ -45,12 +63,12 @@ public class Administrateur {
         this.prenom = prenom;
     }
 
-    public Integer getAge() {
-        return age;
+    public Date getDateNaissance() {
+        return dateNaissance;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
     }
 
     public String getAdresseMail() {

@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
+
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Promotion;
@@ -10,13 +16,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controleur de Promotion qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilités principales : Renvoyer toutes les promotions, ainsi que l'ajout de promotions.
+ */
 @Controller
 @RequestMapping("/promotion")
-@CrossOrigin
 public class PromotionControleur {
-    @Autowired
-    private PromotionService promotionService;
 
+    /**
+     * Instance de PromotionService, interface d'accès à la base de donnée concernant les promotions.
+     */
+    private final PromotionService promotionService;
+
+    /**
+     * Constructeur de la classe pour initialiser les instances de services qu'il utilise. Nécessaire pour les tests,
+     * instancier les services mockés.
+     * @param promotionService Service de promotion.
+     */
+    @Autowired
+    public PromotionControleur(PromotionService promotionService) {
+        this.promotionService = promotionService;
+    }
+
+    /**
+     * Récupération de toutes les promotions pour les transmettre au front.
+     * @return Entité de réponse qui comporte la liste des promotions.
+     */
     @GetMapping("/complet")
     public ResponseEntity<List<Promotion>> recupererPromotions() {
         // Récupère la liste des promotions contenu dans la base de donnée.
@@ -27,32 +53,18 @@ public class PromotionControleur {
     }
 
     /**
-     * Ajoute une promotion a un produit.
+     * Ajoute une promotion a un produit identifié par un id.
      * @param promotion que l'on souhaite ajouter.
-     * @param id du produit associé à la promotion.
+     * @param idProduit du produit associé à la promotion.
      * @return Chaine de caractère qui atteste de la requête concernée.
      */
     @PostMapping("/admin/ajouter/{id}")
     public ResponseEntity<ReponseString> ajouterPromotion(@RequestBody Promotion promotion,
-                                                          @PathVariable("id") Long id) {
-        promotionService.ajouterPromotion(promotion, id);
+                                                          @PathVariable("id") Long idProduit) {
+        promotionService.ajouterPromotion(promotion, idProduit);
 
-        String message = "Nouvelle promotion ajoutée du produit : "+id.toString()+", avec une remise de : "
+        String message = "Nouvelle promotion ajoutée du produit : "+idProduit.toString()+", avec une remise de : "
                 +promotion.getPourcentageRemise()+"%";
         return ResponseEntity.ok(new ReponseString(message));
     }
-
-    /**
-     * Supprime une promotion.
-     * @param id de la promotion que l'on souhaite supprimer.
-     * @return Chaine de caractère qui atteste de la requête concernée.
-     */
-    @PostMapping("/admin/supprimer/{id}")
-    public ResponseEntity<ReponseString> supprimerPromotion(@PathVariable("id") Long id) {
-        promotionService.supprimerPromotion(id);
-
-        String message = "Promotion supprimée à l'id : "+id;
-        return ResponseEntity.ok(new ReponseString(message));
-    }
-
 }

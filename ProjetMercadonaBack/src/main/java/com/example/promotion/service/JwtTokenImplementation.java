@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.service;
 
 import io.jsonwebtoken.*;
@@ -12,6 +17,9 @@ import com.example.promotion.modele.Administrateur;
 
 import javax.crypto.SecretKey;
 
+/**
+ * Implémentation des fonctions de JwtTokenService.
+ */
 @Service
 public class JwtTokenImplementation implements JwtTokenService {
 
@@ -28,30 +36,19 @@ public class JwtTokenImplementation implements JwtTokenService {
     private static final int TEMPS_EXPIRATION_TOKEN = 3600000;
 
     @Override
-    public String generateToken(Administrateur administrateur) {
+    public String genererToken(Administrateur administrateur) {
 
         // Crée le token par la fonciton builder de la librairie Jwts.
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(administrateur.getAdresseMail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date( System.currentTimeMillis() + TEMPS_EXPIRATION_TOKEN ))
                 .signWith(CLE_SECRETE, SignatureAlgorithm.HS256)
                 .compact();
-
-        System.out.println("Token généré : " + token);
-
-        return token;
     }
 
-    /**
-     * Vérifie la validité du token renseigné
-     * @param token Token que l'on souhaite vérifier.
-     * @return Valeur booléenne correspondant à la validité du token. True = token valide, false = token invalide.
-     */
     @Override
-    public boolean validatingToken(String token) {
-
-        System.out.println("Token reçu en validation : "+token);
+    public String validerToken(String token) {
 
         // Lancement du décodage du token pour vérifier sa validité. Les exceptions sont levées avec un message d'erreur
         // correspondant.
@@ -60,7 +57,7 @@ public class JwtTokenImplementation implements JwtTokenService {
                     .setSigningKey(CLE_SECRETE)
                     .build()
                     .parseClaimsJws(token);
-            return true;
+            return "OK";
         } catch (SignatureException e) {
             System.out.println("Signature token invalide. " + e);
         } catch (MalformedJwtException e) {
@@ -72,7 +69,7 @@ public class JwtTokenImplementation implements JwtTokenService {
         } catch (IllegalArgumentException e) {
             System.out.println("Token illégal argument. " + e);
         }
-        return false;
+        return "KO";
     }
 }
 

@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Produit;
@@ -9,16 +14,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import java.io.IOException;
-import java.util.List;
 
+/**
+ * Controleur de Produit qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilité principale : Ajout de produits. Se fait en deux étapes, l'ajout de l'image, puis des autres informations.
+ */
 @Controller
 @RequestMapping("/produit")
-@CrossOrigin(origins = "*")
 public class ProduitControleur {
 
+    /**
+     * Instance de ProduitService, interface d'accès à la base de donnée concernant les produits.
+     */
+    private final ProduitService produitService;
+
+    /**
+     * Constructeur de la classe pour initialiser les instances de services qu'il utilise. Nécessaire pour les tests,
+     * instancier les services mockés.
+     * @param produitService Service de produit.
+     */
     @Autowired
-    private ProduitService produitService;
+    public ProduitControleur(ProduitService produitService) {
+        this.produitService = produitService;
+    }
 
     /**
      * Création d'un produit - Etape 1: Ajout d'un produit dans la base de donnée avec une image.
@@ -27,16 +47,18 @@ public class ProduitControleur {
      * @throws IOException Exception relatif à form-data.
      */
     @PostMapping("/ajouter/image")
-    public ResponseEntity<ReponseString> ajouterProduitImage(@RequestPart("image") MultipartFile fichierImage) throws IOException {
-        System.out.println("Image:"+fichierImage.getOriginalFilename());
+    public ResponseEntity<ReponseString> ajouterProduitImage(@RequestPart("image") MultipartFile fichierImage)
+            throws IOException {
+
         Produit produit = new Produit();
         // Ajotuer une condition qui traite d'une eventuelle absence d'image. Si le nom du fichier s'appelle [quelque chose] on utilise
         // l'image par défaut qui est stocké dans ce projet. On crée quand même le produit et renvoie l'id du produit.
         produit.setImage(fichierImage.getBytes());
         Long idProduit = produitService.enregistrerProduitImage(produit);
 
-        String message = "Création produit - étape 1 : Image "+fichierImage.getOriginalFilename()+ " enregistré !" +
-                " Passage de l'id produit ="+idProduit;
+        // Le message renvoyé au front comprend un '=' avant l'id du produit, il est nécessaire pour récupérer
+        // correctement l'id du produit dans le front
+        String message = "="+idProduit;
         return ResponseEntity.ok(new ReponseString(message));
     }
 
@@ -49,17 +71,9 @@ public class ProduitControleur {
     @PostMapping("/ajouter/produit/{id}")
     public ResponseEntity<ReponseString> ajouterProduitParametres(@RequestBody Produit produit,
                                                                   @PathVariable("id") Long id) {
-        System.out.println("Produit paramètres : "+produit.getLibelle());
         produitService.enregistrerProduitParametres(produit, id);
-        String message = "Création produit - étape 1 : Produit "+produit.getLibelle()+" enregistré !";
+        String message = "Ajout Produit OK";
         return ResponseEntity.ok(new ReponseString(message));
     }
-
-    @DeleteMapping("/supprimer/{id}")
-    public String supprimerProduit(@PathVariable("id") Long id) {
-        produitService.supprimerProduit(id);
-        return "Suppression produit avec id : " + id.toString();
-    }
-
 }
 

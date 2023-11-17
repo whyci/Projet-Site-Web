@@ -1,5 +1,9 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
-
   <div class="p-10 ">
     <!-- text-4xl permet d'agrandir le texte et font-bold de le mettre en gras;
    text-green-900 permet de mettre le texte en vert foncée -->
@@ -9,7 +13,7 @@
     <br><br>
     <div>
       <!-- permet d'importer le fichier produits et d'afficher les données -->
-      <Produits :page-parent="'Accueil'" :resultat-recherche-categorie="null"/>
+      <produits :page-parent="'Accueil'" :resultat-recherche-categorie="null"/>
     </div>
   </div>
   <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
@@ -27,20 +31,18 @@ import store from "../store/index.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Produits from "../components/Produits.vue";
 
-// Appelé au démarrage du composant Accueil.vue
-onMounted(async () => {
-});
+
 
 </script>
 
 <style>
 
 .footer-bg {
-  background-image: url('/nat.png'); /* Adjust the path accordingly */
+  background-image: url('/nat.png');
   background-position: center;
   background-repeat: repeat;
-  min-height:80px; /* Adjust this height as needed */
-  min-width:1400px; /* Adjust this height as needed */
+  min-height:80px;
+  min-width:1400px;
   margin-left: 0;
 }
 </style>

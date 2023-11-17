@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.service;
 
 import com.example.promotion.modele.Produit;
@@ -6,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Implémentation des fonctions de CatalogueService.
+ */
 @Service
 public class CatalogueServiceImplementation implements CatalogueService {
 
@@ -17,15 +24,5 @@ public class CatalogueServiceImplementation implements CatalogueService {
     @Override
     public List<Produit> afficherCatalogueComplet() {
         return produitRepertoire.findAll();
-    }
-
-    @Override
-    public Optional<Produit> afficherCatalogueFiltre(Long id) {
-        return produitRepertoire.findById(Math.toIntExact(id));
-    }
-
-    @Override
-    public List<Produit> afficherCatalogueFiltreCategorie(String categorie) {
-        return produitRepertoire.findProduitByCategorie(categorie);
     }
 }

@@ -10,12 +10,14 @@
     "dev": "vite --port=3000"
   },
   "dependencies": {
+    "@cypress/vue": "^6.0.0",
     "axios": "^1.1.2",
     "bootstrap": "^5.3.1",
     "core-js": "^3.8.3",
     "vue": "^3.2.37",
     "vue-json-viewer": "^3.0.4",
     "vue-router": "^4.1.5",
+    "vue3-datepicker": "^0.4.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

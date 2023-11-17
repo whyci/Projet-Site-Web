@@ -1,9 +1,19 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.modele;
 
 import jakarta.persistence.*;
 
 import java.util.Date;
 
+/**
+ * la classe promotion definis la table qui sera dans la base de données
+ * les attributs prives correspondent aux elements de la table promotion.
+ * Les fonctions seront appeles par le repertoire de la classe et sont publiques.
+ */
 @Entity
 @Table(name = "promotion")
 public class Promotion {
@@ -17,14 +27,16 @@ public class Promotion {
 
     private Float pourcentageRemise;
 
-    private Long produitIdCle;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "produit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "produit_fkey"))
+    private Produit produit;
 
-    public Long getProduitIdCle() {
-        return produitIdCle;
+    public Produit getProduit() {
+        return produit;
     }
 
-    public void setProduitIdCle(Long produitIdCle) {
-        this.produitIdCle = produitIdCle;
+    public void setProduit(Produit produit) {
+        this.produit = produit;
     }
 
     public Long getId() {

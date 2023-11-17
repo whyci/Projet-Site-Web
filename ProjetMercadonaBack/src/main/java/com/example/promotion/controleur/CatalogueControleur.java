@@ -1,7 +1,11 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.controleur;
 
 import com.example.promotion.modele.Produit;
-import com.example.promotion.reponse.ReponseProduits;
 import com.example.promotion.service.CatalogueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,50 +14,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static java.lang.Integer.parseInt;
-
+/**
+ * Controleur du catalogue qui réceptionne les requêtes, les traite et renvoie les réponses au front.
+ * Responsabilité principale et unique : Transmettre tous les produits au front.
+ */
 @Controller
 @RequestMapping("/catalogue")
-@CrossOrigin(origins = "*")
 public class CatalogueControleur {
-    @Autowired
-    private CatalogueService catalogueService;
 
+    /**
+     * Instance de CatalogueService, interface d'accès à la base de donnée concernant la récupération de produit.
+     */
+    private final CatalogueService catalogueService;
+
+    /**
+     * Constructeur de la classe pour initialiser les instances de services qu'il utilise. Nécessaire pour les tests,
+     * instancier les services mockés.
+     * @param catalogueService Service du catalogue.
+     */
+    @Autowired
+    public CatalogueControleur(CatalogueService catalogueService) {
+        this.catalogueService = catalogueService;
+    }
+
+    /**
+     * Récupère et renvoie tout le catalogue
+     * @return Entité de réponse contenant la liste des produits
+     */
     @GetMapping("/complet")
     public ResponseEntity<List<Produit>> afficherComplet() {
-        // Your logic to retrieve a List of Produit objects
+        // Récupère le catalogue de la base de donnée en passant par catalogueService
         List<Produit> produits = catalogueService.afficherCatalogueComplet();
-        /*
-        for (Produit produit : produits) {
-            System.out.println(Arrays.toString(produit.getImage()));
-        }*/
 
-        // Create a ResponseEntity and return the List of Produits
+        // Renvoie le catalogue dans une entité de réponse au front
         return ResponseEntity.ok(produits);
-    }
-
-    @GetMapping("/filtre/{id}")
-    public ResponseEntity<Map<String, Produit>> afficherFiltre(@PathVariable Long id) {
-        Optional<Produit> produitOptional = catalogueService.afficherCatalogueFiltre(id);
-        if (produitOptional.isPresent()) {
-            Produit produit = produitOptional.get();
-
-            // Création d'une map pour stocker l'objet Produit
-            Map<String, Produit> responseData = new HashMap<>();
-            responseData.put("data", produit);
-
-            return ResponseEntity.ok(responseData);
-        } else {
-            // Handle the case when the Produit is not found
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/filtre/categorie/{categorie}")
-    public ResponseEntity<ReponseProduits> afficherFiltreCategorie(@PathVariable String categorie) {
-        List<Produit> produitList = catalogueService.afficherCatalogueFiltreCategorie(categorie);
-        ReponseProduits response = new ReponseProduits(produitList);
-
-        return ResponseEntity.ok(response);
     }
 }

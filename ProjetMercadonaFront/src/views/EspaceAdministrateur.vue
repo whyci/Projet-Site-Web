@@ -1,15 +1,76 @@
+<!--
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+-->
 <template>
   <div class="p-10">
     <!-- text-4xl permet d'agrandir le texte; font-bold permet de mettre en gras;
       text-green-900 permet de mettre en vert foncée -->
     <h1 class="text-4xl font-bold text-green-900">Espace administrateur</h1>
     <br>
+    <div class="text-center">
+    <div class="form-group">
+      <p className="text-test">Veuillez remplir les champs ci-dessous pour créer un code administrateur :</p>
+      <br>
+      <template v-if="!voirCodes">
+        <input
+          type="password"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeAdmin"
+          required_
+          v-model="ajoutCodeAdmin.code"
+          name="codeAdmin"
+          placeholder="Ecrire le code administrateur*"
+        />
+        <br>
+        <input
+          type="password"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeMaster"
+          required_
+          v-model="ajoutCodeAdmin.codeMaster"
+          name="codeMaster"
+          placeholder="Ecrire le code master *"
+        />
+      </template>
+      <template v-else>
+        <input
+          type="text"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeAdmin"
+          required_
+          v-model="ajoutCodeAdmin.code"
+          name="codeAdmin"
+          placeholder="Ecrire le code administrateur*"
+        />
+        <br>
+        <input
+          type="text"
+          class="rounded border-2 bg-white border-gray-200 focus:border-green-800 mb-4 w-25"
+          id="codeMaster"
+          required_
+          v-model="ajoutCodeAdmin.codeMaster"
+          name="codeMaster"
+          placeholder="Ecrire le code master *"
+        />
+      </template>
+      <br>
+      <button class="button" @click="voirCodes = !voirCodes">Voir les codes</button>
+    </div>
     <div>
-      <p className="text-test">Veuillez remplir le formulaire ci-dessous pour créer un produit.</p>
+      <br>
+      <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
+              class="btn btn-success" @click="ajouterCodeAdmin">Ajouter le code administrateur</button>
+      <br><br>
+    </div>
+    </div>
     <br>
-  </div>
+
   <div class="text-center">
     <div class="form-group">
+      <br>
+      <p className="text-test">Veuillez remplir le formulaire ci-dessous pour créer un produit :</p>
       <br>
       <input
         type="text"
@@ -59,7 +120,12 @@
         @change="enregistrerImage"
         required>
     </div>
-      <img v-if="imageApercu !== null" :src="imageApercu" alt="Aucune image sélectionné">
+    <div v-if="imageApercu !== null">
+      <img
+           class="rounded-xl h-52 ml-auto mr-auto "
+           :src="imageApercu"
+      >
+    </div>
     <div>
       <br>
         <!-- permet de gérer la bordure et l'espace du carré pour soumettre la demande
@@ -71,6 +137,7 @@
       <br><br>
     </div>
     <br>
+
   </div>
     <!-- permet d'importer le fichier produits et d'afficher les données -->
     <Produits :page-parent="'EspaceAdministrateur'" :resultat-recherche-categorie="null"/>
@@ -82,13 +149,14 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+
+import { onMounted, ref } from "vue";
 import Produits from "../components/Produits.vue";
-import Produit from "../components/ProduitElement.vue";
-import Catalogue from "./Catalogue.vue";
 import EspaceAdministrateur from "./EspaceAdministrateur.vue";
-import Service from "../services/service.js";
+import Service from "../services/index.js";
 import store from "../store/index.js";
+import {accesEspaceAdmin} from "../store/mutations.js";
+import {MASTER_CODE} from "../main.js";
 
 const idProduitPromotionString = ref("");
 const idProduitPromotionInt = ref(0);
@@ -100,18 +168,66 @@ const catalogue = ref(store.state.catalogue);
 // Produit que l'on souhaite ajouter
 const ajoutProduit = ref({
   id: 0,
-  libelle: "",
-  description: "",
-  categorie: "",
-  prix: 0
+  libelle: ref(),
+  description: ref(),
+  categorie: ref(),
+  prix: ref()
 });
+
+// CodeAdmin que l'on souhaite ajouter
+const ajoutCodeAdmin = ref({
+  code: ref(),
+  codeMaster: ref()
+})
+
+const voirCodes = ref(false);
 
 // Image du produit que l'on souhaite ajouter
 const ajoutProduitImage = ref(null);
 // Aperçu de l'image que l'on affiche quand l'utilisateur choisi une image.
-const imageApercu = ref();
+const imageApercu = ref(null);
 
-// Encodage de l'image
+/**
+ * S'exécute à l'initialisation du composant ; vérifie la validité d'accès à l'espace administrateur par le token.
+ */
+onMounted(() => {
+  // Vérifie l'accès aux ressources de l'espace admin.
+  accesEspaceAdmin();
+})
+
+/**
+ * Vérifie si les champs d'ajout d'un codeAdmin sont bien remplis.
+ * @returns {boolean} Retourne vrai si les champs sont tous remplis, faux sinon.
+ */
+function ajouterCodeAdminValide() {
+  return ( (ajoutCodeAdmin.value.code !== "") && (ajoutCodeAdmin.value.codeMaster === MASTER_CODE()) );
+}
+
+/**
+ * Ajoute un codeAdmin dans la base de donnée.
+ */
+function ajouterCodeAdmin() {
+  if (!ajouterCodeAdminValide())
+    return;
+
+  // Ajout d'un codeAdmin dans la base de donnée
+  Service.serviceAjouterCodeAdmin(ajoutCodeAdmin.value.code)
+    .then(response => {
+      if (response.data.message === "OK") {
+        alert("Ajout du code administrateur est terminé !");
+        location.reload();
+      }
+    })
+    .catch(e => {
+      console.log("Erreur détectée, malheureusement ...");
+      console.log(e);
+    })
+}
+
+/**
+ * Etape d'encodage de l'image pour pouvoir la stocker dans la base de donnée.
+ * @param event
+ */
 function enregistrerImage(event) {
   // Stockage de l'image prêt pour l'envoi à la base de donnée.
   ajoutProduitImage.value = event.target.files[0];
@@ -128,14 +244,24 @@ function enregistrerImage(event) {
   }
 }
 
+/**
+ * Vérifie si les champs sont bien remplis
+ * @returns {boolean} Retourne vrai si les champs sont tous remplis, faux sinon.
+ */
 function ajoutProduitValide() {
-  return !( (ajoutProduit.value.libelle === "") || (ajoutProduit.value.categorie === "") ||
-    (ajoutProduit.value.prix <=0) || (ajoutProduit.value.description === ""));
+  return ( (ajoutProduit.value.libelle !== "") && (ajoutProduit.value.categorie !== "") &&
+    (ajoutProduit.value.prix > 0) && (ajoutProduit.value.prix <= 1000000) && (ajoutProduit.value.description !== ""));
 }
 
+/**
+ * Première étape d'ajout d'un produit. Elle consiste de vérifier l'accès à l'espace administrateur, de vérifier si
+ * les champs sont bien remplis, et d'envoyer l'image à la base de donnée.
+ */
 function ajouterProduit() {
-  if (!ajoutProduitImage.value) {
-    return null;
+  console.log("Ajout produit");
+  accesEspaceAdmin();
+  if ( !ajoutProduitValide() || !ajoutProduitImage.value ) {
+    return;
   }
 
   var idProduit;
@@ -145,14 +271,11 @@ function ajouterProduit() {
   } else {
     // Ajouter l'image par defaut si il n'y a pas d'image.
   }
-  console.log("fichier image: " + ajoutProduitImage.value);
 
   // Création d'un produit - Etape 1: Ajout d'un produit dans la base de donnée avec une image.
   Service.serviceAjouterProduitImage(formulaireDonneeImage)
     .then(response => {
-      console.log(response.data);
       idProduit = parseInt(ajoutProduitTraitementIntermediaire(response.data.message), 10);
-      console.log("Création produit - Etape 1 terminée");
       deuxiemeEtapeAjoutProduit(idProduit);
     })
     .catch(e => {
@@ -170,13 +293,13 @@ function deuxiemeEtapeAjoutProduit(idProduit) {
   // Création d'un produit - Etape 2: Association des paramètres du produit que l'on souahite ajouter.
   Service.serviceAjouterProduitParametres(ajoutProduit.value, idProduit)
     .then(response => {
-      console.log(response.data);
-      console.log("Création produit - Etape 2 terminée");
       alert("Création produit terminée !");
+      location.reload();
     })
     .catch(e => {
       console.log("Erreur détectée, malheureusement ...");
       console.log(e);
+      location.reload();
     })
 }
 
@@ -194,25 +317,14 @@ function ajoutProduitTraitementIntermediaire(responseData) {
     }
     idProduit = responseData[indexString] + idProduit;
   }
-  console.log("Id du produit : " + idProduit);
   return idProduit;
 }
 
-function nouveauProduit() {
-  submitted.value = false;
-  console.log("nouveau produit. submitted: " + submitted.value);
-  ajoutProduit.value = {
-    libelle: "",
-    description: "",
-    categorie: "",
-    prix: 0
-  };
-}
-
 /**
- On récupère l'ancien prix du produit, que l'on souhaite appliquer une promotion, dans le catalogue que l'on possède.
- L'objectif est d'éviter les requêtes inutiles à la base de donnée.
+ * On récupère l'ancien prix du produit, que l'on souhaite appliquer une promotion, dans le catalogue que l'on possède.
+ *  L'objectif est d'éviter les requêtes inutiles à la base de donnée.
  */
+
 function recupereAncienPrix() {
   // On parcours les index du catalogue pour recuperer les id des produits.
   let i;
@@ -230,15 +342,18 @@ function recupereAncienPrix() {
   }
 }
 
+// N'est plus utilisé pour le moment
 function demanderPromo() {
   idProduitPromotionInt.value = parseInt(idProduitPromotionString.value);
   askedPromo.value = true;
   recupereAncienPrix();
 }
 
+// N'est plus utilisé pour le moment
 function terminerPromo() {
   askedPromo.value = false;
 }
+
 </script>
 
 <style>

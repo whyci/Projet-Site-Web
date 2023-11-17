@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.service;
 
 import com.example.promotion.modele.Administrateur;
@@ -7,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implémentation des fonctions de AdministrateurService.
+ */
 @Service
 public class AdministrateurServiceImplementation implements AdministrateurService {
 
@@ -19,7 +27,7 @@ public class AdministrateurServiceImplementation implements AdministrateurServic
     }
 
     @Override
-    public Administrateur inscrireAdministrateur(Administrateur administrateur) {
-        return administrateurRepertoire.save(administrateur);
+    public void inscrireAdministrateur(Administrateur administrateur) {
+        administrateurRepertoire.save(administrateur);
     }
 }

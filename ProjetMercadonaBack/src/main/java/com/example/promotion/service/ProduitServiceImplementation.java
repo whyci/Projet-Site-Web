@@ -1,3 +1,8 @@
+/*
+Copyright (c) 2023 to Present,
+Author: Camille VERON.
+All rights reserved.
+ */
 package com.example.promotion.service;
 
 import com.example.promotion.modele.Produit;
@@ -5,8 +10,10 @@ import com.example.promotion.repertoire.ProduitRepertoire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
+/**
+ * Implémentation des fonctions de ProduitService.
+ */
 @Service
 public class ProduitServiceImplementation implements ProduitService {
 
@@ -37,16 +44,5 @@ public class ProduitServiceImplementation implements ProduitService {
             // Enregistre le changement dans la base de donnée.
             produitRepertoire.save(produitAAjouter);
         }
-    }
-
-
-    @Override
-    public void supprimerProduit(Long id) {
-        produitRepertoire.deleteById(Math.toIntExact(id));
-    }
-
-    @Override
-    public List<Produit> afficherProduits() {
-        return produitRepertoire.findAll();
     }
 }
