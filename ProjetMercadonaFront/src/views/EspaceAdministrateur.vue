@@ -196,6 +196,14 @@ onMounted(() => {
 })
 
 /**
+ * Vérifie si les champs d'ajout d'un codeAdmin sont bien remplis.
+ * @returns {boolean} Retourne vrai si les champs sont tous remplis, faux sinon.
+ */
+function ajouterCodeAdminValide() {
+  return ( (ajoutCodeAdmin.value.code !== "") && (ajoutCodeAdmin.value.codeMaster === MASTER_CODE()) );
+}
+
+/**
  * Ajoute un codeAdmin dans la base de donnée.
  */
 function ajouterCodeAdmin() {

@@ -35,13 +35,14 @@ All rights reserved.
       et le mettre en couleur. Les autres informations permettent de rechercher un produit selon sa catégorie
        quand l'on click sur la bouton la recherche est lancée-->
       <button style="border: 1px; padding : 12px; background-color : lightgray; color :black"
-              class="btn btn-success" @click="resultatRechercheCategorie=filtreCategorie(rechercheCategorie)">Lancer la recherche
+              class="btn btn-success" @click="filtrerCategorie">Lancer la recherche
       </button>
     </div>
     <br><br>
-
-    <!-- permet d'appeller le fichier produits et d'afficher les données -->
-    <Produits :page-parent="'Catalogue'" :resultat-recherche-categorie="resultatRechercheCategorie"/>
+    <template v-if="rafraichirOK">
+      <!-- permet d'appeller le fichier produits et d'afficher les données -->
+      <Produits :page-parent="'Catalogue'" :resultat-recherche-categorie="resultatRechercheCategorie"/>
+    </template>
   </div>
   <!-- footer-bg permet de mettre l'image en bas de page et de gérer la taille -->
   <footer class="footer-bg">
@@ -49,7 +50,7 @@ All rights reserved.
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, onUpdated, ref} from "vue";
 import Produits from "../components/Produits.vue";
 
 // Importe la framework Bootstrap 5 qui permet d'améliorer le front du document
@@ -59,7 +60,18 @@ import {filtreCategorie} from "../filters/index.js";
 const rechercheCategorie = ref("");
 const resultatRechercheCategorie = ref([]);
 
-// Tableau des produits filtrés.
-const filtre = ref([]);
+const rafraichirOK = ref(true);
+
+// Lance le filtre par catégorie
+function filtrerCategorie() {
+  rafraichirOK.value = false;
+  resultatRechercheCategorie.value = filtreCategorie(rechercheCategorie.value);
+}
+
+// Quand on met à jour le filtre par catégorie, on change la valeur de rafraichirOK pour forcer vue à réappeler le
+// composant Produits afin de bien mettre à jour la liste des produits filtrés
+onUpdated(() => {
+  rafraichirOK.value = true;
+})
 
 </script>
